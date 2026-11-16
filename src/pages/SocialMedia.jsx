@@ -270,7 +270,6 @@ export default function SocialMedia() {
             </p>
           </div>
 
-          <MonthPicker value={selectedMonth} onChange={setSelectedMonth} />
         </div>
 
         {/* CUSTOM PERIOD COMPARISON */}

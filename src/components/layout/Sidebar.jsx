@@ -202,7 +202,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen, collapsed, onToggle
           collapsed ? "lg:pt-4" : "lg:px-3"
         }`}>
           {navigation.map((section, sectionIndex) => (
-            <div key={section.title} className={`${collapsed ? "lg:mb-3" : "mb-5"}`}>
+            <div key={section.title} className={`${collapsed ? "mb-4 lg:mb-3" : "mb-8"}`}>
               {/* Judul section (teks saat terbuka) */}
               <p
                 className={`overflow-hidden px-2 text-[10px] font-semibold uppercase leading-tight tracking-[0.14em] text-white/35 transition-[opacity,max-height,margin] duration-300 ${EASE} ${
@@ -217,7 +217,7 @@ export default function Sidebar({ mobileOpen, setMobileOpen, collapsed, onToggle
                 <div
                   aria-hidden="true"
                   className={`mx-auto mb-2 h-px w-6 bg-white/10 transition-opacity duration-300 ${EASE} ${
-                    collapsed ? "lg:opacity-100" : "lg:opacity-0"
+                    collapsed ? "lg:opacity-100" : "lg:hidden"
                   }`}
                 />
               )}

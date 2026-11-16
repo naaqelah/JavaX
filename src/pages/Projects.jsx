@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import GlassSelect from "../components/ui/GlassSelect";
 import { MONTH_OPTIONS } from "../components/ui/monthOptions";
 import { CalendarDays } from "lucide-react";
@@ -155,6 +155,7 @@ const [projects] = useState(() => {
     }));
 });
   const [selectedMonth, setSelectedMonth] = useState("October 2026");
+  const [collapsedSections, setCollapsedSections] = useState({});
   const [exportOpen, setExportOpen] = useState(false);
 
   const attention = useMemo(
@@ -220,36 +221,32 @@ const [projects] = useState(() => {
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="relative">
+          <div className="grid w-full grid-cols-2 items-center gap-2 sm:flex sm:w-auto sm:flex-wrap sm:justify-end">
+            <div className="relative col-span-2 sm:col-span-1">
               <GlassSelect
                 label="Month"
-                className="w-[190px]"
+                className="w-full sm:w-[190px]"
                 icon={<CalendarDays size={14} />}
                 value={selectedMonth}
                 options={MONTH_OPTIONS}
                 onChange={setSelectedMonth}
-              />
-              <ChevronDown
-                size={14}
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/55"
               />
             </div>
 
             <button
               type="button"
               onClick={() => alert("Board Dossier is not connected to the backend yet.")}
-              className={PILL}
+              className={PILL + " h-10 w-full justify-center border-white/15 bg-white/[0.04] text-white/90 sm:h-9 sm:w-auto"}
             >
               <Calculator size={14} />
               Board Dossier
             </button>
 
-            <div className="relative">
+            <div className="relative w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setExportOpen(!exportOpen)}
-                className={PILL_PRIMARY + " h-9 px-3.5"}
+                className={PILL_PRIMARY + " h-10 w-full justify-center px-3.5 sm:h-9 sm:w-auto"}
               >
                 <FileText size={14} />
                 Export As
@@ -300,14 +297,10 @@ const [projects] = useState(() => {
         <section className={`overflow-hidden rounded-2xl p-4 sm:p-5 ${GLASS}`}>
           <div className="mb-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
             <div>
-              <h2 className="text-[15px] font-semibold tracking-tight text-white">
-                Project Roster &amp; Post Checklist
-              </h2>
               <p className="mt-1 text-[12px] text-white/55">
                 Reads live data from your connected Google Sheets.
               </p>
             </div>
-
             <Link
               to="/projects/create"
               className={PILL_PRIMARY + " h-9 px-4"}
@@ -320,9 +313,9 @@ const [projects] = useState(() => {
           <div className="mb-4 border-t border-white/[0.08]" />
 
           {/* Table */}
-          <div className="overflow-x-auto rounded-xl border border-white/[0.08] bg-black/30">
-            <div className="min-w-[820px]">
-              <div className={`grid ${GRID_COLS} items-center gap-3 border-b border-white/[0.12] bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white/55`}>
+          <div className="rounded-xl border border-white/[0.08] bg-black/30 max-md:border-0 max-md:bg-transparent md:overflow-x-auto">
+            <div className="md:min-w-[820px]">
+              <div className={`grid ${GRID_COLS} max-md:hidden items-center gap-3 border-b border-white/[0.12] bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white/55`}>
                 <div>Project</div>
                 <div>Owner</div>
                 <div>Category</div>
@@ -332,7 +325,23 @@ const [projects] = useState(() => {
               </div>
 
               {projects.length > 0 ? (
-                projects.map((project) => {
+                [
+                  { title: "In progress", items: projects.filter((p) => p.status !== "completed") },
+                  { title: "Completed", items: projects.filter((p) => p.status === "completed") },
+                ].filter((group) => group.items.length > 0).map((group) => (
+                <Fragment key={group.title}>
+                <button
+                  type="button"
+                  onClick={() => setCollapsedSections((prev) => ({ ...prev, [group.title]: !prev[group.title] }))}
+                  aria-expanded={!collapsedSections[group.title]}
+                  className="mt-3 flex w-full items-center justify-between border-b border-white/[0.06] bg-white/[0.02] px-4 py-2.5 text-left text-[12px] font-semibold text-white/80 transition first:mt-0 hover:bg-white/[0.04] max-md:mb-1.5 max-md:rounded-xl max-md:border max-md:border-white/[0.08]"
+                >
+                  <span>
+                    {group.title} <span className="ml-1 text-white/40">({group.items.length})</span>
+                  </span>
+                  <ChevronDown size={14} className={`text-white/55 transition-transform duration-200 ${collapsedSections[group.title] ? "-rotate-90" : ""}`} />
+                </button>
+                {!collapsedSections[group.title] && group.items.map((project) => {
                   const progress =
                     project.total > 0
                       ? Math.round((project.done / project.total) * 100)
@@ -342,26 +351,26 @@ const [projects] = useState(() => {
                     <Link
                       key={project.id}
                       to={`/projects/${project.id}`}
-                      className={`group grid min-h-[64px] ${GRID_COLS} items-center gap-3 border-b border-white/[0.06] px-4 py-2.5 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.04]`}
+                      className={`group grid min-h-[64px] ${GRID_COLS} max-md:grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2.5 border-b border-white/[0.06] px-4 py-3.5 max-md:mb-1.5 max-md:rounded-xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-4 md:items-center md:gap-3 md:py-2.5 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.04]`}
                     >
-                      <div className="truncate text-[13px] font-semibold text-white">
+                      <div className="truncate text-[13px] font-semibold text-white max-md:col-start-1 max-md:row-start-1 max-md:min-w-0 max-md:text-[15px]">
                         {project.name}
                       </div>
 
-                      <div className="flex min-w-0 items-center gap-2.5 text-[12px] text-white/75">
+                      <div className="flex min-w-0 items-center gap-2.5 text-[12px] text-white/75 max-md:col-start-1 max-md:row-start-2">
                         <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/10 bg-gradient-to-br from-[#A21E1E]/40 to-white/[0.06] text-[11px] font-semibold text-white">
                           {project.owner.charAt(0).toUpperCase()}
                         </span>
                         <span className="truncate">{project.owner}</span>
                       </div>
 
-                      <div>
+                      <div className="max-md:hidden">
                         <span className="inline-flex rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-0.5 text-[11px] text-white/75">
                           {project.category}
                         </span>
                       </div>
 
-                      <div className="flex flex-col gap-1.5 text-[12px] font-semibold tabular-nums text-white">
+                      <div className="flex flex-col gap-1.5 text-[12px] font-semibold tabular-nums text-white max-md:hidden">
                         <span>
                           {project.done}/{project.total}
                         </span>
@@ -373,7 +382,7 @@ const [projects] = useState(() => {
                         </div>
                       </div>
 
-                      <div>
+                      <div className="max-md:col-start-2 max-md:row-start-1 max-md:justify-self-end">
                         <span
                           className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${statusStyle[project.status] || statusStyle.in_progress}`}
                         >
@@ -382,12 +391,14 @@ const [projects] = useState(() => {
                         </span>
                       </div>
 
-                      <div className="flex justify-center text-[#C42B2B] transition group-hover:translate-x-0.5">
+                      <div className="flex justify-center text-[#C42B2B] transition group-hover:translate-x-0.5 max-md:col-start-2 max-md:row-start-2 max-md:justify-self-end max-md:grid max-md:h-9 max-md:w-9 max-md:shrink-0 max-md:place-items-center max-md:rounded-full max-md:border max-md:border-white/20 max-md:text-white/80">
                         <ChevronRight size={15} />
                       </div>
                     </Link>
                   );
-                })
+                })}
+                </Fragment>
+                ))
               ) : (
                 <div className="px-5 py-10 text-center text-[12px] text-white/55">
                   No projects yet.

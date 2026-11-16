@@ -1,5 +1,5 @@
 
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import AppLayout from "./components/layout/AppLayout";
 import PlaceholderPage from "./pages/PlaceholderPage";
@@ -40,7 +40,6 @@ const routes = [
   "/agent-office",
   "/integrations",
   "/team-scorecards",
-  "/promotors",
 ];
 
 function getPage(path) {
@@ -87,7 +86,6 @@ function getPage(path) {
     case "/promotors/:id":
       return <PromoterDetail />;
 
-    case "/promotors":
     case "/ai-assistant":
     case "/agent-office":
     case "/integrations":
@@ -100,7 +98,7 @@ function getPage(path) {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route element={<AppLayout />}>
           <Route
@@ -115,14 +113,9 @@ function App() {
               element={getPage(path)}
             />
           ))}
-
-        <Route
-          path="/"
-          element={<Navigate to="/overview" replace />}
-        />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

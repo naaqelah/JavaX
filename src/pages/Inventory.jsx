@@ -157,7 +157,7 @@ function AdjustButton({ item, onAdjust }) {
     <button
       type="button"
       onClick={() => onAdjust(item)}
-      className={PILL}
+      className={`${PILL} max-md:h-9 max-md:w-full max-md:justify-center`}
     >
       <Pencil size={12} />
       Adjust
@@ -192,9 +192,9 @@ function MerchandiseSection({ items, onAdjust }) {
           {items.map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className={`grid min-h-[52px] ${MERCH_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-3 max-md:rounded-xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-3.5`}
+              className={`grid min-h-[52px] ${MERCH_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-x-4 max-md:gap-y-3 max-md:rounded-2xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-4 max-md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`}
             >
-              <div className="font-semibold text-white max-md:text-[15px]">{item.name}</div>
+              <div className="font-semibold text-white max-md:col-start-1 max-md:row-start-1 max-md:text-[15px]">{item.name}</div>
               <div className="text-white/55 max-md:col-span-2 max-md:-mt-1 max-md:text-[12px]">
                 {item.category}
               </div>
@@ -210,10 +210,10 @@ function MerchandiseSection({ items, onAdjust }) {
               <div className="tabular-nums max-md:before:mb-1 max-md:before:block max-md:before:text-[10px] max-md:before:uppercase max-md:before:text-white/45 max-md:before:content-['Valuation']">
                 {formatRupiah(item.on_hand * item.unit_cost)}
               </div>
-              <div className="text-center max-md:justify-self-end">
+              <div className="text-center max-md:col-start-2 max-md:row-start-1 max-md:justify-self-end">
                 <StockStatus status={item.status} />
               </div>
-              <div className="text-center max-md:col-span-2">
+              <div className="text-center max-md:col-span-2 max-md:mt-1 max-md:border-t max-md:border-white/[0.07] max-md:pt-3">
                 <AdjustButton item={item} onAdjust={onAdjust} />
               </div>
             </div>
@@ -242,7 +242,7 @@ function EquipmentSection({ items, onAdjust }) {
           {items.map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className={`grid min-h-[52px] ${EQUIP_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-3 max-md:rounded-xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-3.5`}
+              className={`grid min-h-[52px] ${EQUIP_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-x-4 max-md:gap-y-3 max-md:rounded-2xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-4 max-md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`}
             >
               <div className="font-semibold text-white max-md:col-span-2 max-md:text-[15px]">
                 {item.name}
@@ -259,7 +259,7 @@ function EquipmentSection({ items, onAdjust }) {
               <div className="tabular-nums max-md:col-span-2 max-md:before:mb-1 max-md:before:block max-md:before:text-[10px] max-md:before:uppercase max-md:before:text-white/45 max-md:before:content-['Stock_value']">
                 {formatRupiah(item.stock_value)}
               </div>
-              <div className="text-center max-md:col-span-2">
+              <div className="text-center max-md:col-span-2 max-md:mt-1 max-md:border-t max-md:border-white/[0.07] max-md:pt-3">
                 <AdjustButton item={item} onAdjust={onAdjust} />
               </div>
             </div>
@@ -313,8 +313,8 @@ function LogSection({ logs }) {
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3 max-md:items-start">
         <SectionTitle>Log</SectionTitle>
 
-        <div className="flex flex-wrap gap-2.5 max-md:w-full">
-          <div className="relative w-[280px] max-w-full max-md:w-full">
+        <div className="flex flex-wrap gap-2.5 max-md:grid max-md:w-full max-md:grid-cols-2">
+          <div className="relative w-[280px] max-w-full max-md:col-span-2 max-md:w-full">
             <Search
               size={14}
               className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/45"
@@ -333,7 +333,7 @@ function LogSection({ logs }) {
             placeholder="All types"
             value={filter}
             onChange={setFilter}
-            className="w-[150px] max-md:w-full"
+            className="w-[150px] max-md:w-full min-w-0"
             options={[
               { value: "", label: "All types" },
               { value: "in", label: "IN" },

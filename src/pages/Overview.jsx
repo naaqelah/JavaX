@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Chart as ChartJS,
@@ -49,18 +49,91 @@ const donutTrack = {
     const arc = meta?.data?.[0];
     if (!arc) return;
 
+    // Chart.js menggambar segmen dengan radius + spacing/2 (lihat ArcElement.draw), jadi track
+    // harus memakai radius yang sama agar sejajar dengan segmen.
+    const shift = (arc.options?.spacing || 0) / 2;
+    const outer = arc.outerRadius + shift;
+    const inner = arc.innerRadius + shift;
     const { ctx } = chart;
-    const radius = (arc.outerRadius + arc.innerRadius) / 2;
+    const radius = (outer + inner) / 2;
     ctx.save();
     ctx.beginPath();
     ctx.arc(arc.x, arc.y, radius, 0, Math.PI * 2);
-    ctx.lineWidth = arc.outerRadius - arc.innerRadius;
+    ctx.lineWidth = outer - inner;
     ctx.strokeStyle = options.color;
     ctx.stroke();
     ctx.restore();
   },
 };
 ChartJS.register(donutTrack);
+
+// Segmen yang dipencet keluar dari pusat sepanjang sudut tengahnya (radial translation).
+// Irisan aktif digambar ulang oleh plugin dengan geseran dx/dy, bukan lewat offset Chart.js,
+// sehingga ukuran dan ketebalan donat tidak ikut berubah.
+const DONUT_POP = 6;
+
+// Chart.js hanya dipakai untuk geometri dan klik (warna arc dibuat transparan).
+// Semua irisan digambar ulang oleh plugin ini memakai index yang sama dengan data, warna, dan label,
+// sehingga index klik, warna, dan posisi label selalu cocok. Irisan aktif digeser sepanjang mid-angle-nya.
+const donutExplode = {
+  id: "donutExplode",
+  afterDatasetsDraw(chart, _args, options) {
+    const colors = options?.colors;
+    if (!colors) return;
+    const meta = chart.getDatasetMeta(0);
+    const values = chart.data.datasets[0].data;
+    const total = values.reduce((sum, value) => sum + value, 0);
+    const pops = chart.$donutPops || [];
+    const { ctx } = chart;
+    ctx.save();
+    values.forEach((value, i) => {
+      const arc = meta.data[i];
+      if (!arc || !value) return;
+      const mid = (arc.startAngle + arc.endAngle) / 2;
+      const pop = pops[i] || 0;
+      const dx = Math.cos(mid) * pop;
+      const dy = Math.sin(mid) * pop;
+      ctx.beginPath();
+      ctx.arc(arc.x + dx, arc.y + dy, arc.outerRadius, arc.startAngle, arc.endAngle);
+      ctx.arc(arc.x + dx, arc.y + dy, arc.innerRadius, arc.endAngle, arc.startAngle, true);
+      ctx.closePath();
+      ctx.fillStyle = colors[i];
+      ctx.fill();
+
+      const r = (arc.innerRadius + arc.outerRadius) / 2;
+      ctx.font = "600 12px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillText(`${Math.round((value / total) * 100)}%`, arc.x + dx + Math.cos(mid) * r, arc.y + dy + Math.sin(mid) * r);
+    });
+    ctx.restore();
+  },
+};
+
+function tweenDonutPop(chart, next) {
+  const count = chart.data.datasets[0].data.length;
+  const from = chart.$donutPops || Array(count).fill(0);
+  const to = Array.from({ length: count }, (_, i) => (i === next ? DONUT_POP : 0));
+  const start = performance.now();
+  cancelAnimationFrame(chart.$donutRaf);
+  const step = (now) => {
+    const t = Math.min(1, (now - start) / 300);
+    const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; // ease-in-out
+    chart.$donutPops = from.map((v, i) => v + (to[i] - v) * e);
+    chart.draw();
+    if (t < 1) chart.$donutRaf = requestAnimationFrame(step);
+  };
+  chart.$donutRaf = requestAnimationFrame(step);
+}
+
+function donutPopClick(_event, elements, chart) {
+  const index = elements.length ? elements[0].index : null;
+  const current = chart.$donutActive ?? null;
+  const next = index === current ? null : index;
+  chart.$donutActive = next;
+  tweenDonutPop(chart, next);
+}
 
 ChartJS.defaults.color = "#b3a4a7";
 ChartJS.defaults.font.family = "Plus Jakarta Sans, Inter, system-ui, sans-serif";
@@ -350,16 +423,20 @@ export default function Overview() {
     setAssistantInput("");
   }
 
+  // Segmen yang dipilih (null = tampilkan Total).
+  const [marketingSel, setMarketingSel] = useState(null);
+
   const marketingChart = useMemo(() => ({
     labels: ["On Target", "Under 90%", "Not Scored"],
     datasets: [{
       data: [5, 1, 11],
-      backgroundColor: ["#B82323", "#E04848", "#2e2427"],
-      hoverBackgroundColor: ["#D66A6A", "#FFB8B8", "#3d3035"],
+      // Warna asli dipegang plugin donutExplode; arc Chart.js dibuat transparan agar tidak tergambar dua kali.
+      backgroundColor: ["rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],
+      hoverBackgroundColor: ["rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],
       borderWidth: 0,
-      borderRadius: 12,
-      spacing: 5,
-      hoverOffset: 6,
+      borderRadius: 0,
+      spacing: 0,
+      hoverOffset: 0,
     }],
   }), []);
 
@@ -452,8 +529,8 @@ export default function Overview() {
       {
         label: "TikTok",
         data: promoTiktok,
-        backgroundColor: barGradient("#F3E9EB", "#6b5f66"),
-        hoverBackgroundColor: barGradient("#FFFFFF", "#8d8790"),
+        backgroundColor: barGradient("#4B4B4B", "#0A0A0A"),
+        hoverBackgroundColor: barGradient("#6B6B6B", "#161616"),
         borderRadius: barRadius,
         borderSkipped: false,
         barPercentage: 0.8,
@@ -496,7 +573,7 @@ export default function Overview() {
       borderWidth: 0,
       borderRadius: 12,
       spacing: 6,
-      hoverOffset: 8,
+      hoverOffset: 0,
     }],
   };
 
@@ -510,6 +587,7 @@ export default function Overview() {
       donutTrack: { color: "rgba(255,255,255,0.07)" },
       legend: { display: false },
       tooltip: {
+        enabled: false,
         ...tooltipStyle,
         callbacks: {
           label: (context) => {
@@ -521,6 +599,23 @@ export default function Overview() {
       },
     },
   };
+
+  // Donat solid dengan label persen di tiap irisan (gaya diagram donat standar).
+  const marketingDonutOptions = useMemo(() => ({
+    ...donutOptions,
+    cutout: "72%",
+    // Ruang tambahan di sekitar lingkaran agar segmen yang keluar tidak terpotong canvas.
+    layout: { padding: 6 },
+    plugins: {
+      ...donutOptions.plugins,
+      donutExplode: { colors: ["#B82323", "#E04848", "#6E686F"] },
+    },
+    onClick: (event, elements, chart) => {
+      donutPopClick(event, elements, chart);
+      const index = elements.length ? elements[0].index : null;
+      setMarketingSel((prev) => (index === null || index === prev ? null : index));
+    },
+  }), []);
 
   const teamOptions = {
     ...donutOptions,
@@ -548,18 +643,32 @@ export default function Overview() {
       <div className="relative z-10 mx-auto w-full max-w-none px-3 sm:px-4 md:px-4 lg:px-5">
         <header className="mb-5">
           <h1 className="text-xl font-semibold leading-tight tracking-tight text-white md:text-[24px]">Overview</h1>
-          <p className="mt-1.5 text-xs text-white/55">What needs you right now</p>
+          <p className="mt-1.5 text-xs text-white/55">Monitor marketing performance and key metrics.</p>
         </header>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           <Panel className="flex flex-col">
             <CardHeading icon={<BarChart3 size={17} />} title="Marketing Performance" status="Need Attention" to="/marketing-performance" />
             <div className="flex flex-1 flex-col items-center justify-center gap-5">
-              <div className="relative h-[190px] w-[190px] shrink-0 drop-shadow-[0_10px_26px_rgba(162,30,30,0.3)]">
-                <Doughnut data={marketingChart} options={donutOptions} />
+              <div className="relative h-[202px] w-[202px] shrink-0 drop-shadow-[0_10px_26px_rgba(162,30,30,0.3)]">
+                <Doughnut data={marketingChart} options={marketingDonutOptions} plugins={[donutExplode]} />
                 <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-[12px] text-white/50">Total</span>
-                  <b className="mt-0.5 text-[30px] font-semibold leading-none tracking-tight tabular-nums text-white">17</b>
+                  {marketingSel === null ? (
+                    <>
+                      <span className="text-[12px] text-white/50">Total</span>
+                      <b className="mt-0.5 text-[30px] font-semibold leading-none tracking-tight tabular-nums text-white">17</b>
+                    </>
+                  ) : (
+                    <>
+                      <span className="max-w-[90px] truncate text-center text-[11px] text-white/55">{marketingChart.labels[marketingSel]}</span>
+                      <b className="mt-0.5 text-[26px] font-semibold leading-none tracking-tight tabular-nums text-white">
+                        {Math.round((marketingChart.datasets[0].data[marketingSel] / 17) * 100)}%
+                      </b>
+                      <span className="mt-1 text-[11px] tabular-nums text-white/55">
+                        {marketingChart.datasets[0].data[marketingSel]} dari 17
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -573,7 +682,7 @@ export default function Overview() {
                   <b className="mt-1 block text-[14px] font-semibold tabular-nums text-white">1</b>
                 </div>
                 <div className="rounded-xl border border-white/[0.07] bg-black/30 px-2 py-2">
-                  <span className="flex items-center justify-center gap-1.5 whitespace-nowrap text-white/55"><i className="h-2 w-2 rounded-full bg-[#2e2427] ring-1 ring-white/20" />Not Scored</span>
+                  <span className="flex items-center justify-center gap-1.5 whitespace-nowrap text-white/55"><i className="h-2 w-2 rounded-full bg-[#6E686F]" />Not Scored</span>
                   <b className="mt-1 block text-[14px] font-semibold tabular-nums text-white">11</b>
                 </div>
               </div>
@@ -799,7 +908,7 @@ export default function Overview() {
                   <p className="text-[10px] font-medium uppercase tracking-wider text-white/55">Account Submissions &amp; Verification</p>
                   <div className="mt-2 flex justify-end gap-4 text-[11px] text-white/55">
                     <span className="flex items-center gap-1.5"><i className="inline-block h-2 w-2 rounded-sm bg-[#B82323]" />Instagram</span>
-                    <span className="flex items-center gap-1.5"><i className="inline-block h-2 w-2 rounded-sm bg-[#E8DCDE]" />TikTok</span>
+                    <span className="flex items-center gap-1.5"><i className="inline-block h-2 w-2 rounded-sm bg-[#4B4B4B]" />TikTok</span>
                   </div>
                   <div className="mt-2 min-h-[200px] flex-1">
                     <Bar data={promoChart} options={promoOptions} />
@@ -905,7 +1014,7 @@ export default function Overview() {
                   <button
                     type="submit"
                     aria-label="Send"
-                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#6d5bd0] to-[#3b2a8a] text-white transition hover:brightness-110 active:scale-[0.97]"
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#C42428] to-[#9E1B1F] text-white transition hover:brightness-110 active:scale-[0.97]"
                   >
                     <ArrowRight size={15} />
                   </button>

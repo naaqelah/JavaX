@@ -221,6 +221,7 @@ export default function InventoryCreate() {
           <p className="mt-1.5 text-xs text-white/55">
             Enter item details.
           </p>
+
         </div>
 
         {/* FORM */}

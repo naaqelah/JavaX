@@ -255,24 +255,56 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
         </div>
       </div>
 
-      {selectedPeriods.length > 0 && (
-        <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-2.5">
-          <p className="mb-1.5 text-[10px] font-medium uppercase tracking-wide text-white/45">Value per period (demo)</p>
-          <div className="flex flex-wrap gap-x-3 gap-y-1">
-            {selectedPeriods.map((period) => (
-              <span key={period} className="text-[11px] text-white/70">
-                <span className="text-white/45">{periodLabel(period)}:</span>{" "}
-                <b className="font-semibold tabular-nums text-white">
-                  {formatMetricValue(
-                    parseMetricValue(actual) * getPeriodFactor(period),
-                    actual
-                  )}
-                </b>
+      {selectedPeriods.length > 0 && (() => {
+        const targetValue = parseMetricValue(target);
+        const series = [...selectedPeriods]
+          .sort()
+          .map((period) => ({
+            period,
+            value: parseMetricValue(actual) * getPeriodFactor(period),
+          }));
+        const maxValue = Math.max(targetValue, ...series.map((point) => point.value), 1);
+
+        return (
+          <div className="mt-3 rounded-lg border border-white/[0.08] bg-white/[0.03] p-2.5">
+            <div className="mb-2 flex items-center justify-between gap-2 text-[10px] font-medium uppercase tracking-wide text-white/45">
+              <span>Actual vs target</span>
+              <span className="flex items-center gap-2 normal-case tracking-normal text-white/55">
+                <span className="inline-flex items-center gap-1">
+                  <i className="inline-block h-2 w-2 rounded-sm bg-[#B83A3A]" />
+                  Actual
+                </span>
+                <span className="inline-flex items-center gap-1">
+                  <i className="inline-block h-0.5 w-3 border-t border-dashed border-white/70" />
+                  Target
+                </span>
               </span>
-            ))}
+            </div>
+            <div className="flex h-20 items-end gap-2">
+              {series.map((point) => {
+                const height = (point.value / maxValue) * 100;
+                const targetHeight = (targetValue / maxValue) * 100;
+                return (
+                  <div key={point.period} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1">
+                    <div className="relative flex h-full w-full items-end justify-center">
+                      <div
+                        className="w-full max-w-[28px] rounded-t-md bg-gradient-to-t from-[#741818] to-[#B83A3A]"
+                        style={{ height: `${height}%` }}
+                        title={`${periodLabel(point.period)}: ${formatMetricValue(point.value, actual)}`}
+                      />
+                      <div
+                        className="pointer-events-none absolute inset-x-0 border-t border-dashed border-white/70"
+                        style={{ bottom: `${targetHeight}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] font-medium text-white/55">{shortPeriodLabel(point.period)}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       <button
         type="button"
@@ -518,6 +550,10 @@ function MonthOverMonth({ selectedPeriods = ["2026-11"] }) {
 function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
   const [selectedWeek, setSelectedWeek] = useState(null);
 
+  // Satu periode: batang dibuat lebih tebal supaya jarak antar minggu tidak terlalu renggang.
+  const singlePeriod = selectedPeriods.length === 1;
+  const barWidth = singlePeriod ? undefined : 14;
+
   const chartData = {
     labels: weeks.map((week) => week.label),
     datasets: selectedPeriods.flatMap((period, periodIndex) => {
@@ -528,7 +564,9 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
           data: weeks.map((week) => Math.round(week.actual * factor)),
           backgroundColor: BAR_COLORS[periodIndex % BAR_COLORS.length],
           borderRadius: 4,
-          barThickness: 14,
+          barThickness: barWidth,
+          barPercentage: singlePeriod ? 0.7 : 0.9,
+          categoryPercentage: singlePeriod ? 0.75 : 0.8,
           yAxisID: "yLeads",
         },
         {
@@ -536,7 +574,9 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
           data: weeks.map((week) => Number((week.spend * factor).toFixed(2))),
           backgroundColor: SPEND_COLORS[periodIndex % SPEND_COLORS.length],
           borderRadius: 4,
-          barThickness: 14,
+          barThickness: barWidth,
+          barPercentage: singlePeriod ? 0.7 : 0.9,
+          categoryPercentage: singlePeriod ? 0.75 : 0.8,
           yAxisID: "ySpend",
         },
       ];
@@ -547,10 +587,12 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
     responsive: true,
     maintainAspectRatio: false,
     interaction: { mode: "index", intersect: false },
+    layout: { padding: { top: 12, right: 12, bottom: 4, left: 8 } },
     plugins: {
       legend: {
-        display: selectedPeriods.length > 1,
-        labels: { color: "#d9cdd0", boxWidth: 8, usePointStyle: true, font: { size: 10 } },
+        display: true,
+        padding: { top: 0, bottom: 60 },
+        labels: { color: "#d9cdd0", boxWidth: 8, boxHeight: 8, usePointStyle: true, padding: 16, font: { size: 10 } },
       },
       tooltip: {
         ...chartTooltip,
@@ -562,7 +604,7 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: "#b3a4a7", font: { size: 11 } },
+        ticks: { color: "#b3a4a7", font: { size: 11 }, padding: 8, minRotation: 0, maxRotation: 0, autoSkip: false },
         border: { color: "rgba(255,255,255,0.15)" },
       },
       yLeads: {
@@ -571,9 +613,10 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
         beginAtZero: true,
         min: 0,
         max: 600,
-        ticks: { stepSize: 150, color: "#b3a4a7", font: { size: 10 } },
+        ticks: { stepSize: 150, color: "#e9a0a0", font: { size: 10 } },
         grid: { color: "rgba(255,255,255,0.06)" },
         border: { display: false },
+        title: { display: true, text: "Leads (jumlah orang)", color: "#e9a0a0", font: { size: 11, weight: "500" } },
       },
       ySpend: {
         type: "linear",
@@ -581,9 +624,10 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
         beginAtZero: true,
         min: 0,
         max: 80,
-        ticks: { stepSize: 20, color: "#b3a4a7", font: { size: 10 } },
+        ticks: { stepSize: 20, color: "#c9c4cc", font: { size: 10 }, callback: (value) => `Rp ${value} jt` },
         grid: { drawOnChartArea: false },
         border: { display: false },
+        title: { display: true, text: "Ad Spend (Rp juta)", color: "#c9c4cc", font: { size: 11, weight: "500" } },
       },
     },
     onClick: (_, elements) => {
@@ -605,24 +649,14 @@ function WeeklyPacing({ selectedPeriods = ["2026-11"] }) {
               Weekly leads and advertising spend · follows the selected period
             </p>
           </div>
-
-          <div className="flex items-center gap-4 text-xs text-white/70">
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#A21E1E]" />
-              Leads
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#8d8790]" />
-              Ad Spend
-            </div>
-          </div>
         </div>
 
         <div className={`p-3 ${INNER}`}>
-          <div className="relative h-[190px] w-full">
-            <Bar data={chartData} options={chartOptions} />
+          <div className="mp-scroll -mx-1 overflow-x-auto px-1 pb-1">
+            <div className={`relative h-[280px] w-full ${singlePeriod ? "min-w-[400px] md:min-w-0" : "min-w-[620px] md:min-w-0"}`}>
+              <Bar data={chartData} options={chartOptions} />
+            </div>
           </div>
-          <p className="mt-3 text-center text-xs text-white/40">Click a bar to see week details</p>
         </div>
 
         {selected && (
@@ -694,7 +728,7 @@ function getDemoPeriodValue(baseValue, period) {
   return Math.max(0, baseValue * factor);
 }
 
-const QUICK_MONTHS = ["2026-06", "2026-07", "2026-08", "2026-09", "2026-10", "2026-11"];
+const QUICK_MONTHS = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10", "2026-11", "2026-12"];
 const DEFAULT_PERIOD = "2026-11";
 
 function shortPeriodLabel(value) {
@@ -779,13 +813,12 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
       {/* PILIH PERIODE */}
       <div className={`mt-3.5 p-3 md:p-3.5 ${INNER}`}>
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs font-medium text-white/60">
-            Select period <span className="text-white/35">· click a month to add / remove</span>
+          <p className="text-[11px] font-medium text-white/60">
+            Select period
           </p>
-          <span className="text-[11px] text-white/45">{selectedPeriods.length} {selectedPeriods.length === 1 ? "month" : "months"} selected</span>
         </div>
 
-        <div className="mt-2.5 flex flex-wrap gap-1.5">
+        <div className="mt-2.5 grid grid-cols-4 gap-1 sm:grid-cols-6 md:grid-cols-6">
           {chipPeriods.map((period) => {
             const active = selectedPeriods.includes(period);
             const locked = active && selectedPeriods.length === 1;
@@ -795,39 +828,20 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
                 type="button"
                 onClick={() => togglePeriod(period)}
                 aria-pressed={active}
-                                className={`inline-flex h-6 items-center gap-1 rounded-full border px-2 text-[12px] font-medium transition active:scale-[0.97] ${
+                                className={`inline-flex h-7 items-center justify-center gap-1 whitespace-nowrap rounded-lg border px-1.5 text-[11px] font-medium transition active:scale-[0.97] ${
                   active
                     ? "border-white/30 bg-white/15 text-white"
                     : "border-white/10 bg-white/[0.04] text-white/65 hover:border-white/25 hover:text-white"
                 } ${locked ? "cursor-default" : ""}`}
               >
-                {active && <CheckCircle2 size={11} className="text-[#D98A8A]" />}
+                {active && <CheckCircle2 size={11} strokeWidth={2} className="shrink-0 text-green-300" />}
                 {shortPeriodLabel(period)}
               </button>
             );
           })}
         </div>
 
-        <div className="mt-2.5 flex flex-wrap items-center justify-end gap-x-4 gap-y-3 border-t border-white/[0.07] pt-2.5">
-          <label className="flex w-full min-w-0 items-center gap-2 sm:w-auto sm:max-w-[260px] sm:flex-1 sm:basis-0">
-            <span className="shrink-0 text-xs text-white/50">Other month</span>
-            <input
-              type="month"
-              value={monthToAdd}
-              onChange={(event) => setMonthToAdd(event.target.value)}
-              onKeyDown={(event) => event.key === "Enter" && addPeriod()}
-              className="h-8 min-w-0 w-full rounded-lg border border-white/10 bg-white/[0.05] px-2 text-[11px] text-white outline-none transition focus:border-[#B82323]/60 [color-scheme:dark]"
-            />
-          </label>
-          <button
-            type="button"
-            onClick={addPeriod}
-            disabled={alreadyAdded}
-            className={`${PILL_PRIMARY} disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:brightness-100`}
-          >
-            <Plus size={13} />
-            Add month
-          </button>
+        <div className="mt-2.5 flex justify-end border-t border-white/[0.07] pt-2.5">
           <button type="button" onClick={reset} className={`${PILL}`}>
             <RotateCcw size={12} />
             Reset
@@ -917,10 +931,6 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
           </table>
         </div>
       </div>
-
-      <p className="mt-3 text-[11px] leading-relaxed text-white/40">
-        Note: monthly figures are currently a frontend simulation, not actual historical data. Integration with historical data from the backend or Google Sheets is needed so results reflect actual performance in each month.
-      </p>
     </Panel>
   );
 }
@@ -1268,11 +1278,7 @@ export default function MarketingPerformance() {
       {/* ATTENTION BANNER */}
 <button
   onClick={() => window.alert("1 item needs attention")}
-  className="!bg-none !bg-[#2A1114] group mb-1 flex min-h-8 w-full items-center gap-2 rounded-xl border border-[#B82323]/30 px-2.5 py-1.5 text-left text-[11px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-[#B82323]/55"
-  style={{
-    backgroundColor: "#2A1114",
-    backgroundImage: "none",
-  }}
+  className="bg-[#2A1114] group mb-1 flex min-h-8 w-full items-center gap-2 rounded-xl border border-[#B82323]/30 px-2.5 py-1.5 text-left text-[11px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-[#B82323]/55"
 >
   <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#A21E1E]/30 text-white">
     <AlertTriangle size={12} />
@@ -1309,11 +1315,10 @@ export default function MarketingPerformance() {
               {section.title}
             </SectionTitle>
 
-            <div
-              className={
-                "mp-scroll flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3 [&>article]:w-[80vw] [&>article]:max-w-[300px] [&>article]:min-w-[230px] [&>article]:shrink-0 [&>article]:snap-start sm:[&>article]:w-auto sm:[&>article]:max-w-none sm:[&>article]:min-w-0"
-              }
-            >
+<div
+  className="mp-scroll flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 sm:overflow-visible xl:grid-cols-3 [&>article]:w-[80vw] [&>article]:max-w-[300px] [&>article]:min-w-[230px] [&>article]:shrink-0 [&>article]:snap-start sm:[&>article]:w-auto sm:[&>article]:max-w-none sm:[&>article]:min-w-0 sm:[&>article]:shrink"
+>
+
               {section.cards.map((card) => (
                 <KpiCard
                   key={card[0]}
@@ -1351,6 +1356,7 @@ export default function MarketingPerformance() {
             {/* AGAINST TARGET */}
             <div className={`min-w-0 p-4 ${INNER}`}>
               <h3 className="text-sm font-semibold text-white">Against target</h3>
+
               <p className="mt-1.5 text-xs leading-relaxed text-white/50">
                 Distance from 100% target. Right = beat, left = missed.
                 Monitored metrics have no target, so they're excluded.
@@ -1404,6 +1410,7 @@ export default function MarketingPerformance() {
             {/* ACQUISITION FUNNEL */}
             <div className={`min-w-0 p-4 ${INNER}`}>
               <h3 className="text-sm font-semibold text-white">Acquisition funnel</h3>
+
               <p className="mt-1.5 text-xs leading-relaxed text-white/50">
                 Each stage against the one before it. Bar length is the count,
                 not the rate.

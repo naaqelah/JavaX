@@ -108,14 +108,12 @@ export default function PeriodCompare({ title, description, months, series }) {
       </div>
       <p className="text-[12px] text-white/55">{description}</p>
 
+
       <div className="mt-4 rounded-xl border border-white/[0.07] bg-black/35 p-3.5">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="text-xs font-medium text-white/60">
-            Select period <span className="text-white/35">· click a month to add / remove</span>
+            Select period
           </p>
-          <span className="text-[11px] text-white/45">
-            {ordered.length} {ordered.length === 1 ? "month" : "months"} selected
-          </span>
         </div>
 
         <div className="mt-2.5 flex flex-wrap gap-1.5">
@@ -134,7 +132,7 @@ export default function PeriodCompare({ title, description, months, series }) {
                     : "border-white/10 bg-white/[0.04] text-white/65 hover:border-white/25 hover:text-white"
                 }`}
               >
-                {active && <CheckCircle2 size={11} className="text-[#D98A8A]" />}
+                {active && <CheckCircle2 size={11} strokeWidth={2} className="shrink-0 text-green-300" />}
                 {month}
               </button>
             );

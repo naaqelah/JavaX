@@ -140,6 +140,7 @@ function PanelHeading({ title, description, children }) {
             {description}
           </p>
         )}
+
       </div>
 
       {children}

@@ -1,6 +1,11 @@
 import { Fragment, useMemo, useState } from "react";
+import LidiaImage from "../assets/images/LIDIA.JPG";
+import BellaImage from "../assets/images/BELLA.JPG";
+import MichaelImage from "../assets/images/MICHAEL.JPG";
+import JasonImage from "../assets/images/JASON.JPG";
+import JodieImage from "../assets/images/JODIE.JPG";
 import GlassSelect from "../components/ui/GlassSelect";
-import { MONTH_OPTIONS } from "../components/ui/monthOptions";
+import MonthPicker from "../components/ui/MonthPicker";
 import PersonKpiList from "../components/analytics/PersonKpiList";
 import {
   ArrowRight,
@@ -37,12 +42,17 @@ const initialPeople = [
   { id: 6, name: "Lidia", role: "Marketing Operations Executive", kpis: 1, composite: null, tier: "no_data" },
 ];
 
+// Posisi foto per orang (default 50% 18%). Nilai Y lebih besar = wajah naik di lingkaran.
+const photoPosition = {
+  Lidia: "50% 70%",
+};
+
 const profileImages = {
-  Lidia: "/src/assets/images/LIDIA.JPG",
-  Bella: "/src/assets/images/BELLA.JPG",
-  Michael: "/src/assets/images/MICHAEL.JPG",
-  Jason: "/src/assets/images/JASON.JPG",
-  Jodie: "/src/assets/images/JODIE.JPG",
+  Lidia: LidiaImage,
+  Bella: BellaImage,
+  Michael: MichaelImage,
+  Jason: JasonImage,
+  Jodie: JodieImage,
 };
 
 const months = [
@@ -215,20 +225,7 @@ export default function TeamScorecards() {
           </div>
 
           <div className="grid w-full grid-cols-2 items-center gap-3 md:flex md:w-auto md:justify-end md:gap-2">
-            <div className="relative col-span-2 md:col-span-1">
-              <GlassSelect
-                label="Month"
-                className="h-9 w-full md:w-[190px]"
-                icon={<CalendarDays size={14} />}
-                value={selectedMonth}
-                options={MONTH_OPTIONS}
-                onChange={setSelectedMonth}
-              />
-              <ChevronDown
-                size={14}
-                className="hidden"
-              />
-            </div>
+            <MonthPicker value={selectedMonth} onChange={setSelectedMonth} />
 
             <button onClick={handlePrint} className={PILL + " h-10 w-full justify-center md:h-9 md:w-auto"}>
               <Calculator size={14} />
@@ -319,7 +316,8 @@ export default function TeamScorecards() {
                     <img
                       src={profileImages[person.name]}
                       alt={person.name}
-                      className="h-full w-full scale-[1.6] object-cover object-[50%_18%]"
+                      className="h-full w-full scale-[1.3] object-cover"
+                      style={{ objectPosition: photoPosition[person.name] || "50% 18%" }}
                     />
                   </span>
 
@@ -410,7 +408,8 @@ export default function TeamScorecards() {
                       <img
                         src={profileImages[person.name]}
                         alt={person.name}
-                        className="h-full w-full scale-[1.6] object-cover object-[50%_18%]"
+                        className="h-full w-full scale-[1.3] object-cover"
+                        style={{ objectPosition: photoPosition[person.name] || "50% 18%" }}
                       />
                     </span>
                     {person.name}

@@ -9,6 +9,7 @@ import {
   Bell,
   SlidersHorizontal,
   UserCog,
+  UserRound,
   Users,
   Monitor,
   Sun,
@@ -290,12 +291,9 @@ export default function Header({ onMenuClick }) {
               aria-haspopup="menu"
               aria-expanded={profileOpen}
               aria-label="Open profile menu"
-              className={`flex h-9 items-center gap-1.5 rounded-lg px-1.5 ${BTN}`}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white/85 ${BTN}`}
             >
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-[#A21E1E] text-[11px] font-bold text-white ring-1 ring-white/15">
-                RE
-              </span>
-              <ChevronDown size={13} className="text-white/55" />
+              <UserRound size={16} />
             </button>
 
             {profileOpen && (

@@ -252,6 +252,7 @@ export default function MyWork() {
               What needs your attention right now, across your KPIs,
               content and projects
             </p>
+
           </div>
 
           {/* WORK SUMMARY */}
@@ -272,11 +273,7 @@ export default function MyWork() {
         {/* ATTENTION BANNER */}
 <button
   onClick={() => window.alert("1 item needs attention")}
-  className="!bg-none !bg-[#2A1114] group mb-1 flex min-h-8 w-full items-center gap-2 rounded-xl border border-[#B82323]/30 px-2.5 py-1.5 text-left text-[11px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-[#B82323]/55"
-  style={{
-    backgroundColor: "#2A1114",
-    backgroundImage: "none",
-  }}
+  className="bg-[#2A1114] group mb-1 flex min-h-8 w-full items-center gap-2 rounded-xl border border-[#B82323]/30 px-2.5 py-1.5 text-left text-[11px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-[#B82323]/55"
 >
   <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#A21E1E]/30 text-white">
     <AlertTriangle size={12} />

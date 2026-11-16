@@ -4,7 +4,9 @@ import { createPortal } from "react-dom";
 import GlassSelect from "../components/ui/GlassSelect";
 import { MONTH_OPTIONS } from "../components/ui/monthOptions";
 import {
-  ArrowLeft, ArrowRight, CalendarDays, CalendarCheck,
+  ArrowLeft,
+  ArrowUp,
+  ArrowDown, ArrowRight, CalendarDays, CalendarCheck,
   CheckCircle2, ChevronDown, ChevronLeft, ChevronRight,
   Clock3, Columns3, FileText, History, Image, Lightbulb,
   Megaphone, Plus, Send, Trash2, X, Info
@@ -30,12 +32,12 @@ const MONTHS = [
 
 // Urutan kolom papan sekaligus alur status (dipakai juga oleh tombol geser kiri/kanan)
 const COLUMNS = [
-  { id: "idea", label: "IDEA", icon: Lightbulb },
-  { id: "scheduled", label: "SCHEDULED", icon: CalendarCheck },
-  { id: "drafting", label: "DRAFTING", icon: FileText },
-  { id: "review", label: "IN REVIEW", icon: Clock3 },
-  { id: "approved", label: "APPROVED", icon: CheckCircle2 },
-  { id: "published", label: "PUBLISHED", icon: Megaphone },
+  { id: "idea", label: "Idea", icon: Lightbulb },
+  { id: "scheduled", label: "Scheduled", icon: CalendarCheck },
+  { id: "drafting", label: "Drafting", icon: FileText },
+  { id: "review", label: "In review", icon: Clock3 },
+  { id: "approved", label: "Approved", icon: CheckCircle2 },
+  { id: "published", label: "Published", icon: Megaphone },
 ];
 
 const BOARD_COLUMNS = COLUMNS;
@@ -70,12 +72,23 @@ const OWNERS = ["Bella", "Jason", "Reinhart", "Michelle", "Jodie", "Kevin"];
 const PLATFORMS = ["IG", "TT", "YT", "FB", "X"];
 
 const STATUS_STYLE = {
-  idea: "bg-white/10 text-white/80 ring-1 ring-white/10",
-  drafting: "bg-white/[0.06] text-white/75 ring-1 ring-white/10",
-  review: "bg-amber-300/10 text-amber-300 ring-1 ring-amber-300/25",
-  approved: "bg-[#A21E1E]/20 text-[#E04848] ring-1 ring-[#B82323]/30",
-  scheduled: "bg-[#A21E1E]/20 text-[#E04848] ring-1 ring-[#B82323]/30",
-  published: "bg-emerald-400/10 text-emerald-300 ring-1 ring-emerald-400/25",
+  // Warna mengikuti psikologi warna: biru = tenang/proses, kuning = perlu perhatian,
+  // hijau = siap/selesai, ungu = terjadwal, abu = belum mulai
+  idea: "bg-slate-400/10 text-slate-300 ring-1 ring-slate-400/25",
+  drafting: "bg-sky-400/10 text-sky-300 ring-1 ring-sky-400/25",
+  review: "bg-amber-400/10 text-amber-300 ring-1 ring-amber-400/30",
+  approved: "bg-green-400/10 text-green-300 ring-1 ring-green-400/30",
+  scheduled: "bg-violet-400/10 text-violet-300 ring-1 ring-violet-400/30",
+  published: "bg-pink-400/15 text-pink-300 ring-1 ring-pink-400/35",
+};
+
+const LEGEND_DOT = {
+  idea: "bg-slate-300",
+  drafting: "bg-sky-300",
+  review: "bg-amber-300",
+  approved: "bg-green-300",
+  scheduled: "bg-violet-300",
+  published: "bg-pink-300",
 };
 
 function readSavedCards() {
@@ -121,6 +134,7 @@ export default function ContentCalendar() {
   const [selectedMonth, setSelectedMonth] = useState("October 2026");
   const [view, setView] = useState("board");
   const [calendarDate, setCalendarDate] = useState({ year: 2026, month: 8 });
+  const [collapsedColumns, setCollapsedColumns] = useState({});
 
   const [createOpen, setCreateOpen] = useState(false);
   const [detailCard, setDetailCard] = useState(null);
@@ -279,15 +293,16 @@ export default function ContentCalendar() {
           </div>
 
           <div className="relative">
-            <GlassSelect
-              label="Month"
-              className="w-[190px]"
-              icon={<CalendarDays size={14} />}
-              value={selectedMonth}
-              options={MONTH_OPTIONS}
-              onChange={setSelectedMonth}
-            />
-          </div>
+              <GlassSelect
+                label="Month"
+                className="h-9 w-[190px] max-sm:w-full"
+                icon={<CalendarDays size={14} />}
+                value={selectedMonth}
+                options={MONTH_OPTIONS}
+                onChange={setSelectedMonth}
+              />
+              <ChevronDown size={14} className="hidden" />
+            </div>
         </div>
 
         {/* ATTENTION BANNER */}
@@ -304,11 +319,11 @@ export default function ContentCalendar() {
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-[15px] font-semibold tracking-tight text-white">Content calendar</h2>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex w-full items-center gap-2 sm:w-auto">
               <button
                 onClick={() => setView("board")}
-                className={`flex h-9 items-center gap-1.5 rounded-lg px-3.5 text-[12px] font-medium transition ${
-                  view === "board" ? "bg-white text-[#120809] shadow-[0_6px_18px_-8px_rgba(255,255,255,0.25)]" : "border border-white/10 bg-white/[0.05] text-white/75 hover:border-white/25 hover:text-white"
+                className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg px-3.5 text-[12px] font-medium transition sm:flex-none ${
+                  view === "board" ? "bg-black text-white ring-1 ring-white/30 shadow-[0_6px_18px_-8px_rgba(0,0,0,0.8)]" : "border border-white/10 bg-white/[0.05] text-white/75 hover:border-white/25 hover:text-white"
                 }`}
               >
                 <Columns3 size={14} /> Board
@@ -316,8 +331,8 @@ export default function ContentCalendar() {
 
               <button
                 onClick={() => setView("calendar")}
-                className={`flex h-9 items-center gap-1.5 rounded-lg px-3.5 text-[12px] font-medium transition ${
-                  view === "calendar" ? "bg-white text-[#120809] shadow-[0_6px_18px_-8px_rgba(255,255,255,0.25)]" : "border border-white/10 bg-white/[0.05] text-white/75 hover:border-white/25 hover:text-white"
+                className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg px-3.5 text-[12px] font-medium transition sm:flex-none ${
+                  view === "calendar" ? "bg-black text-white ring-1 ring-white/30 shadow-[0_6px_18px_-8px_rgba(0,0,0,0.8)]" : "border border-white/10 bg-white/[0.05] text-white/75 hover:border-white/25 hover:text-white"
                 }`}
               >
                 <CalendarDays size={14} /> Calendar
@@ -325,7 +340,7 @@ export default function ContentCalendar() {
 
               <button
                 onClick={() => setCreateOpen(true)}
-                className={PILL_PRIMARY + " h-9 px-3.5"}
+                className={PILL_PRIMARY + " h-9 flex-1 px-3.5 sm:flex-none"}
               >
                 <Plus size={14} /> New
               </button>
@@ -336,23 +351,46 @@ export default function ContentCalendar() {
 
           {/* BOARD VIEW */}
           {view === "board" && (
-            <div className="overflow-x-auto pb-3">
-              <div className="grid min-w-[1200px] grid-cols-6 items-start gap-2.5">
+            <>
+            <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-2.5">
+                {[
+                  ["idea", "Idea", "Not started"],
+                  ["drafting", "Drafting", "In progress"],
+                  ["review", "In review", "Waiting for review"],
+                  ["approved", "Approved", "Ready to schedule"],
+                  ["scheduled", "Scheduled", "Planned date"],
+                  ["published", "Published", "Live"],
+                ].map(([key, label, meaning]) => (
+                  <span key={key} className="inline-flex items-center gap-2 text-[13px] font-medium leading-none text-white/55">
+                    <span className={`h-[7px] w-[7px] shrink-0 rounded-full ${LEGEND_DOT[key]}`} />
+                    {label}
+                  </span>
+                ))}
+              </div>
+              <div className="pb-3 md:overflow-x-auto">
+              <div className="grid grid-cols-1 items-start gap-3 md:min-w-[1200px] md:grid-cols-6 md:gap-2.5">
                 {BOARD_COLUMNS.map((column) => {
                   // Posisi di alur status (untuk tombol geser kiri/kanan)
                   const index = COLUMNS.findIndex((c) => c.id === column.id);
                   const Icon = column.icon;
                   const columnCards = cards.filter((card) => card.status === column.id);
+                  // Di HP, kolom kosong tertutup otomatis dan bisa dibuka lewat header
+                  const isOpen = collapsedColumns[column.id] ?? columnCards.length > 0;
 
                   return (
                     <div key={column.id} className={`min-w-0 pb-2.5 ${INNER}`}>
-                      <div className="flex h-10 items-center gap-2 rounded-t-xl border-b border-white/[0.07] bg-white/[0.04] px-3 text-[10px] font-semibold uppercase tracking-wider text-white/75">
-                        <Icon size={14} />
+                      <div role="button" tabIndex={0} aria-expanded={isOpen} onClick={() => setCollapsedColumns((prev) => ({ ...prev, [column.id]: !isOpen }))} className="flex h-10 cursor-pointer items-center gap-2 rounded-t-xl border-b border-white/[0.07] bg-white/[0.04] px-3 text-[10px] font-semibold tracking-normal text-white/75 max-md:h-auto max-md:rounded-2xl max-md:border-0 max-md:bg-transparent max-md:px-4 max-md:py-3.5 max-md:text-[13px] max-md:text-white md:cursor-default">
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-white/15 bg-gradient-to-br from-[#5A1C1C] to-[#2A0C0C] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+                          <Icon size={14} />
+                        </span>
                         <span className="truncate">{column.label}</span>
-                        <span className="ml-auto tabular-nums text-white/55">{columnCards.length}</span>
+                        <span className={`grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[11px] font-semibold tabular-nums ring-1 ${STATUS_STYLE[column.id]}`}>{columnCards.length}</span>
+                        <span className={`ml-auto grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-[#1a1a1a] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-transform duration-200 md:hidden ${isOpen ? "rotate-180" : ""}`}>
+                          <ChevronDown size={14} />
+                        </span>
                       </div>
 
-                      <div className="flex flex-col gap-2.5 p-2">
+                      <div className={`flex flex-col gap-2.5 p-2 max-md:border-t max-md:border-white/[0.07] max-md:p-3 ${isOpen ? "" : "max-md:hidden"}`}>
                         {columnCards.length === 0 && column.id === "idea" && (
                           <div className="flex min-h-[170px] flex-col items-center justify-center rounded-lg border border-dashed border-white/15 px-3 text-center">
                             <Lightbulb size={22} className="mb-2.5 text-white/40" />
@@ -374,32 +412,32 @@ export default function ContentCalendar() {
                             className="cursor-pointer rounded-lg border border-white/[0.08] bg-gradient-to-br from-white/[0.05] to-black/50 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition hover:border-[#B82323]/40"
                           >
                             <div className="mb-1.5 flex items-start justify-between gap-2">
-                              <h3 className="text-[12px] font-semibold leading-snug text-white">
+                              <h3 className="text-[12px] font-semibold leading-snug text-white max-md:text-[14px]">
                                 {card.title}
                               </h3>
                               <PlatformBadge platform={card.platform} />
                             </div>
 
-                            <p className="text-[11px] text-white/55">
+                            <p className="text-[11px] text-white/55 max-md:text-[13px]">
                               {card.owner}
                             </p>
 
                             {card.asset && (
-                              <div className="mt-2.5 flex h-16 items-center justify-center rounded-md border border-white/[0.06] bg-black/40 text-white/35">
+                              <div className="mt-2.5 flex h-20 items-center justify-center rounded-md border border-white/[0.06] bg-black/40 text-white/35">
                                 <Image size={20} />
                               </div>
                             )}
 
                             <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
-                              <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${STATUS_STYLE[card.status]}`}>
+                              <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium max-md:px-2.5 max-md:text-[12px] ${STATUS_STYLE[card.status]}`}>
                                 {column.label}
                               </span>
-                              <span className="text-[10px] text-white/50">
+                              <span className="text-[10px] text-white/50 max-md:text-[12px]">
                                 {card.date ? formatDate(card.date) : "No date"}
                               </span>
                             </div>
 
-                            <div className="mt-2.5 flex items-center gap-1.5 border-t border-white/[0.07] pt-2">
+                            <div className="mt-2.5 flex items-center gap-1.5 border-t border-white/[0.07] pt-2 max-md:justify-end">
                               <button
                                 disabled={index === 0}
                                 onClick={(e) => {
@@ -407,9 +445,10 @@ export default function ContentCalendar() {
                                   moveCard(card.id, -1);
                                 }}
                                 title="Move backward"
-                                className="grid h-7 w-8 place-items-center rounded-md border border-white/10 text-white/75 transition hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-30"
+                                className="max-md:order-2 grid h-7 w-8 place-items-center rounded-md border border-white/10 text-white/75 transition hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-30"
                               >
-                                <ArrowLeft size={13} />
+                                <ArrowLeft size={13} className="hidden md:block" />
+                                <ArrowUp size={13} className="md:hidden" />
                               </button>
 
                               <button
@@ -419,9 +458,10 @@ export default function ContentCalendar() {
                                   moveCard(card.id, 1);
                                 }}
                                 title="Move forward"
-                                className="grid h-7 w-8 place-items-center rounded-md border border-white/10 text-white/75 transition hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-30"
+                                className="max-md:order-1 grid h-7 w-8 place-items-center rounded-md border border-white/10 text-white/75 transition hover:border-white/25 hover:bg-white/[0.07] disabled:opacity-30"
                               >
-                                <ArrowRight size={13} />
+                                <ArrowRight size={13} className="hidden md:block" />
+                                <ArrowDown size={13} className="md:hidden" />
                               </button>
 
                               <button
@@ -430,7 +470,7 @@ export default function ContentCalendar() {
                                   deleteCard(card.id);
                                 }}
                                 title="Delete"
-                                className="ml-auto grid h-7 w-8 place-items-center rounded-md text-[#C42B2B] transition hover:bg-[#A21E1E]/15"
+                                className="ml-auto max-md:order-3 grid h-7 w-8 place-items-center rounded-md text-[#C42B2B] transition hover:bg-[#A21E1E]/15"
                               >
                                 <Trash2 size={13} />
                               </button>
@@ -443,6 +483,7 @@ export default function ContentCalendar() {
                 })}
               </div>
             </div>
+            </>
           )}
 
           {/* CALENDAR VIEW */}
@@ -471,7 +512,44 @@ export default function ContentCalendar() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-7 gap-1.5">
+              <div className="space-y-2.5 md:hidden">
+                {calendarCells.filter((cell) => !cell.dimmed && calendarEvents.some((event) => event.date === cell.date)).map((cell) => {
+                  const weekday = new Date(calendarDate.year, calendarDate.month, cell.day).toLocaleDateString("en-US", { weekday: "short" });
+                  return (
+                    <div key={cell.date} className="flex gap-3 rounded-xl border border-white/[0.08] bg-black/35 p-3">
+                      <div className="flex w-14 shrink-0 flex-col items-center justify-center rounded-lg bg-white/[0.05] py-2">
+                        <span className="text-[18px] font-semibold text-white">{cell.day}</span>
+                        <span className="text-[10px] uppercase tracking-wider text-white/50">{weekday}</span>
+                      </div>
+                      <div className="grid min-w-0 flex-1 gap-1.5">
+                        {calendarEvents.filter((event) => event.date === cell.date).map((event, eventIndex) => (
+                          <button
+                            key={`${event.title}-${eventIndex}`}
+                            onClick={() => {
+                              const matching = cards.find((card) => card.title === event.title && card.date === event.date);
+                              if (matching) {
+                                setDetailCard(matching);
+                                setReason("");
+                                setReviewMessage("");
+                              }
+                            }}
+                            className={`min-w-0 rounded-md p-2 text-left text-[12px] transition hover:brightness-125 ${STATUS_STYLE[event.status] || STATUS_STYLE.drafting}`}
+                          >
+                            <span className="block truncate font-semibold">{event.title}</span>
+                            <span className="mt-0.5 block truncate opacity-80">{event.time || "Published"} · {event.owner}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+                {!calendarEvents.some((event) => calendarCells.some((cell) => !cell.dimmed && cell.date === event.date)) && (
+                  <p className="py-8 text-center text-[12px] text-white/50">No activity this month.</p>
+                )}
+              </div>
+
+              <div className="hidden md:grid md:grid-cols-7 md:gap-1.5">
+
                 {["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((day) => (
                   <div key={day} className="pb-1.5 pl-1 text-[10px] font-semibold tracking-wider text-white/45">
                     {day}

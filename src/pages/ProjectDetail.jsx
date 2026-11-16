@@ -405,18 +405,13 @@ function ProjectDetail() {
       <div className="relative z-10 mx-auto w-full max-w-none space-y-5 px-3 pb-6 sm:px-4 md:px-4 lg:px-5">
         {/* Top Navigation */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-[12px] text-white/55">
-            <Link
-              to="/projects"
-              className="transition hover:text-white"
-            >
-              Projects
-            </Link>
-            <span>/</span>
-            <span className="font-semibold text-white">
-              {project?.name || "Project Name"} (ID: {id || 1})
-            </span>
-          </div>
+          <Link
+            to="/projects"
+            className="inline-flex h-9 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.05] px-3.5 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
+          >
+            <ArrowLeft size={14} />
+            Back
+          </Link>
 
           <div className="flex items-center gap-2">
             <button
@@ -438,7 +433,7 @@ function ProjectDetail() {
 
             <button
               onClick={handleDeleteProject}
-              className={PILL_PRIMARY + " h-9 px-3.5"}
+              className="inline-flex h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#B82323]/50 bg-[#A21E1E] px-3.5 text-[12px] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(162,30,30,0.7)] transition hover:brightness-110 active:scale-[0.97]"
             >
               <Trash2 size={13} />
               Delete Project

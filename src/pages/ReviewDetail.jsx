@@ -288,6 +288,7 @@ export default function ReviewDetail() {
             Add feedback.
           </p>
 
+
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -312,6 +313,7 @@ export default function ReviewDetail() {
           <p className="mt-1 text-[12px] text-white/55">
             Choose an action.
           </p>
+
 
           {confirmation && (
             <div className="mt-3 rounded-xl border border-emerald-400/25 bg-emerald-400/10 px-3.5 py-2.5 text-[12px] text-emerald-300">

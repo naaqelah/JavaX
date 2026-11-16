@@ -290,17 +290,20 @@ export default function SocialMedia() {
           <div className={`p-3 md:p-3.5 ${INNER}`}>
             <p className="text-xs font-medium text-white/60">Select period</p>
 
-            <div className="mt-2.5 grid grid-cols-4 gap-1.5 sm:grid-cols-6">
-              {trendMonths.map((month) => {
+            <div className="mt-2.5 grid w-full grid-cols-4 gap-1.5 sm:grid-cols-6 md:grid-cols-12">
+              {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((month) => {
                 const active = compareMonths.includes(month);
+                const hasData = trendMonths.includes(month);
 
                 return (
                   <button
                     key={month}
                     type="button"
                     aria-pressed={active}
+                    disabled={!hasData}
                     onClick={() => toggleCompareMonth(month)}
-                    className={`inline-flex h-8 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border text-[12px] font-medium transition active:scale-[0.97] ${
+                    title={hasData ? undefined : "No data for this month"}
+                    className={`inline-flex h-8 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border px-1.5 text-[12px] font-medium transition active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 ${
                       active
                         ? "border-white/30 bg-white/15 text-white"
                         : "border-white/10 bg-white/[0.04] text-white/65 hover:border-white/25 hover:text-white"

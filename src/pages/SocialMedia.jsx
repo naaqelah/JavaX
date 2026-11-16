@@ -273,6 +273,54 @@ export default function SocialMedia() {
           <MonthPicker value={selectedMonth} onChange={setSelectedMonth} />
         </div>
 
+        {/* CUSTOM PERIOD COMPARISON */}
+        <section className={`mt-5 rounded-2xl p-4 md:p-5 ${GLASS}`}>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h2 className="text-[15px] font-semibold tracking-tight text-white">Custom period comparison</h2>
+            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300">
+              Demo data
+            </span>
+          </div>
+
+          <div className={`p-3 md:p-3.5 ${INNER}`}>
+            <p className="text-xs font-medium text-white/60">Select period</p>
+
+            <div className="mt-2.5 grid grid-cols-4 gap-1.5 sm:grid-cols-6">
+              {trendMonths.map((month) => {
+                const active = compareMonths.includes(month);
+
+                return (
+                  <button
+                    key={month}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => toggleCompareMonth(month)}
+                    className={`inline-flex h-8 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border text-[12px] font-medium transition active:scale-[0.97] ${
+                      active
+                        ? "border-white/30 bg-white/15 text-white"
+                        : "border-white/10 bg-white/[0.04] text-white/65 hover:border-white/25 hover:text-white"
+                    }`}
+                  >
+                    {active && <CheckCircle2 size={13} strokeWidth={2} className="shrink-0 text-green-300" />}
+                    {month} 2026
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-3 flex justify-end border-t border-white/[0.07] pt-3">
+              <button
+                type="button"
+                onClick={resetCompare}
+                className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
+              >
+                <RotateCcw size={12} />
+                Reset
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Attention Banner */}
         <div className="mb-5 flex min-h-10 py-2.5 md:h-10 md:py-0 items-center gap-2.5 rounded-xl border border-[#B82323]/25 bg-[#A21E1E]/10 px-3 text-[14px] md:text-[12px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
           <span className="grid h-7 w-7 max-md:h-9 max-md:w-9 shrink-0 place-items-center rounded-full bg-[#A21E1E]/30"><CircleAlert size={14} /></span>
@@ -419,54 +467,6 @@ export default function SocialMedia() {
                 </div>
               );
             })}
-          </div>
-        </section>
-
-        {/* CUSTOM PERIOD COMPARISON */}
-        <section className={`mt-5 rounded-2xl p-4 md:p-5 ${GLASS}`}>
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <h2 className="text-[15px] font-semibold tracking-tight text-white">Custom period comparison</h2>
-            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300">
-              Demo data
-            </span>
-          </div>
-
-          <div className={`p-3 md:p-3.5 ${INNER}`}>
-            <p className="text-xs font-medium text-white/60">Select period</p>
-
-            <div className="mt-2.5 grid grid-cols-4 gap-1.5 sm:grid-cols-6">
-              {trendMonths.map((month) => {
-                const active = compareMonths.includes(month);
-
-                return (
-                  <button
-                    key={month}
-                    type="button"
-                    aria-pressed={active}
-                    onClick={() => toggleCompareMonth(month)}
-                    className={`inline-flex h-8 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border text-[12px] font-medium transition active:scale-[0.97] ${
-                      active
-                        ? "border-white/30 bg-white/15 text-white"
-                        : "border-white/10 bg-white/[0.04] text-white/65 hover:border-white/25 hover:text-white"
-                    }`}
-                  >
-                    {active && <CheckCircle2 size={13} strokeWidth={2} className="shrink-0 text-green-300" />}
-                    {month} 2026
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-3 flex justify-end border-t border-white/[0.07] pt-3">
-              <button
-                type="button"
-                onClick={resetCompare}
-                className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-3 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
-              >
-                <RotateCcw size={12} />
-                Reset
-              </button>
-            </div>
           </div>
         </section>
 

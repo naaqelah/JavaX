@@ -419,20 +419,20 @@ export default function SocialMedia() {
                         </p>
                       </div>
 
-                      <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 md:block md:space-y-2.5">
+                      <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 md:block md:space-y-2.5">
                         {metrics.map((metric) => {
                           const Icon = metric.icon;
 
                           return (
                             <div
                               key={metric.label}
-                              className="flex min-w-0 flex-col gap-1.5 md:flex-row md:items-center md:gap-2.5"
+                              className="flex min-w-0 items-center justify-between gap-2"
                             >
-                              <div className="flex min-w-0 items-center gap-2.5 text-[13px] text-white/55">
-                                <Icon size={18} strokeWidth={1.8} className="shrink-0" />
+                              <div className="flex min-w-0 items-center gap-1.5 text-[12px] text-white/55">
+                                <Icon size={16} strokeWidth={1.8} className="shrink-0" />
                                 <span className="whitespace-nowrap">{metric.label}</span>
                               </div>
-                              <span className="text-right text-[15px] font-medium tabular-nums text-white md:ml-auto">
+                              <span className="shrink-0 whitespace-nowrap text-[13px] font-medium tabular-nums text-white">
                                 {channel.stats?.[metric.label] ?? "—"}
                               </span>
                             </div>

@@ -146,16 +146,13 @@ export default function SocialMedia() {
 
   const toggleCompareMonth = (month) => {
     setCompareMonths((current) =>
-      current.includes(month)
-        ? current.length > 1
-          ? current.filter((m) => m !== month)
-          : current
-        : [...current, month]
+      current.includes(month) ? current.filter((m) => m !== month) : [...current, month]
     );
   };
 
+  // Reset mengosongkan semua centang
   const resetCompare = () => {
-    setCompareMonths(["Jun", "Oct"]);
+    setCompareMonths([]);
     setOtherMonth("2026-10");
   };
 

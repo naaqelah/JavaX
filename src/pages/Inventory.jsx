@@ -229,8 +229,8 @@ function EquipmentSection({ items, onAdjust }) {
     <section className="mb-6">
       <SectionTitle>Equipment</SectionTitle>
 
-      <div className="overflow-x-auto rounded-2xl max-md:overflow-visible">
-        <div className={`min-w-[760px] overflow-hidden rounded-2xl ${GLASS} max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
+      <div className="overflow-x-auto max-md:overflow-visible">
+        <div className={`min-w-[760px] overflow-hidden ${GLASS} max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
           <div className={`grid ${EQUIP_COLS} items-center gap-2.5 border-b border-white/[0.12] bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white/55 max-md:hidden`}>
             {["Item", "Category", "On hand", "Unit cost", "Stock value", "Adjust"].map((heading) => (
               <div key={heading} className={heading === "Adjust" ? "text-center" : ""}>

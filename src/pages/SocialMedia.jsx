@@ -300,7 +300,7 @@ export default function SocialMedia() {
                     disabled={!hasData}
                     onClick={() => toggleCompareMonth(month)}
                     title={hasData ? undefined : "No data for this month"}
-                    className={`inline-flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded-lg border px-1 text-[11px] font-medium transition active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 ${
+                    className={`inline-flex h-8 items-center justify-center gap-1 whitespace-nowrap rounded-lg border px-1 text-[11px] font-medium transition active:scale-[0.97] ${
                       active
                         ? "border-white/30 bg-white/15 text-white"
                         : "border-white/10 bg-white/[0.04] text-white/65 hover:border-white/25 hover:text-white"

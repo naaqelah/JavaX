@@ -65,6 +65,7 @@ const channels = [
     tracked: true,
     audience: "50.540",
     growth: "+3.8%",
+    stats: { Impressions: "1.764.000", Reach: "482.300", Engagement: "38.910", Post: "24" },
     Logo: InstagramLogo,
   },
   {
@@ -73,6 +74,7 @@ const channels = [
     tracked: true,
     audience: "36.260",
     growth: "+7.9%",
+    stats: { Impressions: "2.315.000", Reach: "611.800", Engagement: "52.440", Post: "18" },
     Logo: TikTokLogo,
   },
   {
@@ -81,6 +83,7 @@ const channels = [
     tracked: true,
     audience: "13.680",
     growth: "+4.0%",
+    stats: { Impressions: "642.000", Reach: "198.500", Engagement: "16.250", Post: "9" },
     Logo: YouTubeLogo,
   },
   {
@@ -428,7 +431,7 @@ export default function SocialMedia() {
                               <Icon size={14} className="shrink-0" />
                               <span className="min-w-0 truncate">{metric.label}</span>
                               <span className="ml-auto shrink-0 text-white/90">
-                                —
+                                {channel.stats?.[metric.label] ?? "—"}
                               </span>
                             </div>
                           );

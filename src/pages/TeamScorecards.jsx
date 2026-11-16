@@ -5,7 +5,7 @@ import MichaelImage from "../assets/images/MICHAEL.JPG";
 import JasonImage from "../assets/images/JASON.JPG";
 import JodieImage from "../assets/images/JODIE.JPG";
 import GlassSelect from "../components/ui/GlassSelect";
-import MonthPicker from "../components/ui/MonthPicker";
+import { MONTH_OPTIONS } from "../components/ui/monthOptions";
 import PersonKpiList from "../components/analytics/PersonKpiList";
 import {
   ArrowRight,
@@ -225,7 +225,16 @@ export default function TeamScorecards() {
           </div>
 
           <div className="grid w-full grid-cols-2 items-center gap-3 md:flex md:w-auto md:justify-end md:gap-2">
-            <MonthPicker value={selectedMonth} onChange={setSelectedMonth} />
+            <div className="relative col-span-2 md:col-span-1">
+              <GlassSelect
+                label="Month"
+                className="w-full md:w-[190px]"
+                icon={<CalendarDays size={14} />}
+                value={selectedMonth}
+                options={MONTH_OPTIONS}
+                onChange={setSelectedMonth}
+              />
+            </div>
 
             <button onClick={handlePrint} className={PILL + " h-10 w-full justify-center md:h-9 md:w-auto"}>
               <Calculator size={14} />

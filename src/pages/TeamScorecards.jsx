@@ -538,7 +538,7 @@ export default function TeamScorecards() {
                   {axis.map((value) => (
                     <span
                       key={value}
-                      className="absolute top-1 -translate-x-1/2 text-[10px] text-white/50"
+                      className={`absolute top-1 -translate-x-1/2 text-[10px] text-white/50 ${value === 90 ? "max-md:hidden" : ""}`}
                       style={{ left: `${getPercentage(value)}%` }}
                     >
                       {value}%

@@ -1305,10 +1305,10 @@ html[data-theme="light"] :is(button, a):not(:disabled):not(aside a):hover {
 
 /* Menu profil (role="menu"): glassmorphism penuh, lebih bening dengan blur kuat; baris dan kontrol di dalamnya ikut transparan */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] {
-  background-color: rgba(255, 255, 255, 0.56) !important;
-  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.18) 60%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-  backdrop-filter: blur(28px) saturate(180%) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 70%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(180%) !important;
+  backdrop-filter: blur(36px) saturate(180%) !important;
   border: 1px solid rgba(255, 255, 255, 0.85) !important;
   box-shadow: 0 18px 48px rgba(31, 41, 55, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
 }
@@ -1323,7 +1323,7 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 /* Pill pilihan Appearance: kaca tipis, yang aktif lebih terang */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] {
   background-color: rgba(255, 255, 255, 0.35) !important;
-  border-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.92) !important;
 }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] button[aria-pressed="true"],
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] button[aria-checked="true"] {
@@ -1338,4 +1338,13 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] a[class]:hover {
   background-color: rgba(255, 255, 255, 0.5) !important;
+}
+/* Hover item menu profil: putih halus, teks tetap gelap (tanpa gradasi/teks putih dari aturan hover lain) */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] a[class]:hover {
+  background-image: none !important;
+  background-color: rgba(185, 28, 28, 0.07) !important;
+  color: #1F2937 !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] a[class]:hover * {
+  color: #1F2937 !important;
 }

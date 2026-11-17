@@ -805,7 +805,7 @@ function ProjectDetail() {
               if (event.key === "Enter") addTask();
             }}
             placeholder="Add a checklist item"
-            className={FIELD + " h-11 min-w-0 flex-1 lg:h-10"}
+            className={FIELD + " h-11 w-full min-w-0 shrink-0 lg:h-10 lg:flex-1"}
           />
 
           <input
@@ -836,7 +836,7 @@ function ProjectDetail() {
 
         <div className="flex items-center gap-2 text-xs text-white/55 md:text-[11px] md:text-white/45">
           <Paperclip size={13} />
-          Added to the bottom.
+          New items are added to the bottom of the checklist.
         </div>
 
         {/* Edit Task Modal */}

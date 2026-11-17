@@ -701,7 +701,7 @@ export default function SocialMedia() {
           </div>
 
           {/* Social Channels */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:flex md:snap-x md:snap-mandatory md:overflow-x-auto md:pb-3 [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {channels.map((channel) => {
               const isConnected = Boolean(connected[channel.name]);
               const tracked = channel.tracked || isConnected;
@@ -709,7 +709,7 @@ export default function SocialMedia() {
               return (
                 <div
                   key={channel.name}
-                  className={`flex min-h-[250px] min-w-0 w-full shrink-0 snap-start flex-col p-4 md:w-[260px] md:p-3 ${INNER}`}
+                  className={`flex h-full min-h-[300px] min-w-0 w-full flex-col p-4 ${INNER}`}
                 >
                   {/* Channel Header */}
                   <div className="flex min-w-0 items-center gap-2.5 border-b border-white/[0.07] pb-3">
@@ -740,25 +740,23 @@ export default function SocialMedia() {
                     <>
                       <div className="border-b border-white/[0.07] py-3">
                         <p className="text-xs text-white/55 sm:text-[11px]">Audience</p>
-                        <p className="mt-0.5 text-[22px] font-semibold leading-tight tabular-nums text-white md:text-lg">
+                        <p className="mt-1 text-[24px] font-semibold leading-tight tabular-nums text-white">
                           {channel.audience || "Connected"}
                         </p>
                       </div>
 
-                      <div className="mt-3 flex flex-col gap-4 md:block md:space-y-2.5">
+                      <div className="mt-3 flex flex-col gap-3">
                         {metrics.map((metric) => {
                           const Icon = metric.icon;
 
                           return (
                             <div
                               key={metric.label}
-                              className="flex items-center justify-between gap-2"
+                              className="grid min-h-[28px] grid-cols-[18px_minmax(0,1fr)_auto] items-center gap-x-2.5"
                             >
-                              <div className="flex min-w-0 items-center gap-2 text-[13px] text-white/55">
-                                <Icon size={18} strokeWidth={1.8} className="shrink-0" />
-                                <span className="min-w-0 whitespace-nowrap">{metric.label}</span>
-                              </div>
-                              <span className="ml-auto shrink-0 whitespace-nowrap text-[15px] font-medium tabular-nums text-white">
+                              <Icon size={18} strokeWidth={1.8} className="text-white/55" />
+                              <span className="whitespace-nowrap text-[13px] text-white/55">{metric.label}</span>
+                              <span className="whitespace-nowrap pr-0.5 text-right text-[15px] font-medium tabular-nums text-white">
                                 {channel.stats?.[metric.label] ?? "—"}
                               </span>
                             </div>

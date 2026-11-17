@@ -1305,7 +1305,7 @@ html[data-theme="light"] :is(button, a):not(:disabled):not(aside a):hover {
 
 /* Menu profil (role="menu"): glassmorphism penuh, lebih bening dengan blur kuat; baris dan kontrol di dalamnya ikut transparan */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] {
-  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgba(255, 255, 255, 0.58) !important;
   background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 70%) !important;
   -webkit-backdrop-filter: blur(36px) saturate(180%) !important;
   backdrop-filter: blur(36px) saturate(180%) !important;
@@ -1323,7 +1323,7 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 /* Pill pilihan Appearance: kaca tipis, yang aktif lebih terang */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] {
   background-color: rgba(255, 255, 255, 0.35) !important;
-  border-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.58) !important;
 }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] button[aria-pressed="true"],
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] button[aria-checked="true"] {
@@ -1347,4 +1347,11 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] a[class]:hover * {
   color: #1F2937 !important;
+}
+/* Header memiliki backdrop-filter sendiri sehingga memblokir blur menu di dalamnya.
+   Saat menu profil terbuka, header memakai kaca tanpa filter agar blur menu bekerja pada isi halaman. */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] header[class*="sticky"]:has([role="menu"]) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background-color: rgba(255, 255, 255, 0.78) !important;
 }

@@ -90,13 +90,13 @@ html[data-theme="light"] {
   --lm-shadow: 0 1px 2px rgba(32, 33, 36, 0.04), 0 8px 20px -14px rgba(153, 27, 27, 0.16);
   /* Token Liquid Glass */
   /* Hierarki transparansi: nav (paling bening) < kartu < kotak dalam/grafik < dropdown/modal */
-  --lm-glass-nav: rgba(255, 255, 255, 0.58);
-  --lm-glass-bg: rgba(255, 255, 255, 0.66);
-  --lm-glass-inner: rgba(255, 255, 255, 0.78);
+  --lm-glass-nav: rgba(255, 255, 255, 0.5);
+  --lm-glass-bg: rgba(255, 255, 255, 0.7);
+  --lm-glass-inner: rgba(255, 255, 255, 0.82);
   --lm-glass-bg-strong: rgba(255, 255, 255, 0.84);
-  --lm-glass-border: rgba(255, 255, 255, 0.8);
-  --lm-glass-shadow: 0 12px 40px rgba(65, 75, 120, 0.08), 0 0 0 1px rgba(65, 75, 120, 0.035), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --lm-glass-shadow-hover: 0 16px 48px rgba(65, 75, 120, 0.12), 0 0 0 1px rgba(65, 75, 120, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --lm-glass-border: rgba(255, 255, 255, 0.88);
+  --lm-glass-shadow: 0 14px 44px rgba(76, 70, 160, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --lm-glass-shadow-hover: 0 18px 54px rgba(76, 70, 160, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 1);
   --lm-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 38%, rgba(255, 255, 255, 0) 60%);
   --lm-blur: 24px;
   color-scheme: light;
@@ -1168,18 +1168,35 @@ html[data-theme="light"] span[class*="rounded-lg"][class*="bg-white/[0.05]"]:has
    memakai selector berspesifisitas tinggi (html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme]) agar menang atas aturan halaman yang memberi latar putih solid. */
 
 /* Latar halaman: #F5F6F8 dengan gradasi halus agar ada sesuatu yang diburamkan di balik kaca */
-html[data-theme="light"],
-html[data-theme="light"] body {
-  background-color: #F8FAFC !important;
+/* Atmosfer latar: wash periwinkle/lavender/pink + bola warna lembut di belakang panel kaca (diganti lebih ringan di mobile) */
+html[data-theme="light"] {
+  --lm-orbs:
+    /* bola ungu-magenta (kiri bawah) dengan kilau */
+    radial-gradient(circle 70px at 5% 80%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(circle 300px at 7% 90%, rgba(190, 80, 214, 0.72) 0%, rgba(160, 64, 200, 0.5) 46%, rgba(140, 56, 190, 0) 72%),
+    /* bola emas (kanan tengah) */
+    radial-gradient(circle 230px at 99% 56%, rgba(255, 196, 96, 0.7) 0%, rgba(255, 184, 80, 0.42) 52%, rgba(255, 184, 80, 0) 76%),
+    /* bola kaca biru (kanan atas) */
+    radial-gradient(circle 270px at 90% 4%, rgba(98, 132, 255, 0.5) 0%, rgba(140, 160, 255, 0.28) 52%, rgba(140, 160, 255, 0) 76%),
+    /* semburat pink-lilac (bawah tengah) */
+    radial-gradient(circle 320px at 62% 102%, rgba(238, 164, 224, 0.55) 0%, rgba(238, 164, 224, 0) 72%);
+  --lm-orbs-soft:
+    radial-gradient(circle 220px at 4% 94%, rgba(190, 80, 214, 0.42), transparent 72%),
+    radial-gradient(circle 190px at 100% 56%, rgba(255, 196, 96, 0.4), transparent 74%),
+    radial-gradient(circle 200px at 92% 2%, rgba(98, 132, 255, 0.3), transparent 74%);
+}
+html[data-theme="light"] {
+  background-color: #E9ECFB !important;
   background-image:
-    /* Ice blue (kiri atas), lavender (kanan atas), soft pink (kanan bawah), ice blue (kiri bawah) */
-    radial-gradient(1200px 820px at 6% 6%, rgba(214, 228, 255, 0.75) 0%, rgba(234, 241, 255, 0.95) 38%, transparent 72%),
-    radial-gradient(1100px 760px at 94% 22%, rgba(221, 212, 255, 0.7) 0%, rgba(237, 231, 255, 0.92) 38%, transparent 72%),
-    radial-gradient(1100px 780px at 72% 94%, rgba(245, 208, 230, 0.6) 0%, rgba(249, 232, 242, 0.92) 38%, transparent 72%),
-    radial-gradient(900px 640px at 2% 90%, rgba(214, 228, 255, 0.6) 0%, rgba(234, 241, 255, 0.85) 40%, transparent 72%),
-    radial-gradient(620px 420px at 55% 40%, rgba(185, 28, 28, 0.025), transparent 70%),
-    linear-gradient(180deg, #F8FAFC 0%, #F3F6FB 100%) !important;
+    var(--lm-orbs),
+    radial-gradient(1300px 900px at 8% 6%, rgba(198, 214, 255, 0.85) 0%, rgba(214, 226, 255, 0.7) 40%, transparent 74%),
+    radial-gradient(1200px 820px at 92% 30%, rgba(214, 204, 252, 0.8) 0%, rgba(226, 218, 255, 0.6) 40%, transparent 74%),
+    radial-gradient(1200px 840px at 70% 96%, rgba(246, 204, 230, 0.6) 0%, rgba(249, 222, 240, 0.5) 40%, transparent 74%),
+    linear-gradient(180deg, #EEF2FD 0%, #E9ECFB 55%, #F1E9F8 100%) !important;
   background-attachment: fixed !important;
+}
+html[data-theme="light"] body {
+  background: transparent !important;
 }
 
 /* Pembungkus utama aplikasi (AppLayout, bg-[#060606]) harus transparan agar latar atmosfer terlihat di balik kaca */
@@ -1268,6 +1285,7 @@ html[data-theme="light"] :is(button, a):not(:disabled):not(aside a):hover {
 @media (max-width: 767px) {
   html[data-theme="light"] {
     --lm-blur: 14px;
+    --lm-orbs: var(--lm-orbs-soft);
     --lm-glass-nav: rgba(255, 255, 255, 0.78);
     --lm-glass-bg: rgba(255, 255, 255, 0.8);
     --lm-glass-inner: rgba(255, 255, 255, 0.88);

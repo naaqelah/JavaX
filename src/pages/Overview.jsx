@@ -694,7 +694,7 @@ export default function Overview() {
                         {Math.round((marketingChart.datasets[0].data[marketingSel] / 17) * 100)}%
                       </b>
                       <span className="mt-1 text-[11px] tabular-nums text-white/55">
-                        {marketingChart.datasets[0].data[marketingSel]} dari 17
+                        {marketingChart.datasets[0].data[marketingSel]} of 17
                       </span>
                     </>
                   )}

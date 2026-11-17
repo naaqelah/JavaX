@@ -133,7 +133,7 @@ const formatMetricValue = (value, originalValue) => {
   return String(originalValue).includes("Rp") ? `Rp ${formatted}` : formatted;
 };
 
-// Selisih bertanda (+/-) dalam format nilai asli, mis. "-Rp 38.836"
+// Variance bertanda (+/-) dalam format nilai asli, mis. "-Rp 38.836"
 const formatSigned = (value, originalValue) => {
   const sign = value < 0 ? "-" : value > 0 ? "+" : "";
   return `${sign}${formatMetricValue(Math.abs(value), originalValue)}`;
@@ -164,32 +164,32 @@ const formatChange = (value) => {
 
 const against = [
   ["Leads", 100, "green"],
-  ["Biaya Iklan", 100, "green"],
-  ["ROAS (Hasil per Biaya Iklan)", 99, "yellow"],
-  ["Pendapatan / Deposit", 99, "yellow"],
-  ["Rasio FTD", 98, "yellow"],
-  ["Registrasi", 94, "yellow"],
-  ["Deposit Pertama (FTD)", 92, "yellow"],
-  ["Biaya per Lead", 63, "red"],
-  ["Biaya per Akuisisi", 58, "red"],
+  ["Ad Spend", 100, "green"],
+  ["ROAS (Return on Ad Spend)", 99, "yellow"],
+  ["Revenue / Deposit", 99, "yellow"],
+  ["FTD Ratio", 98, "yellow"],
+  ["Registration", 94, "yellow"],
+  ["First Deposit (FTD)", 92, "yellow"],
+  ["Cost per Lead", 63, "red"],
+  ["Cost per Acquisition", 58, "red"],
 ];
 
 const funnel = [
-  { label: "Leads", value: "2.010", width: 100, chip: "23,3%", note: "dari leads" },
-  { label: "Registrasi", value: "468", width: 23.3, chip: "11,8%", note: "dari leads" },
-  { label: "Deposit Pertama (FTD)", value: "55", width: 3, chip: "11,8%", note: "dari registrasi" },
+  { label: "Leads", value: "2.010", width: 100, chip: "23,3%", note: "of leads" },
+  { label: "Registration", value: "468", width: 23.3, chip: "11,8%", note: "of leads" },
+  { label: "First Deposit (FTD)", value: "55", width: 3, chip: "11,8%", note: "of registrations" },
 ];
 
 const tabs = [
   "Leads",
-  "Registrasi",
-  "Deposit Pertama (FTD)",
-  "Biaya Iklan",
-  "Pendapatan / Deposit",
-  "Biaya per Lead",
-  "Biaya per Akuisisi",
-  "Rasio FTD",
-  "ROAS (Hasil per Biaya Iklan)",
+  "Registration",
+  "First Deposit (FTD)",
+  "Ad Spend",
+  "Revenue / Deposit",
+  "Cost per Lead",
+  "Cost per Acquisition",
+  "FTD Ratio",
+  "ROAS (Return on Ad Spend)",
 ];
 
 const weeks = [
@@ -228,28 +228,28 @@ function Panel({ children, className = "" }) {
 
 // Nama tampilan + penjelasan singkat (bahasa sederhana). Kunci data tetap memakai nama asli.
 const METRIC_INFO = {
-  "Ad Spend": { label: "Biaya Iklan", hint: "Total uang yang dipakai untuk iklan" },
-  CPL: { label: "Biaya per Lead (CPL)", hint: "Biaya untuk mendapat 1 calon pelanggan" },
-  CPR: { label: "Biaya per Registrasi (CPR)", hint: "Biaya untuk 1 orang yang mendaftar" },
-  CPA: { label: "Biaya per Akuisisi (CPA)", hint: "Biaya untuk 1 pelanggan yang deposit" },
-  Leads: { label: "Leads", hint: "Calon pelanggan yang menunjukkan minat" },
-  Registration: { label: "Registrasi", hint: "Jumlah orang yang mendaftar akun" },
-  "Real Account Registration": { label: "Registrasi Akun Real", hint: "Pendaftar yang membuka akun sungguhan" },
-  FTD: { label: "FTD (Deposit Pertama)", hint: "Pelanggan yang melakukan deposit pertama" },
-  "Leads to Reg. Rate": { label: "Leads → Registrasi", hint: "Berapa leads yang akhirnya mendaftar" },
-  "Reg. to FTD Rate": { label: "Registrasi → FTD", hint: "Berapa pendaftar yang melakukan deposit pertama" },
-  "Leads to FTD Rate": { label: "Leads → FTD", hint: "Berapa leads yang akhirnya deposit pertama" },
-  "FTD Amount": { label: "Nilai Deposit Pertama", hint: "Total uang dari deposit pertama" },
-  "Deposit per FTD": { label: "Deposit per FTD", hint: "Rata-rata deposit tiap pelanggan baru" },
-  "ROAS (Deposit per Ad Spend)": { label: "ROAS (Hasil per Biaya Iklan)", hint: "Deposit yang didapat dari tiap Rp 1 biaya iklan" },
+  "Ad Spend": { label: "Ad Spend", hint: "Total money spent on ads" },
+  CPL: { label: "Cost per Lead (CPL)", hint: "Cost to get 1 potential customer" },
+  CPR: { label: "Cost per Registration (CPR)", hint: "Cost per person who signs up" },
+  CPA: { label: "Cost per Acquisition (CPA)", hint: "Cost per customer who deposits" },
+  Leads: { label: "Leads", hint: "Potential customers who showed interest" },
+  Registration: { label: "Registration", hint: "Number of people who registered an account" },
+  "Real Account Registration": { label: "Real Account Registration", hint: "Sign-ups who opened a real account" },
+  FTD: { label: "FTD (First-Time Deposit)", hint: "Customers who made a first deposit" },
+  "Leads to Reg. Rate": { label: "Leads → Registration", hint: "How many leads ended up registering" },
+  "Reg. to FTD Rate": { label: "Registration → FTD", hint: "How many sign-ups made a first deposit" },
+  "Leads to FTD Rate": { label: "Leads → FTD", hint: "How many leads ended up making a first deposit" },
+  "FTD Amount": { label: "First-Time Deposit Amount", hint: "Total money from first deposits" },
+  "Deposit per FTD": { label: "Deposit per FTD", hint: "Average deposit per new customer" },
+  "ROAS (Deposit per Ad Spend)": { label: "ROAS (Return on Ad Spend)", hint: "Deposit earned for every Rp 1 of ad spend" },
 };
 const metricLabel = (name) => METRIC_INFO[name]?.label ?? name;
 
 const SECTION_LABELS = {
-  "Budget & Advertising Performance": "Anggaran & Iklan",
-  "Acquisition Performance": "Perolehan Pelanggan",
+  "Budget & Advertising Performance": "Budget & Advertising",
+  "Acquisition Performance": "Customer Acquisition",
   "Conversion Performance": "Konversi",
-  "Deposit & Revenue Performance": "Deposit & Pendapatan",
+  "Deposit & Revenue Performance": "Deposit & Revenue",
 };
 const sectionLabel = (title) => SECTION_LABELS[title] ?? title;
 
@@ -260,11 +260,11 @@ function getCardStatus(card) {
   const pct = target > 0 ? (actual / target) * 100 : null;
   const lowerIsBetter = isCostMetric(card[0]);
   const met = pct === null ? null : lowerIsBetter ? actual <= target : actual >= target;
-  let text = "Target belum tersedia";
+  let text = "Target not available yet";
   if (met !== null) {
     text = lowerIsBetter
-      ? met ? "Biaya di bawah batas target" : "Biaya melebihi batas target"
-      : met ? "Target tercapai" : "Belum mencapai target";
+      ? met ? "Cost is within the target limit" : "Cost exceeds the target limit"
+      : met ? "Target met" : "Target not yet met";
   }
   return { actual, target, pct, diff: actual - target, lowerIsBetter, met, text };
 }
@@ -304,7 +304,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
         </div>
 
         <span
-          title="Perubahan dibanding periode sebelumnya"
+          title="Change vs previous period"
           className={`inline-flex h-6 shrink-0 items-center gap-0.5 rounded-full px-2 text-[11px] font-semibold leading-none ring-1 ${
             positive
               ? "bg-emerald-400/10 text-emerald-300 ring-emerald-400/25"
@@ -316,12 +316,12 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
         </span>
       </div>
 
-      {/* Hasil aktual (merah) dan target (abu-abu) berdampingan */}
+      {/* Actual (merah) dan target (abu-abu) berdampingan */}
       <div className="grid grid-cols-2 gap-3">
         <div className="min-w-0">
           <p className="flex items-center gap-1.5 text-xs leading-none text-white/55 sm:text-[11px]">
             <i className="inline-block h-[8px] w-[8px] shrink-0 rounded-full bg-[#B83A3A]" />
-            Hasil aktual
+            Actual
           </p>
           <p className="mt-2 text-lg font-semibold leading-none tracking-tight tabular-nums text-white">{actual}</p>
         </div>
@@ -341,18 +341,18 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
           aria-valuenow={Math.round(bar)}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Pencapaian ${metricLabel(name)}`}
+          aria-label={`Achievement ${metricLabel(name)}`}
         >
           <div className={`h-full rounded-full ${STATUS_BAR[statusKey]}`} style={{ width: `${bar}%` }} />
         </div>
 
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <p className="text-xs leading-none text-white/55 sm:text-[11px]">Pencapaian</p>
+            <p className="text-xs leading-none text-white/55 sm:text-[11px]">Achievement</p>
             <p className={`mt-1.5 text-base font-semibold leading-none tabular-nums ${STATUS_TEXT[statusKey]}`}>{pct}</p>
           </div>
           <div className="min-w-0 text-right">
-            <p className="text-xs leading-none text-white/55 sm:text-[11px]">Selisih</p>
+            <p className="text-xs leading-none text-white/55 sm:text-[11px]">Variance</p>
             <p className={`mt-1.5 text-base font-semibold leading-none tabular-nums ${STATUS_TEXT[statusKey]}`}>
               {pctNumber === null ? "N/A" : formatSigned(status.diff, actual)}
             </p>
@@ -363,7 +363,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
 
       {(() => {
         // Setiap bulan punya pasangan Aktual & Target sendiri (tidak dicampur antarbulan).
-        // Pencapaian = Aktual / Target × 100%, Selisih = Aktual - Target.
+        // Achievement = Aktual / Target × 100%, Variance = Aktual - Target.
         const series = [...selectedPeriods].sort().map((period) => {
           const month = getMonthlyMetric(card, period);
           if (!month.available) {
@@ -398,11 +398,11 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
         return (
           <div className="rounded-lg border border-white/[0.08] bg-white/[0.03] p-3">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
-              <span className="text-[11px] font-medium leading-none text-white/55">Hasil aktual vs target</span>
+              <span className="text-[11px] font-medium leading-none text-white/55">Actual vs target</span>
               <span className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] leading-none text-white/65">
                 <span className="inline-flex items-center gap-1.5">
                   <i className="inline-block h-[9px] w-[9px] shrink-0 rounded-full bg-[#B83A3A]" />
-                  Aktual
+                  Actual
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <i className="inline-block h-[9px] w-[9px] shrink-0 rounded-full bg-[#8d8790]" />
@@ -412,7 +412,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
             </div>
 
             {series.length === 0 ? (
-              <p className="py-6 text-center text-xs text-white/45">Pilih minimal satu bulan untuk melihat grafik.</p>
+              <p className="py-6 text-center text-xs text-white/45">Select at least one month to see the chart.</p>
             ) : (
               <div className="flex h-24 items-end gap-2">
                 {series.map((point, index) => {
@@ -449,7 +449,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
                             />
                           </>
                         ) : (
-                          <span className="absolute inset-x-0 bottom-1 text-center text-[11px] leading-tight text-white/40">Belum ada data</span>
+                          <span className="absolute inset-x-0 bottom-1 text-center text-[11px] leading-tight text-white/40">No data yet</span>
                         )}
                         <div
                           role="tooltip"
@@ -459,13 +459,13 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
                             {periodLabel(point.period)}
                           </p>
                           {!point.available ? (
-                            <p className="leading-relaxed text-white/70">Data bulan ini belum tersedia.</p>
+                            <p className="leading-relaxed text-white/70">No data for this month yet.</p>
                           ) : (
                             <>
                               <div className="flex items-center justify-between gap-4 leading-relaxed">
                                 <span className="flex items-center gap-1.5 text-white/70">
                                   <i className="inline-block h-[9px] w-[9px] shrink-0 rounded-full bg-[#B83A3A]" />
-                                  Aktual
+                                  Actual
                                 </span>
                                 <b className="font-semibold tabular-nums text-white">{formatMetricValue(point.value, actual)}</b>
                               </div>
@@ -477,7 +477,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
                                 <b className="font-semibold tabular-nums text-white">{formatMetricValue(point.target, target)}</b>
                               </div>
                               <div className="flex items-center justify-between gap-4 leading-relaxed">
-                                <span className="text-white/70">Selisih</span>
+                                <span className="text-white/70">Variance</span>
                                 <b
                                   className={`font-semibold tabular-nums ${
                                     point.pct === null ? "text-white/60" : good ? "text-emerald-300" : "text-[#E04848]"
@@ -487,7 +487,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
                                 </b>
                               </div>
                               <div className="flex items-center justify-between gap-4 leading-relaxed">
-                                <span className="text-white/70">Pencapaian</span>
+                                <span className="text-white/70">Achievement</span>
                                 <b className="font-semibold tabular-nums text-white">
                                   {point.pct === null ? "N/A" : `${point.pct.toFixed(1)}%`}
                                 </b>
@@ -495,7 +495,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
                               {point.hasPrev && (
                                 <div className="mt-1 border-t border-white/10 pt-1">
                                   <div className="flex items-center justify-between gap-4 leading-relaxed">
-                                    <span className="text-white/70">Aktual vs bulan sebelumnya</span>
+                                    <span className="text-white/70">Actual vs previous month</span>
                                     <b
                                       className={`font-semibold tabular-nums ${
                                         point.actualChange === null
@@ -511,7 +511,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
                                     </b>
                                   </div>
                                   <div className="flex items-center justify-between gap-4 leading-relaxed">
-                                    <span className="text-white/70">Target vs bulan sebelumnya</span>
+                                    <span className="text-white/70">Target vs previous month</span>
                                     <b className="font-semibold tabular-nums text-white">{formatChange(point.targetChange)}</b>
                                   </div>
                                 </div>
@@ -536,7 +536,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
         className="mt-auto inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full border border-white/10 px-3 text-[13px] font-medium text-white/65 transition hover:border-white/30 hover:bg-white/[0.06] hover:text-white sm:h-6 sm:w-fit sm:justify-start sm:gap-1 sm:self-end sm:px-2 sm:text-[12px]"
       >
         <Pencil size={10} />
-        Ubah angka
+        Edit figures
       </button>
     </article>
   );
@@ -595,15 +595,15 @@ function MonthOverMonth({ selectedPeriods = ["2026-11"] }) {
     <Panel className="mp-mom">
       <SectionTitle className="mb-1">Perbandingan Bulanan</SectionTitle>
       <p className="text-[13px] text-white/55">
-        Grafik mengikuti bulan yang dipilih: {selectedPeriods.map(periodLabel).join(" · ")}
+        Chart follows the selected months: {selectedPeriods.map(periodLabel).join(" · ")}
       </p>
 
       <div className={`mt-3 p-3 ${INNER}`}>
-        <p className="mb-3 text-xs font-medium text-white/55">Ringkasan per bulan (data contoh)</p>
+        <p className="mb-3 text-xs font-medium text-white/55">Monthly summary (sample data)</p>
         <div className="h-[170px]">
           <Bar
             data={{
-              labels: ["Leads", "Registrasi", "FTD", "Pendapatan"],
+              labels: ["Leads", "Registration", "FTD", "Revenue"],
               datasets: selectedPeriods.map((period, index) => ({
                 label: periodLabel(period),
                 data: [2010, 468, 55, 2487].map((value) =>
@@ -626,7 +626,7 @@ function MonthOverMonth({ selectedPeriods = ["2026-11"] }) {
               },
               scales: {
                 x: { ticks: { color: "#b3a4a7", font: { size: 10 } }, grid: { display: false }, border: { display: false } },
-                y: { beginAtZero: true, ticks: { color: "#b3a4a7", font: { size: 10 } }, grid: { color: "rgba(255,255,255,0.05)" }, border: { display: false }, title: { display: true, text: "Jumlah", color: "#b3a4a7", font: { size: 10 } } },
+                y: { beginAtZero: true, ticks: { color: "#b3a4a7", font: { size: 10 } }, grid: { color: "rgba(255,255,255,0.05)" }, border: { display: false }, title: { display: true, text: "Count", color: "#b3a4a7", font: { size: 10 } } },
               },
             }}
           />
@@ -635,8 +635,8 @@ function MonthOverMonth({ selectedPeriods = ["2026-11"] }) {
 
       {/* HP: pilih metrik lewat dropdown (area sentuh besar); layar lebar: tab */}
       <div className="mt-3 sm:hidden">
-        <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-white/45">Indikator</span>
-        <GlassSelect label="Indikator" value={activeTab} onChange={setActiveTab} options={tabs} />
+        <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-white/45">Indicator</span>
+        <GlassSelect label="Indicator" value={activeTab} onChange={setActiveTab} options={tabs} />
       </div>
 
       <div className="mp-scroll mt-3 hidden gap-1.5 overflow-x-auto pb-2 sm:flex" role="tablist" aria-label="Metric">
@@ -663,8 +663,8 @@ function MonthOverMonth({ selectedPeriods = ["2026-11"] }) {
         </span>
         <span className="text-white/50">{selectedPeriods.map(periodLabel).join(" · ")}</span>
         <span className="ml-auto text-xs text-white/40">
-          <span className="sm:hidden">Sentuh grafik untuk melihat nilai</span>
-          <span className="hidden sm:inline">Arahkan kursor untuk melihat nilai</span>
+          <span className="sm:hidden">Tap the chart to see values</span>
+          <span className="hidden sm:inline">Hover to see values</span>
         </span>
       </div>
 
@@ -785,8 +785,8 @@ function MonthOverMonth({ selectedPeriods = ["2026-11"] }) {
 
 // Warna: merah = bulan utama, abu-abu = bulan pembanding. Ad Spend memakai tint lebih terang
 // dari warna yang sama supaya tetap berbeda dari Leads (juga dibedakan oleh sumbu kanan).
-// Desktop: merah = Leads, abu-abu = Biaya Iklan; bulan utama pekat, bulan pembanding lebih pudar.
-// Mobile: grup Leads dan Biaya Iklan dipisah, jadi merah = bulan utama, abu-abu = pembanding.
+// Desktop: merah = Leads, abu-abu = Ad Spend; bulan utama pekat, bulan pembanding lebih pudar.
+// Mobile: grup Leads dan Ad Spend dipisah, jadi merah = bulan utama, abu-abu = pembanding.
 const WEEK_COLORS = {
   current: { leads: "#A21E1E", spend: "#8d8790", mobile: "#A21E1E" },
   compare: { leads: "rgba(162,30,30,0.42)", spend: "rgba(141,135,144,0.45)", mobile: "#8d8790" },
@@ -852,7 +852,7 @@ function WeeklyPacing({ selectedPeriods = [] }) {
   const missing = periods.filter(({ period }) => !hasPeriodData(period));
 
   const monthList = [...new Set([...QUICK_MONTHS, current, compare].filter(Boolean))].sort();
-  const monthLabel = (month) => `${periodLabel(month)}${hasPeriodData(month) ? "" : " · belum ada data"}`;
+  const monthLabel = (month) => `${periodLabel(month)}${hasPeriodData(month) ? "" : " · no data yet"}`;
   const currentOptions = monthList.filter((month) => month !== compare).map((month) => ({ value: month, label: monthLabel(month) }));
   const compareOptions = [
     { value: "", label: "Tanpa pembanding" },
@@ -885,7 +885,7 @@ function WeeklyPacing({ selectedPeriods = [] }) {
         yAxisID: "yLeads",
       })),
       ...series.map((s) => ({
-        label: `Biaya Iklan · ${periodLabel(s.period)}`,
+        label: `Ad Spend · ${periodLabel(s.period)}`,
         data: s.rows.map((row) => row?.spend ?? null),
         backgroundColor: WEEK_COLORS[s.key].spend,
         borderRadius: 4,
@@ -932,7 +932,7 @@ function WeeklyPacing({ selectedPeriods = [] }) {
         ticks: { stepSize: leadsScale.step, color: "#e9a0a0", font: { size: 10 } },
         grid: { color: "rgba(255,255,255,0.06)" },
         border: { display: false },
-        title: { display: true, text: "Leads (jumlah orang)", color: "#e9a0a0", font: { size: 11, weight: "500" } },
+        title: { display: true, text: "Leads (people)", color: "#e9a0a0", font: { size: 11, weight: "500" } },
       },
       ySpend: {
         type: "linear",
@@ -943,7 +943,7 @@ function WeeklyPacing({ selectedPeriods = [] }) {
         ticks: { stepSize: spendScale.step, color: "#c9c4cc", font: { size: 10 }, callback: (value) => `Rp ${value} jt` },
         grid: { drawOnChartArea: false },
         border: { display: false },
-        title: { display: true, text: "Biaya Iklan (Rp juta)", color: "#c9c4cc", font: { size: 11, weight: "500" } },
+        title: { display: true, text: "Ad Spend (Rp million)", color: "#c9c4cc", font: { size: 11, weight: "500" } },
       },
     },
     onClick: (_, elements) => {
@@ -957,8 +957,8 @@ function WeeklyPacing({ selectedPeriods = [] }) {
 
   // Kelompok mobile: Leads dan Ad Spend dipisah, tiap minggu punya dua bar horizontal
   const mobileGroups = [
-    { id: "leads", title: "Leads (jumlah orang)", format: formatLeads, max: Math.max(0, ...allLeads) },
-    { id: "spend", title: "Biaya Iklan (Rp juta)", format: formatSpendMillions, max: Math.max(0, ...allSpend) },
+    { id: "leads", title: "Leads (people)", format: formatLeads, max: Math.max(0, ...allLeads) },
+    { id: "spend", title: "Ad Spend (Rp million)", format: formatSpendMillions, max: Math.max(0, ...allSpend) },
   ];
 
   return (
@@ -966,20 +966,20 @@ function WeeklyPacing({ selectedPeriods = [] }) {
       <div className="space-y-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h3 className="text-[15px] font-semibold text-white">Performa Mingguan</h3>
+            <h3 className="text-[15px] font-semibold text-white">Weekly Performance</h3>
             <p className="mt-1 text-xs text-white/50">
-              Leads dan biaya iklan tiap minggu · membandingkan minggu yang sama dari dua bulan
+              Leads and ad spend per week · comparing the same week across two months
             </p>
           </div>
 
           <div className="grid w-full grid-cols-2 gap-2 sm:w-auto sm:grid-cols-[11rem_11rem]">
             <div className="min-w-0">
-              <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-white/45 sm:text-[10px]">Bulan utama</span>
-              <GlassSelect label="Bulan utama" value={current} onChange={setCurrent} options={currentOptions} />
+              <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-white/45 sm:text-[10px]">Main month</span>
+              <GlassSelect label="Main month" value={current} onChange={setCurrent} options={currentOptions} />
             </div>
             <div className="min-w-0">
-              <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-white/45 sm:text-[10px]">Bandingkan dengan</span>
-              <GlassSelect label="Bandingkan dengan" value={compare} onChange={setCompare} options={compareOptions} />
+              <span className="mb-1 block text-[11px] font-medium uppercase tracking-wide text-white/45 sm:text-[10px]">Compare with</span>
+              <GlassSelect label="Compare with" value={compare} onChange={setCompare} options={compareOptions} />
             </div>
           </div>
         </div>
@@ -991,7 +991,7 @@ function WeeklyPacing({ selectedPeriods = [] }) {
           >
             <AlertTriangle size={14} className="mt-0.5 shrink-0" />
             <span>
-              Data {missing.map(({ period }) => periodLabel(period)).join(" dan ")} belum tersedia. Minggu tersebut dikosongkan, bukan dihitung nol.
+              Data {missing.map(({ period }) => periodLabel(period)).join(" and ")} is not available yet. Those weeks are left blank, not counted as zero.
             </span>
           </div>
         )}
@@ -1039,7 +1039,7 @@ function WeeklyPacing({ selectedPeriods = [] }) {
                               />
                             </span>
                             <span className="w-[5.75rem] shrink-0 text-right text-[11px] font-semibold tabular-nums text-white/90">
-                              {value != null ? group.format(value) : <span className="font-normal text-white/40">Belum ada data</span>}
+                              {value != null ? group.format(value) : <span className="font-normal text-white/40">No data yet</span>}
                             </span>
                           </span>
                         );
@@ -1082,14 +1082,14 @@ function WeeklyPacing({ selectedPeriods = [] }) {
                           <p className="mt-1 text-lg font-semibold tabular-nums text-white">{formatLeads(row.leads)}</p>
                         </div>
                         <div>
-                          <p className="text-sm text-white/55">Biaya Iklan</p>
+                          <p className="text-sm text-white/55">Ad Spend</p>
                           <p className="mt-1 text-lg font-semibold tabular-nums text-white">
                             Rp {Math.round(row.spend * 1_000_000).toLocaleString("id-ID")}
                           </p>
                         </div>
                       </div>
                     ) : (
-                      <p className="mt-1.5 text-sm text-white/40">Data belum tersedia</p>
+                      <p className="mt-1.5 text-sm text-white/40">Data not available yet</p>
                     )}
                   </div>
                 );
@@ -1213,9 +1213,9 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
     <Panel className="mt-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="max-w-[640px]">
-          <SectionTitle className="mb-1">Pilih periode</SectionTitle>
+          <SectionTitle className="mb-1">Select period</SectionTitle>
           <p className="text-xs leading-relaxed text-white/55">
-            Pilih satu bulan untuk melihat hasilnya, atau beberapa bulan untuk membandingkan. Semua angka dan grafik di halaman ini ikut berubah.
+            Select one month to see its results, or several months to compare. All figures and charts on this page update accordingly.
           </p>
 
         </div>
@@ -1228,16 +1228,16 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
       <div className={`mt-3.5 p-3 md:p-4 ${INNER}`}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <p className="text-xs font-medium text-white/60">Klik bulan untuk memilih atau membandingkan</p>
+            <p className="text-xs font-medium text-white/60">Click a month to select or compare</p>
             <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium tabular-nums text-white/70">
-              {selectedPeriods.length} bulan dipilih
+              {selectedPeriods.length} months selected
             </span>
           </div>
 
           <div className="flex items-center gap-3">
             <span className="hidden items-center gap-1.5 text-[11px] text-white/45 sm:inline-flex">
               <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Memiliki data
+              Has data
             </span>
             <button
               type="button"
@@ -1279,12 +1279,12 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
         {sortedPeriods.length > 0 && (
           <div className="mt-3 space-y-1 text-xs leading-relaxed text-white/60">
             <p>
-              <span className="text-white/45">Bulan utama:</span>{" "}
+              <span className="text-white/45">Main month:</span>{" "}
               <b className="font-semibold text-white">{periodLabel(sortedPeriods[sortedPeriods.length - 1])}</b>
             </p>
             {sortedPeriods.length > 1 && (
               <p>
-                <span className="text-white/45">Bulan pembanding:</span>{" "}
+                <span className="text-white/45">Comparison month:</span>{" "}
                 <b className="font-semibold text-white/85">
                   {sortedPeriods.slice(0, -1).map(periodLabel).join(", ")}
                 </b>
@@ -1295,7 +1295,7 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
 
         <p className="mt-3 inline-flex items-center gap-1.5 text-[11px] text-white/50 sm:hidden">
           <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          Titik hijau = Memiliki data
+          Green dot = Has data
         </p>
       </div>
 
@@ -1303,14 +1303,14 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
       <div className="mt-4 flex flex-wrap items-end justify-between gap-2">
         <div>
           <h3 className="text-sm font-semibold text-white">
-            {multi ? "Hasil perbandingan periode" : "Hasil bulanan"}
+            {multi ? "Period comparison results" : "Monthly results"}
           </h3>
           <p className="mt-0.5 text-[11px] text-white/50">
             {multi
-              ? `Perubahan dihitung dari ${periodLabel(sortedPeriods[0])} ke ${periodLabel(sortedPeriods[sortedPeriods.length - 1])}.`
+              ? `Change calculated from ${periodLabel(sortedPeriods[0])} to ${periodLabel(sortedPeriods[sortedPeriods.length - 1])}.`
               : sortedPeriods.length === 0
-                ? "Pilih bulan di atas untuk melihat hasil."
-                : `Menampilkan nilai bulan ${periodLabel(sortedPeriods[0])}.`}
+                ? "Select a month above to see results."
+                : `Showing values for ${periodLabel(sortedPeriods[0])}.`}
           </p>
         </div>
       </div>
@@ -1326,14 +1326,14 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
           <table className="w-full border-separate border-spacing-0 text-left text-xs sm:min-w-[520px]">
             <thead>
               <tr className="text-[11px] uppercase tracking-wide text-white/60">
-                <th className="mp-table-head mp-table-head-cell sticky left-0 top-0 z-[4] min-w-[96px] sm:min-w-[118px] border-b border-white/[0.14] bg-[#1d1013] px-3 py-3 text-left shadow-[4px_0_8px_-4px_rgba(0,0,0,0.6)]">Indikator</th>
+                <th className="mp-table-head mp-table-head-cell sticky left-0 top-0 z-[4] min-w-[96px] sm:min-w-[118px] border-b border-white/[0.14] bg-[#1d1013] px-3 py-3 text-left shadow-[4px_0_8px_-4px_rgba(0,0,0,0.6)]">Indicator</th>
                 {sortedPeriods.map((period) => (
                   <th key={period} className="mp-table-head-period mp-table-head-cell sticky top-0 z-[2] whitespace-nowrap border-b border-white/[0.14] bg-[#1d1013] px-2.5 py-3 text-right sm:px-3">
                     {shortPeriodLabel(period)}
                   </th>
                 ))}
                 {multi && (
-                  <th className="mp-table-head-period mp-table-head-cell sticky top-0 z-[2] whitespace-nowrap border-b border-white/[0.14] bg-[#1d1013] px-2.5 py-3 text-right sm:px-3">Perubahan</th>
+                  <th className="mp-table-head-period mp-table-head-cell sticky top-0 z-[2] whitespace-nowrap border-b border-white/[0.14] bg-[#1d1013] px-2.5 py-3 text-right sm:px-3">Change</th>
                 )}
               </tr>
             </thead>
@@ -1659,13 +1659,13 @@ export default function MarketingPerformance() {
             Marketing Performance
           </h1>
           <p className="mt-1.5 text-xs text-white/55">
-            Pantau hasil iklan, cek apakah sudah sesuai target, dan bandingkan antarbulan.
+            Track ad results, check whether targets are met, and compare across months.
           </p>
-          <p className="mt-1 text-[11px] text-white/40">Data terakhir disinkronkan</p>
+          <p className="mt-1 text-[11px] text-white/40">Data last synced</p>
           {overall.total > 0 && (
             <p className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-white/75">
               <span className={`h-1.5 w-1.5 rounded-full ${overall.met >= overall.total / 2 ? "bg-emerald-400" : "bg-[#E04848]"}`} />
-              Ringkasan: <b className="font-semibold tabular-nums text-white">{overall.met} dari {overall.total}</b> indikator sesuai target
+              Summary: <b className="font-semibold tabular-nums text-white">{overall.met} of {overall.total}</b> indicators on target
             </p>
           )}
         </div>
@@ -1779,7 +1779,7 @@ export default function MarketingPerformance() {
               aside={
                 <span className="inline-flex items-center gap-2 text-xs text-white/55">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  {onTrack} dari {section.cards.length} sesuai target
+                  {onTrack} of {section.cards.length} on target
                 </span>
               }
             >
@@ -1818,7 +1818,7 @@ export default function MarketingPerformance() {
             Analisis lengkap
           </span>
           <small className="text-xs font-medium text-white/50">
-            Capaian target · Alur pelanggan · Perbandingan bulanan · Performa mingguan
+            Target achievement · Customer funnel · Monthly comparison · Weekly performance
           </small>
         </button>
 
@@ -1826,11 +1826,11 @@ export default function MarketingPerformance() {
           <div className="mt-4 grid grid-cols-1 gap-3 xl:grid-cols-2">
             {/* AGAINST TARGET */}
             <div className={`min-w-0 p-4 ${INNER}`}>
-              <h3 className="text-sm font-semibold text-white">Capaian terhadap target</h3>
+              <h3 className="text-sm font-semibold text-white">Achievement vs target</h3>
 
               <p className="mt-1.5 text-xs leading-relaxed text-white/50">
-                Garis putih = target (100%). Bar yang mencapai garis atau melewatinya berarti
-                target tercapai. Indikator tanpa target tidak ditampilkan.
+                White line = target (100%). A bar that reaches or passes the line means the
+                target is met. Indicators without a target are not shown.
               </p>
 
               <div className="mt-5 flex flex-col gap-3">
@@ -1881,11 +1881,11 @@ export default function MarketingPerformance() {
 
             {/* ACQUISITION FUNNEL */}
             <div className={`min-w-0 p-4 ${INNER}`}>
-              <h3 className="text-sm font-semibold text-white">Alur pelanggan (funnel)</h3>
+              <h3 className="text-sm font-semibold text-white">Customer funnel</h3>
 
               <p className="mt-1.5 text-xs leading-relaxed text-white/50">
-                Tiap tahap dibandingkan dengan tahap sebelumnya. Panjang bar menunjukkan
-                jumlah orang, bukan persentase.
+                Each stage is compared with the previous stage. Bar length shows
+                the number of people, not a percentage.
               </p>
 
               <div className="mt-5 flex flex-col gap-5">
@@ -1960,11 +1960,11 @@ export default function MarketingPerformance() {
               <b className="text-[13px] font-semibold text-white">Week {number}</b>
               {Math.round(weeks[number - 1].actual * latestFactor) >= Math.round(weeks[number - 1].leads * latestFactor) ? (
                 <span className="rounded-full bg-emerald-400/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-300 ring-1 ring-emerald-400/25 sm:text-[10px]">
-                  Sesuai target
+                  On target
                 </span>
               ) : (
                 <span className="rounded-full bg-[#B83A3A]/10 px-2 py-0.5 text-[11px] font-semibold text-[#E04848] ring-1 ring-[#B83A3A]/25 sm:text-[10px]">
-                  Di bawah target
+                  Below target
                 </span>
               )}
             </div>
@@ -1975,17 +1975,17 @@ export default function MarketingPerformance() {
                 <dd className="text-right font-semibold tabular-nums text-white">
                   {Math.round(weeks[number - 1].actual * latestFactor)}
                   <span className="mt-0.5 block text-xs font-normal text-white/45">
-                    dari {Math.round(weeks[number - 1].leads * latestFactor)}
+                    of {Math.round(weeks[number - 1].leads * latestFactor)}
                   </span>
                 </dd>
               </div>
 
               <div className="flex justify-between gap-2 py-2">
-                <dt className="text-white/50">Biaya Iklan</dt>
+                <dt className="text-white/50">Ad Spend</dt>
                 <dd className="text-right font-semibold tabular-nums text-white">
                   Rp {(weeks[number - 1].spend * 1_000_000 * latestFactor).toLocaleString("id-ID")}
                   <span className="mt-0.5 block text-xs font-normal text-white/45">
-                    dari Rp 200.000.000
+                    of Rp 200.000.000
                   </span>
                 </dd>
               </div>
@@ -1997,7 +1997,7 @@ export default function MarketingPerformance() {
                     <>
                       {Math.round(weeks[number - 1].ftd * latestFactor)}
                       <span className="mt-0.5 block text-xs font-normal text-white/45">
-                        dari {weeks[number - 1].ftdTarget}
+                        of {weeks[number - 1].ftdTarget}
                       </span>
                     </>
                   ) : (

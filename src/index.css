@@ -70,11 +70,11 @@ button {
    Dipilih lewat menu Appearance. Kelas utilitas gelap dipetakan ke palet terang.
    Semua aturan berada di bawah html[data-theme="light"], jadi Dark Mode tidak terpengaruh. */
 html[data-theme="light"] {
-  --lm-bg: #FFFFFF;
+  --lm-bg: #F5F6F8;
   --lm-bg2: #F1F1F2;
   --lm-card: #FFFFFF;
-  --lm-text: #202124;
-  --lm-text2: #77777D;
+  --lm-text: #1F2937;
+  --lm-text2: #6B7280;
   --lm-muted: #929299;
   --lm-border: #E8DCDC;
   --lm-divider: #F1E8E8;
@@ -88,6 +88,13 @@ html[data-theme="light"] {
   --lm-warning: #B45309;
   --lm-info: #2563EB;
   --lm-shadow: 0 1px 2px rgba(32, 33, 36, 0.04), 0 8px 20px -14px rgba(153, 27, 27, 0.16);
+  /* Token Liquid Glass */
+  --lm-glass-bg: rgba(255, 255, 255, 0.72);
+  --lm-glass-bg-strong: rgba(255, 255, 255, 0.84);
+  --lm-glass-border: rgba(255, 255, 255, 0.85);
+  --lm-glass-shadow: 0 8px 24px rgba(31, 41, 55, 0.06), 0 0 0 1px rgba(31, 41, 55, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --lm-glass-shadow-hover: 0 12px 30px rgba(31, 41, 55, 0.09), 0 0 0 1px rgba(31, 41, 55, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --lm-blur: 20px;
   color-scheme: light;
 }
 html[data-theme="light"],
@@ -1150,6 +1157,105 @@ html[data-theme="light"] article i[class*="bg-[#8d8790]"] {
 html[data-theme="light"] span[class*="rounded-lg"][class*="bg-white/[0.05]"]:has(> svg[aria-label="TikTok"]) {
   background-color: #1F2937 !important;
   border-color: #1F2937 !important;
+}
+
+/* ===== Liquid Glass (mode terang saja): permukaan kaca transparan ala Apple =====
+   Token ada di blok variabel mode terang (--lm-glass-*). Lapisan ini sengaja berada paling akhir dan
+   memakai selector berspesifisitas tinggi (html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme]) agar menang atas aturan halaman yang memberi latar putih solid. */
+
+/* Latar halaman: #F5F6F8 dengan gradasi halus agar ada sesuatu yang diburamkan di balik kaca */
+html[data-theme="light"],
+html[data-theme="light"] body {
+  background-color: #F5F6F8 !important;
+  background-image:
+    radial-gradient(900px 480px at 100% -10%, rgba(185, 28, 28, 0.05), transparent 60%),
+    radial-gradient(820px 520px at -8% 105%, rgba(107, 114, 128, 0.1), transparent 62%),
+    linear-gradient(180deg, #FAFBFC 0%, #F5F6F8 55%, #EEF0F3 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* Kartu dashboard, dropdown (listbox), popover, menu profil: kaca putih transparan.
+   Tabel data (backdrop-blur-none) dan overlay (inset-0) sengaja tidak ikut. */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="backdrop-blur"]:not([class*="backdrop-blur-none"]):not([class*="inset-0"]):not([class*="bg-transparent"]),
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="rounded-[22px]"][class*="bg-[#121212]"] {
+  background-color: var(--lm-glass-bg) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: blur(var(--lm-blur)) saturate(160%) !important;
+  backdrop-filter: blur(var(--lm-blur)) saturate(160%) !important;
+  border: 1px solid var(--lm-glass-border) !important;
+  box-shadow: var(--lm-glass-shadow) !important;
+  transition-property: background-color, border-color, box-shadow, transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+/* Hover halus pada kartu yang bisa diklik */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] :is(a, button, article)[class*="backdrop-blur"]:not([class*="backdrop-blur-none"]):hover {
+  box-shadow: var(--lm-glass-shadow-hover) !important;
+}
+/* Modal dan popover: kaca lebih pekat agar teks tetap tajam */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [role="dialog"],
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] ul[role="listbox"] {
+  background-color: var(--lm-glass-bg-strong) !important;
+}
+/* Overlay modal: gelap lembut dengan blur ringan */
+html[data-theme="light"] [class*="inset-0"][class*="bg-black/"] {
+  background-color: rgba(31, 41, 55, 0.32) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+/* Sidebar dan navigasi atas: frosted glass */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] aside[class] {
+  background-color: var(--lm-glass-bg-strong) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(170%) !important;
+  backdrop-filter: blur(24px) saturate(170%) !important;
+  border-color: var(--lm-glass-border) !important;
+  box-shadow: 8px 0 28px -20px rgba(31, 41, 55, 0.18), 0 0 0 1px rgba(31, 41, 55, 0.04), inset -1px 0 0 rgba(255, 255, 255, 0.9) !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] header[class*="sticky"] {
+  background-color: var(--lm-glass-bg) !important;
+  -webkit-backdrop-filter: blur(var(--lm-blur)) saturate(170%) !important;
+  backdrop-filter: blur(var(--lm-blur)) saturate(170%) !important;
+  border-color: var(--lm-glass-border) !important;
+  box-shadow: 0 8px 24px -18px rgba(31, 41, 55, 0.2), 0 1px 0 rgba(31, 41, 55, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Kotak statistik: kaca ringan */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="to-black/"][class*="from-white/"] {
+  background-color: rgba(255, 255, 255, 0.64) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+  border-color: var(--lm-glass-border) !important;
+  box-shadow: var(--lm-glass-shadow) !important;
+}
+
+/* Filter dan kontrol melayang (dropdown): kaca ringan, border tetap terlihat */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] button[aria-haspopup="listbox"] {
+  background-color: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* Interaksi tombol dan tautan: transisi 150-200ms, hover sedikit lebih terang */
+html[data-theme="light"] :is(button, a):not(aside a) {
+  transition: background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, color 0.18s ease, filter 0.18s ease, transform 0.15s ease;
+}
+html[data-theme="light"] :is(button, a):not(:disabled):not(aside a):hover {
+  filter: brightness(1.03);
+}
+
+/* Perangkat mobile: blur lebih ringan demi performa */
+@media (max-width: 767px) {
+  html[data-theme="light"] {
+    --lm-blur: 12px;
+  }
+}
+/* Fallback bila backdrop-filter tidak didukung: permukaan hampir solid */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html[data-theme="light"] {
+    --lm-glass-bg: rgba(255, 255, 255, 0.96);
+    --lm-glass-bg-strong: rgba(255, 255, 255, 0.98);
+  }
 }
 
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */

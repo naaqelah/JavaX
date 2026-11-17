@@ -1376,3 +1376,14 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] button[aria-label="Send"][class] svg {
   color: #FFFFFF !important;
 }
+
+/* Gauge Team Scorecards: pembungkus berkelas drop-shadow-[...] ikut terkena aturan shadow kartu sehingga muncul kotak di belakang grafik. Hapus box-shadow, biarkan filter drop-shadow */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] div[class*="drop-shadow-"][class] {
+  box-shadow: none !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+/* Pil persentase merah (Below 80%): teks putih agar terbaca */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] span[class*="from-[#E04848]"][class*="to-[#8F1A1A]"][class*="rounded-full"] {
+  color: #FFFFFF !important;
+}

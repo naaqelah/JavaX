@@ -66,270 +66,316 @@ button {
   }
 }
 
-/* ===== Light mode: putih, kaca (glass), dan aksen merah =====
-   Dipilih lewat menu Appearance. Kelas utilitas gelap dipetakan ke versi terang. */
+/* ===== Light mode: Modern SaaS analytics (putih bersih, aksen merah selektif) =====
+   Dipilih lewat menu Appearance. Kelas utilitas gelap dipetakan ke palet terang.
+   Semua aturan berada di bawah html[data-theme="light"], jadi Dark Mode tidak terpengaruh. */
 html[data-theme="light"] {
-  background: #f7f5f5;
+  --lm-bg: #F4F5F7;
+  --lm-bg2: #ECEEF2;
+  --lm-card: #FFFFFF;
+  --lm-text: #20242D;
+  --lm-text2: #5B6472;
+  --lm-muted: #87909D;
+  --lm-border: #E4E7EC;
+  --lm-divider: #ECEEF1;
+  --lm-red: #B91C1C;
+  --lm-red-hover: #991B1B;
+  --lm-red-soft: #FEE2E2;
+  --lm-success: #15803D;
+  --lm-warning: #B45309;
+  --lm-info: #2563EB;
+  --lm-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 20px -10px rgba(16, 24, 40, 0.12);
   color-scheme: light;
 }
+html[data-theme="light"],
 html[data-theme="light"] body {
-  color: #1d1d1f;
-  background:
-    radial-gradient(900px 520px at 96% -8%, rgba(196, 36, 40, 0.22), transparent 62%),
-    radial-gradient(760px 480px at -6% 105%, rgba(196, 36, 40, 0.16), transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, #f5f3f3 100%);
-  background-attachment: fixed;
+  background: var(--lm-bg) !important;
+  background-image: none !important;
+  background-attachment: scroll !important;
+  color: var(--lm-text);
+}
+html[data-theme="light"] ::selection {
+  background: var(--lm-red);
+  color: #ffffff;
+}
+html[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--lm-bg);
+}
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #C9CED6;
 }
 html[data-theme="light"] [class*="bg-[linear-gradient"],
 html[data-theme="light"] [class*="bg-[radial-gradient"] {
   background-image: none !important;
   background-color: transparent !important;
 }
-/* Teks */
-html[data-theme="light"] [class*="text-white"]:not([class*="A21E1E"]) {
-  color: #1d1d1f !important;
+
+/* ---- Teks: primer charcoal, sekunder slate, muted abu ---- */
+html[data-theme="light"] [class*="text-white"]:not([class*="A21E1E"]),
+html[data-theme="light"] [class*="text-[#f"]:not([class*="A21E1E"]) {
+  color: var(--lm-text) !important;
 }
 html[data-theme="light"] [class*="text-white/"]:not([class*="A21E1E"]) {
-  color: rgba(29, 29, 31, 0.6) !important;
+  color: var(--lm-text2) !important;
 }
-html[data-theme="light"] [class*="text-[#f"] {
-  color: #1d1d1f !important;
-}
-/* Latar gelap menjadi kaca putih */
-html[data-theme="light"] [class*="bg-black"],
-html[data-theme="light"] [class*="bg-[#0"],
-html[data-theme="light"] [class*="bg-[#1"],
-html[data-theme="light"] [class*="bg-[#2"],
-html[data-theme="light"] [class*="bg-[#14"] {
-  background-color: rgba(255, 255, 255, 0.55) !important;
-}
-html[data-theme="light"] [class*="bg-white/"] {
-  background-color: rgba(0, 0, 0, 0.035) !important;
-}
-/* Tombol utama putih menjadi hitam lembut */
-html[data-theme="light"] [class~="bg-white"] {
-  background-color: #1d1d1f !important;
-  color: #ffffff !important;
-}
-/* Garis */
-html[data-theme="light"] [class*="border-white/"] {
-  border-color: rgba(0, 0, 0, 0.08) !important;
-}
-/* Kartu kaca: panel dengan backdrop-blur */
-html[data-theme="light"] [class*="backdrop-blur"] {
-  background-color: rgba(255, 255, 255, 0.94) !important;
-  background-image: none !important;
-  border-color: rgba(255, 255, 255, 0.9) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 14px 34px -16px rgba(196, 36, 40, 0.34), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
-}
-/* Garis tipis bercahaya merah di kartu tertentu */
-html[data-theme="light"] [class*="shadow-[0_0_44px"] {
-  box-shadow: 0 0 40px -14px rgba(196, 36, 40, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+html[data-theme="light"] [class*="text-white/2"]:not([class*="A21E1E"]),
+html[data-theme="light"] [class*="text-white/3"]:not([class*="A21E1E"]),
+html[data-theme="light"] [class*="text-white/4"]:not([class*="A21E1E"]) {
+  color: var(--lm-muted) !important;
 }
 
-/* Warna aksen yang terlalu terang di latar putih */
-html[data-theme="light"] [class*="text-amber-200"],
-html[data-theme="light"] [class*="text-amber-300"] { color: #92400e !important; }
-html[data-theme="light"] [class*="text-sky-200"],
-html[data-theme="light"] [class*="text-sky-300"] { color: #0c4a6e !important; }
-html[data-theme="light"] [class*="text-emerald-300"] { color: #047857 !important; }
+/* ---- Permukaan: kartu putih, kotak dalam abu sangat terang ---- */
+html[data-theme="light"] [class*="bg-black/"],
+html[data-theme="light"] [class*="bg-[#0"],
+html[data-theme="light"] [class*="bg-[#1"],
+html[data-theme="light"] [class*="bg-[#2"] {
+  background-color: #F7F8FA !important;
+}
+html[data-theme="light"] [class~="bg-black"] {
+  background-color: var(--lm-card) !important;
+}
+html[data-theme="light"] [class*="bg-white/"] {
+  background-color: #F7F8FA !important;
+}
+html[data-theme="light"] [class*="bg-white/1"],
+html[data-theme="light"] [class*="bg-white/[0.1"],
+html[data-theme="light"] [class*="bg-white/2"] {
+  background-color: var(--lm-bg2) !important;
+}
+/* Garis: border terlihat tapi tipis, pemisah lebih halus */
+html[data-theme="light"] [class*="border-white/"] {
+  border-color: var(--lm-border) !important;
+}
+html[data-theme="light"] [class*="border-white/[0.0"] {
+  border-color: var(--lm-divider) !important;
+}
+/* Kartu (panel dengan backdrop-blur): putih bersih, border tipis, bayangan lembut */
+html[data-theme="light"] [class*="backdrop-blur"]:not([class*="inset-0"]):not([class*="bg-transparent"]) {
+  background-color: var(--lm-card) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  border: 1px solid var(--lm-border) !important;
+  box-shadow: var(--lm-shadow) !important;
+}
+html[data-theme="light"] [class*="shadow-[0_0_"],
+html[data-theme="light"] [class*="shadow-[0_18px"],
+html[data-theme="light"] [class*="shadow-[0_12px"] {
+  box-shadow: var(--lm-shadow) !important;
+}
+/* Overlay modal / menu mobile: tetap gelap transparan */
+html[data-theme="light"] [class*="inset-0"][class*="bg-black/"] {
+  background-color: rgba(32, 36, 45, 0.45) !important;
+}
+
+/* ---- Tombol ---- */
+/* Utama: merah, teks putih */
+html[data-theme="light"] :is(button, a)[class~="bg-white"] {
+  background-color: var(--lm-red) !important;
+  border-color: var(--lm-red) !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 14px -8px rgba(185, 28, 28, 0.6) !important;
+}
+html[data-theme="light"] :is(button, a)[class~="bg-white"]:hover {
+  background-color: var(--lm-red-hover) !important;
+  border-color: var(--lm-red-hover) !important;
+}
+html[data-theme="light"] :is(button, a)[class~="bg-white"] * {
+  color: #ffffff !important;
+}
+/* Sekunder: putih dengan border abu-abu, hover abu terang */
+html[data-theme="light"] :is(button, a)[class*="bg-white/"] {
+  background-color: var(--lm-card) !important;
+}
+html[data-theme="light"] :is(button, a)[class*="bg-white/"]:hover {
+  background-color: var(--lm-bg) !important;
+  border-color: #D5D9E0 !important;
+}
+/* Filter / toggle aktif: merah. Tidak aktif: abu terang (aturan di atas) */
+html[data-theme="light"] [class*="border-white/30"][class*="bg-white/15"],
+html[data-theme="light"] [class*="border-white/20"][class*="bg-white/[0.08]"],
+html[data-theme="light"] [class*="bg-black"][class*="ring-white/30"] {
+  background-color: var(--lm-red) !important;
+  border-color: var(--lm-red) !important;
+  color: #ffffff !important;
+}
+html[data-theme="light"] :is(button, a)[class*="border-white/30"][class*="bg-white/15"]:hover {
+  background-color: var(--lm-red-hover) !important;
+}
+/* Input, select, textarea: permukaan putih, fokus merah */
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea {
+  background-color: var(--lm-card) !important;
+  border-color: var(--lm-border) !important;
+  color: var(--lm-text) !important;
+}
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+  color: var(--lm-muted) !important;
+}
+html[data-theme="light"] input:focus,
+html[data-theme="light"] select:focus,
+html[data-theme="light"] textarea:focus {
+  border-color: var(--lm-red) !important;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.14) !important;
+  outline: none !important;
+}
+
+/* ---- Warna status dan aksen (kontras cukup di latar putih) ---- */
+html[data-theme="light"] [class*="text-amber-"],
+html[data-theme="light"] [class*="text-yellow-"] { color: var(--lm-warning) !important; }
+html[data-theme="light"] [class*="text-sky-"],
+html[data-theme="light"] [class*="text-blue-"],
+html[data-theme="light"] [class*="text-cyan-"] { color: var(--lm-info) !important; }
+html[data-theme="light"] [class*="text-emerald-"],
+html[data-theme="light"] [class*="text-green-"] { color: var(--lm-success) !important; }
+html[data-theme="light"] [class*="text-violet-"],
+html[data-theme="light"] [class*="text-purple-"] { color: #6D28D9 !important; }
+html[data-theme="light"] [class*="text-pink-"] { color: #BE185D !important; }
+html[data-theme="light"] [class*="text-slate-"] { color: var(--lm-text2) !important; }
 html[data-theme="light"] [class*="text-[#F0A0A0]"],
 html[data-theme="light"] [class*="text-[#D98A8A]"],
 html[data-theme="light"] [class*="text-[#E04848]"],
-html[data-theme="light"] [class*="text-[#F08B8B]"] { color: #C42428 !important; }
-/* Banner gelap menjadi merah muda lembut */
-html[data-theme="light"] [style*="2A1114"],
-html[data-theme="light"] [class*="bg-[#C42428]/"],
-html[data-theme="light"] [class*="bg-[#2A1114]"] {
-  background-color: rgba(196, 36, 40, 0.16) !important;
+html[data-theme="light"] [class*="text-[#F08B8B]"],
+html[data-theme="light"] [class*="text-[#C42B2B]"] { color: var(--lm-red) !important; }
+/* Latar lencana status: tint lembut */
+html[data-theme="light"] [class*="bg-amber-"],
+html[data-theme="light"] [class*="bg-yellow-"] { background-color: #FEF3C7 !important; }
+html[data-theme="light"] [class*="bg-emerald-"],
+html[data-theme="light"] [class*="bg-green-"] { background-color: #DCFCE7 !important; }
+html[data-theme="light"] [class*="bg-sky-"],
+html[data-theme="light"] [class*="bg-blue-"],
+html[data-theme="light"] [class*="bg-cyan-"] { background-color: #DBEAFE !important; }
+html[data-theme="light"] [class*="bg-violet-"],
+html[data-theme="light"] [class*="bg-purple-"] { background-color: #EDE9FE !important; }
+html[data-theme="light"] [class*="bg-pink-"] { background-color: #FCE7F3 !important; }
+html[data-theme="light"] [class*="bg-slate-"] { background-color: var(--lm-bg2) !important; }
+html[data-theme="light"] [class*="bg-[#A21E1E]/"]:not([class*="from-"]),
+html[data-theme="light"] [class*="bg-[#B82323]/"]:not([class*="from-"]) {
+  background-color: var(--lm-red-soft) !important;
+}
+
+/* ---- Sidebar: putih, menu aktif merah kaca, hover abu lembut ---- */
+html[data-theme="light"] aside[class] {
+  background-color: #ffffff !important;
   background-image: none !important;
+  backdrop-filter: none !important;
+  border-color: var(--lm-border) !important;
+  box-shadow: 8px 0 24px -20px rgba(16, 24, 40, 0.18) !important;
 }
-html[data-theme="light"] [class*="bg-amber-400/"],
-html[data-theme="light"] [class*="bg-emerald-400/"],
-html[data-theme="light"] [class*="bg-sky-400/"] { background-color: rgba(0, 0, 0, 0.04) !important; }
-
-/* Sidebar terang: item aktif berwarna merah tua agar terbaca */
-html[data-theme="light"] aside [class*="text-white"][class*="A21E1E"] {
-  color: #9E1B1F !important;
-}
-html[data-theme="light"] aside [class*="A21E1E"] svg {
-  color: #C42428 !important;
-}
-html[data-theme="light"] aside [class*="text-white/"] {
-  color: rgba(29, 29, 31, 0.62) !important;
-}
-
-/* Menu sidebar yang tidak aktif: tanpa latar abu-abu dan tanpa bayangan */
 html[data-theme="light"] aside a:not([class*="A21E1E"]) {
   background-color: transparent !important;
   background-image: none !important;
   box-shadow: none !important;
 }
+html[data-theme="light"] aside a:not([class*="A21E1E"]) svg {
+  color: var(--lm-text2) !important;
+}
 html[data-theme="light"] aside a:not([class*="A21E1E"]):hover {
-  background-color: rgba(196, 36, 40, 0.05) !important;
+  background-color: var(--lm-bg) !important;
 }
-
-/* Banner "needs attention" (latar merah tua dari inline style) */
-html[data-theme="light"] button[class*="2A1114"],
-html[data-theme="light"] [style*="background-color: rgb(42, 17, 20)"] {
-  background-color: rgba(196, 36, 40, 0.16) !important;
-  background-image: none !important;
-  color: #9E1B1F !important;
+html[data-theme="light"] aside a:not([class*="A21E1E"]):hover svg {
+  color: var(--lm-text) !important;
 }
-
-/* Banner alert di mode terang: merah solid, teks dan ikon putih */
-html[data-theme="light"] button[class*="2A1114"],
-html[data-theme="light"] [style*="background-color: rgb(42, 17, 20)"],
-html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] {
-  background-color: #C42428 !important;
-  background-image: none !important;
-  border-color: #C42428 !important;
-  color: #ffffff !important;
-}
-html[data-theme="light"] button[class*="2A1114"] *,
-html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] * {
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
-}
-html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] > span[class*="bg-[#C42428]/"] {
-  background-color: rgba(255, 255, 255, 0.22) !important;
-}
-
-/* Ikon di kartu (mode terang): kotak merah dengan bayangan merah */
-html[data-theme="light"] [class*="from-[#C42428]/"]:not([class*="rounded-2xl"]):not([class*="rounded-[28px]"]) {
-  background-image: linear-gradient(135deg, #C42428, #9E1B1F) !important;
-  background-color: #C42428 !important;
-  border-color: rgba(196, 36, 40, 0.6) !important;
-  color: #ffffff !important;
-  box-shadow: 0 8px 18px -6px rgba(196, 36, 40, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
-}
-html[data-theme="light"] [class*="from-[#C42428]/"]:not([class*="rounded-2xl"]):not([class*="rounded-[28px]"]) svg {
-  color: #ffffff !important;
-}
-
-/* Kotak statistik (gradasi abu) di mode terang: hitam dengan teks putih */
-html[data-theme="light"] [class*="to-black/"][class*="from-white/"] {
-  background-image: none !important;
-  background-color: #0b0b0b !important;
-  border-color: rgba(255, 255, 255, 0.1) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
-}
-html[data-theme="light"] [class*="to-black/"][class*="from-white/"] * {
-  color: #f5f5f5 !important;
-  border-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Baris dan kotak dalam kartu (mode terang): tint merah lembut, tidak pucat */
-html[data-theme="light"] [class*="bg-black/"][class*="rounded-xl"]:not([class*="backdrop-blur"]) {
-  background-color: rgba(196, 36, 40, 0.07) !important;
-  border-color: rgba(196, 36, 40, 0.16) !important;
-}
-
-/* Outline ikon di kotak statistik hitam: diberi bayangan putih */
-html[data-theme="light"] [class*="to-black/"][class*="from-white/"] [class*="border-white/"] {
-  border-color: rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4) !important;
-}
-
-/* Sidebar tetap gelap seperti referensi; menu aktif merah */
-/* aside[class] / header[class] dibuat lebih spesifik agar menang atas aturan generik "bg-black" (kaca putih 55%) */
-html[data-theme="light"] aside[class] {
-  background-color: #ffffff !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  box-shadow: 10px 0 28px -22px rgba(0, 0, 0, 0.28) !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-}
-/* Navbar atas: putih solid, garis bawah jelas, dan tombol terbaca (teks gelap) */
-html[data-theme="light"] header[class] {
-  background-color: #ffffff !important;
-  backdrop-filter: none !important;
-  box-shadow: 0 8px 24px -20px rgba(0, 0, 0, 0.3) !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-}
-html[data-theme="light"] header :is(button, a)[class*="bg-white/[0.05]"] {
-  color: rgba(29, 29, 31, 0.85) !important;
-  background-color: rgba(0, 0, 0, 0.04) !important;
-  border-color: rgba(0, 0, 0, 0.14) !important;
-}
-html[data-theme="light"] aside [class*="text-"] {
-  color: rgba(79, 24, 24, 0.75) !important;
-}
-html[data-theme="light"] aside [class*="text-white"] {
-  color: #ffffff !important;
-}
-/* Menu aktif: merah dengan gradasi kaca ala Apple (kilau putih di atas), teks putih agar kontras jelas */
+/* Menu aktif: gradasi kaca merah, tanpa border, teks putih */
 html[data-theme="light"] aside a[class*="A21E1E"] {
-  background-color: #C42428 !important;
+  background-color: var(--lm-red) !important;
   background-image:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0) 52%),
-    linear-gradient(135deg, #D8393D 0%, #B01F23 100%) !important;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0) 52%),
+    linear-gradient(135deg, #CF2D2D 0%, #B91C1C 55%, #991B1B 100%) !important;
   border-color: transparent !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(0, 0, 0, 0.1),
-    0 8px 18px -10px rgba(158, 27, 31, 0.6) !important;
+    0 8px 18px -10px rgba(153, 27, 27, 0.6) !important;
 }
-/* Penanda aktif di tepi kiri: putih */
 html[data-theme="light"] aside a[class*="A21E1E"] > span[aria-hidden="true"] {
   background-color: #ffffff !important;
   box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.75) !important;
 }
 html[data-theme="light"] aside a[class*="A21E1E"],
-html[data-theme="light"] aside a[class*="A21E1E"] * {
-  color: #ffffff !important;
-}
+html[data-theme="light"] aside a[class*="A21E1E"] *,
 html[data-theme="light"] aside a[class*="A21E1E"] svg {
   color: #ffffff !important;
 }
 
-/* Latar halaman terang polos, tanpa glow atau bayangan di background */
-html[data-theme="light"],
-html[data-theme="light"] body {
-  background: #ffffff !important;
-  background-image: none !important;
-  background-attachment: scroll !important;
+/* ---- Header: putih, garis bawah halus, tombol charcoal ---- */
+html[data-theme="light"] header[class*="sticky"] {
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  border-color: var(--lm-border) !important;
+  box-shadow: 0 8px 24px -20px rgba(16, 24, 40, 0.25) !important;
 }
-html[data-theme="light"] [class*="shadow-[0_0_"],
-html[data-theme="light"] [class*="shadow-[0_18px"],
-html[data-theme="light"] [class*="shadow-[0_12px"] {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+html[data-theme="light"] header[class*="sticky"] :is(button, a)[class*="bg-white/"],
+html[data-theme="light"] header[class*="sticky"] button[class~="bg-black"] {
+  background-color: var(--lm-card) !important;
+  border-color: var(--lm-border) !important;
+  color: var(--lm-text) !important;
 }
-html[data-theme="light"] [class*="backdrop-blur"] {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+html[data-theme="light"] header[class*="sticky"] :is(button, a)[class*="bg-white/"]:hover,
+html[data-theme="light"] header[class*="sticky"] button[class~="bg-black"]:hover {
+  background-color: var(--lm-bg) !important;
 }
 
-/* Kotak ikon kartu (mode terang): marun solid, bukan merah muda pucat */
+/* ---- Banner "needs attention": merah solid, teks putih ---- */
+html[data-theme="light"] button[class*="2A1114"],
+html[data-theme="light"] [style*="background-color: rgb(42, 17, 20)"],
+html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"],
+html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] {
+  background-color: var(--lm-red) !important;
+  background-image: none !important;
+  border-color: var(--lm-red) !important;
+  color: #ffffff !important;
+}
+html[data-theme="light"] button[class*="2A1114"] *,
+html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] *,
+html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] * {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] > span[class*="bg-[#A21E1E]/"],
+html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] > span[class*="bg-[#C42428]/"] {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+}
+/* Banner merah dengan gradasi bawaan (mis. Projects): teks putih */
+html[data-theme="light"] [class*="from-[#A21E1E]"][class*="to-[#8F1A1A]"],
+html[data-theme="light"] [class*="from-[#A21E1E]"][class*="to-[#8F1A1A]"] * {
+  color: #ffffff !important;
+}
+
+/* ---- Ikon kartu: kotak merah solid, ikon putih ---- */
 html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-9"],
 html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-10"],
 html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-11"],
-html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-12"] {
-  background-image: linear-gradient(135deg, #C42428 0%, #9E1B1F 100%) !important;
-  background-color: #C42428 !important;
-  border-color: rgba(196, 36, 40, 0.5) !important;
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-12"],
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-8"],
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-7"],
+html[data-theme="light"] [class*="from-[#C42428]/"]:not([class*="rounded-2xl"]):not([class*="rounded-[28px]"]) {
+  background-image: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%) !important;
+  background-color: var(--lm-red) !important;
+  border-color: rgba(185, 28, 28, 0.6) !important;
   color: #ffffff !important;
-  box-shadow: 0 6px 14px -6px rgba(196, 36, 40, 0.45) !important;
+  box-shadow: 0 6px 14px -6px rgba(185, 28, 28, 0.45) !important;
 }
 html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-9"] svg,
 html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-10"] svg,
 html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-11"] svg,
-html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-12"] svg {
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-12"] svg,
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-8"] svg,
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="h-7"] svg,
+html[data-theme="light"] [class*="from-[#C42428]/"]:not([class*="rounded-2xl"]):not([class*="rounded-[28px]"]) svg {
   color: #ffffff !important;
 }
 
-/* Kolom/panel (mode terang): bayangan lembut seperti referensi */
-html[data-theme="light"] [class*="backdrop-blur"] {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 12px 28px -14px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+/* ---- Kotak statistik: putih seperti kartu, angka gelap ---- */
+html[data-theme="light"] [class*="to-black/"][class*="from-white/"] {
+  background-image: none !important;
+  background-color: var(--lm-card) !important;
+  border-color: var(--lm-border) !important;
+  box-shadow: var(--lm-shadow) !important;
 }
 
-/* Efek kaca ala Apple (mode terang): translucent, blur, saturasi, dan tepi putih tipis */
-html[data-theme="light"] [class*="backdrop-blur"] {
-  background-color: rgba(255, 255, 255, 0.58) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.75) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), inset 0 -1px 0 rgba(255, 255, 255, 0.35), 0 16px 40px -18px rgba(139, 26, 26, 0.22), 0 2px 8px rgba(0, 0, 0, 0.05) !important;
-}
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

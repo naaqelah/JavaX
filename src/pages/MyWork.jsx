@@ -273,10 +273,10 @@ export default function MyWork() {
         {/* ATTENTION BANNER */}
 <button
   onClick={() => window.alert("1 item needs attention")}
-  className="bg-[#2A1114] group mb-1 flex min-h-8 w-full items-center gap-2 rounded-xl border border-[#B82323]/30 px-2.5 py-1.5 text-left text-[11px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-[#B82323]/55"
+  className="bg-[#2A1114] group mb-1 flex min-h-8 w-full items-center gap-2 rounded-xl border border-[#B82323]/30 px-2.5 py-0.5 text-left text-[11px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:border-[#B82323]/55"
 >
-  <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#A21E1E]/30 text-white">
-    <AlertTriangle size={12} />
+  <span className="grid h-[26px] w-[26px] shrink-0 place-items-center rounded-full bg-[#A21E1E]/30 text-white">
+    <AlertTriangle size={16} />
   </span>
 
   <span>1 item needs attention</span>

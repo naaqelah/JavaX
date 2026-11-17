@@ -1146,6 +1146,12 @@ html[data-theme="light"] article i[class*="bg-[#8d8790]"] {
   background-color: #A1A1AA !important;
 }
 
+/* Logo TikTok (badan putih + bayangan cyan/pink): container charcoal agar kontras di latar terang */
+html[data-theme="light"] span[class*="rounded-lg"][class*="bg-white/[0.05]"]:has(> svg[aria-label="TikTok"]) {
+  background-color: #1F2937 !important;
+  border-color: #1F2937 !important;
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

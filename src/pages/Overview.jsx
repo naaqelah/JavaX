@@ -474,9 +474,9 @@ export default function Overview() {
       {
         label: "Target",
         data: socialData[socialMetric].target,
-        // Mode terang: abu-abu medium solid agar terlihat di latar putih
-        backgroundColor: isLightTheme ? "#A1A1AA" : "rgba(255,255,255,0.06)",
-        borderColor: isLightTheme ? "#A1A1AA" : "rgba(255,255,255,0.32)",
+        // Abu-abu solid 100% (tanpa transparansi) agar batang Target selalu terlihat di semua tema
+        backgroundColor: "#A1A1AA",
+        borderColor: "#A1A1AA",
         borderWidth: 1,
         borderRadius: barRadius,
         borderSkipped: false,
@@ -857,7 +857,7 @@ export default function Overview() {
               <CardHeading icon={<BarChart3 size={17} />} title="Social Media" status="On Track" tone="ok" to="/social-media" />
               <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-4 text-[11px] text-white/55">
-                  <span className="flex items-center gap-1.5"><i className="inline-block h-2 w-2 rounded-sm border border-white/40 bg-white/10" />Target</span>
+                  <span className="flex items-center gap-1.5"><i className="inline-block h-2 w-2 rounded-sm bg-[#A1A1AA]" />Target</span>
                   <span className="flex items-center gap-1.5"><i className="inline-block h-2 w-2 rounded-sm bg-[#B82323]" />Actual</span>
                 </div>
                 <GlassSelect

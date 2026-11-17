@@ -1059,10 +1059,6 @@ html[data-theme="light"] div[class*="min-h-[96px]"] button:hover {
 }
 
 /* ---- Grafik Social Media di Overview: legend dan tombol metrik aktif (mode terang) ---- */
-html[data-theme="light"] i[class*="border-white/40"][class*="bg-white/10"] {
-  background-color: #A1A1AA !important;
-  border-color: #A1A1AA !important;
-}
 html[data-theme="light"] i[class*="bg-[#B82323]"] {
   background-color: #B91C1C !important;
 }

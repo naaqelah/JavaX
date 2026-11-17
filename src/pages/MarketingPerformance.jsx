@@ -292,7 +292,7 @@ function KpiCard({ card, onEdit, selectedPeriods = [] }) {
 
   return (
     <article className="group/card flex min-w-0 flex-col gap-3.5 rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-black/40 p-4 transition-colors duration-200 hover:border-white/20">
-      <div className="flex min-h-[44px] items-start justify-between gap-2">
+      <div className="flex min-h-[44px] items-start justify-between gap-2 sm:min-h-[72px]">
         <div className="flex min-w-0 items-center gap-2.5">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-white/10 bg-gradient-to-br from-[#A21E1E]/30 to-white/[0.04] text-white">
             <Icon size={15} strokeWidth={1.8} />

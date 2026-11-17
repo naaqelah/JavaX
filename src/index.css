@@ -1112,6 +1112,24 @@ html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="fle
   background-color: #FEF2F2 !important;
 }
 
+/* ===== Kartu KPI Marketing Performance (mode terang): grafik Actual vs Target ===== */
+/* Batang: Actual merah #B91C1C, Target abu-abu #A1A1AA, keduanya solid */
+html[data-theme="light"] article div[class*="mp-bar-grow"][class*="from-[#741818]"] {
+  background-image: none !important;
+  background-color: #B91C1C !important;
+}
+html[data-theme="light"] article div[class*="mp-bar-grow"][class*="from-[#4b464d]"] {
+  background-image: none !important;
+  background-color: #A1A1AA !important;
+}
+/* Titik legend dan label mengikuti warna batang */
+html[data-theme="light"] article i[class*="bg-[#B83A3A]"] {
+  background-color: #B91C1C !important;
+}
+html[data-theme="light"] article i[class*="bg-[#8d8790]"] {
+  background-color: #A1A1AA !important;
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

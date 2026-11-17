@@ -1412,3 +1412,13 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .sm-root [role="tab"][aria-selected="false"] svg {
   color: #374151 !important;
 }
+/* Garis di dalam ikon (path/line/circle) ikut warna ikon; sebelumnya tetap putih */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .sm-root [role="tab"] svg * {
+  stroke: currentColor !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .sm-root [role="tab"][aria-selected="true"] svg * {
+  color: #B91C1C !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .sm-root [role="tab"][aria-selected="false"] svg * {
+  color: #374151 !important;
+}

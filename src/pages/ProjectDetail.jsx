@@ -404,16 +404,16 @@ function ProjectDetail() {
 
       <div className="relative z-10 mx-auto w-full max-w-none space-y-5 px-4 pb-6 lg:px-5">
         {/* Top Navigation */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Link
             to="/projects"
-            className="inline-flex h-11 items-center gap-2 rounded-lg md:h-9 border border-white/10 bg-white/[0.05] px-3.5 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
+            className="inline-flex h-10 w-fit items-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] pl-3 pr-4 text-[13px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97] md:h-9 md:text-[12px]"
           >
             <ArrowLeft size={14} />
             Back
           </Link>
 
-          <div className="grid w-full grid-cols-2 items-center gap-2 sm:flex sm:w-auto">
+          <div className="grid w-full grid-cols-2 items-stretch gap-2.5 sm:flex sm:w-auto sm:gap-2">
             <button
               onClick={() => {
                 setEditForm({
@@ -425,17 +425,17 @@ function ProjectDetail() {
 
                 setShowEditProject(true);
               }}
-              className={PILL + " max-md:h-11"}
+              className={PILL + " max-md:h-12 max-md:rounded-xl max-md:text-[13px] max-md:font-semibold"}
             >
-              <Pencil size={13} />
+              <Pencil size={14} />
               Edit Project
             </button>
 
             <button
               onClick={handleDeleteProject}
-              className="inline-flex h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#B82323]/50 bg-[#A21E1E] md:h-9 px-3.5 text-[12px] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(162,30,30,0.7)] transition hover:brightness-110 active:scale-[0.97]"
+              className="inline-flex h-12 items-center justify-center gap-1.5 whitespace-nowrap rounded-xl border border-[#B82323]/50 bg-[#A21E1E] px-3.5 text-[13px] font-semibold text-white md:h-9 md:rounded-lg md:text-[12px] shadow-[0_8px_18px_-8px_rgba(162,30,30,0.7)] transition hover:brightness-110 active:scale-[0.97]"
             >
-              <Trash2 size={13} />
+              <Trash2 size={14} />
               Delete Project
             </button>
           </div>

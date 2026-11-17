@@ -89,12 +89,16 @@ html[data-theme="light"] {
   --lm-info: #2563EB;
   --lm-shadow: 0 1px 2px rgba(32, 33, 36, 0.04), 0 8px 20px -14px rgba(153, 27, 27, 0.16);
   /* Token Liquid Glass */
-  --lm-glass-bg: rgba(255, 255, 255, 0.72);
+  /* Hierarki transparansi: nav (paling bening) < kartu < kotak dalam/grafik < dropdown/modal */
+  --lm-glass-nav: rgba(255, 255, 255, 0.58);
+  --lm-glass-bg: rgba(255, 255, 255, 0.66);
+  --lm-glass-inner: rgba(255, 255, 255, 0.78);
   --lm-glass-bg-strong: rgba(255, 255, 255, 0.84);
-  --lm-glass-border: rgba(255, 255, 255, 0.85);
-  --lm-glass-shadow: 0 8px 24px rgba(31, 41, 55, 0.06), 0 0 0 1px rgba(31, 41, 55, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --lm-glass-shadow-hover: 0 12px 30px rgba(31, 41, 55, 0.09), 0 0 0 1px rgba(31, 41, 55, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --lm-blur: 20px;
+  --lm-glass-border: rgba(255, 255, 255, 0.8);
+  --lm-glass-shadow: 0 12px 40px rgba(65, 75, 120, 0.08), 0 0 0 1px rgba(65, 75, 120, 0.035), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --lm-glass-shadow-hover: 0 16px 48px rgba(65, 75, 120, 0.12), 0 0 0 1px rgba(65, 75, 120, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --lm-sheen: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 38%, rgba(255, 255, 255, 0) 60%);
+  --lm-blur: 24px;
   color-scheme: light;
 }
 html[data-theme="light"],
@@ -1166,11 +1170,15 @@ html[data-theme="light"] span[class*="rounded-lg"][class*="bg-white/[0.05]"]:has
 /* Latar halaman: #F5F6F8 dengan gradasi halus agar ada sesuatu yang diburamkan di balik kaca */
 html[data-theme="light"],
 html[data-theme="light"] body {
-  background-color: #F5F6F8 !important;
+  background-color: #F8FAFC !important;
   background-image:
-    radial-gradient(900px 480px at 100% -10%, rgba(185, 28, 28, 0.05), transparent 60%),
-    radial-gradient(820px 520px at -8% 105%, rgba(107, 114, 128, 0.1), transparent 62%),
-    linear-gradient(180deg, #FAFBFC 0%, #F5F6F8 55%, #EEF0F3 100%) !important;
+    /* Ice blue (kiri atas), lavender (kanan atas), soft pink (kanan bawah), ice blue (kiri bawah) */
+    radial-gradient(1200px 820px at 6% 6%, rgba(214, 228, 255, 0.75) 0%, rgba(234, 241, 255, 0.95) 38%, transparent 72%),
+    radial-gradient(1100px 760px at 94% 22%, rgba(221, 212, 255, 0.7) 0%, rgba(237, 231, 255, 0.92) 38%, transparent 72%),
+    radial-gradient(1100px 780px at 72% 94%, rgba(245, 208, 230, 0.6) 0%, rgba(249, 232, 242, 0.92) 38%, transparent 72%),
+    radial-gradient(900px 640px at 2% 90%, rgba(214, 228, 255, 0.6) 0%, rgba(234, 241, 255, 0.85) 40%, transparent 72%),
+    radial-gradient(620px 420px at 55% 40%, rgba(185, 28, 28, 0.025), transparent 70%),
+    linear-gradient(180deg, #F8FAFC 0%, #F3F6FB 100%) !important;
   background-attachment: fixed !important;
 }
 
@@ -1179,7 +1187,7 @@ html[data-theme="light"] body {
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="backdrop-blur"]:not([class*="backdrop-blur-none"]):not([class*="inset-0"]):not([class*="bg-transparent"]),
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="rounded-[22px]"][class*="bg-[#121212]"] {
   background-color: var(--lm-glass-bg) !important;
-  background-image: none !important;
+  background-image: var(--lm-sheen) !important;
   -webkit-backdrop-filter: blur(var(--lm-blur)) saturate(160%) !important;
   backdrop-filter: blur(var(--lm-blur)) saturate(160%) !important;
   border: 1px solid var(--lm-glass-border) !important;
@@ -1206,18 +1214,25 @@ html[data-theme="light"] [class*="inset-0"][class*="bg-black/"] {
 
 /* Sidebar dan navigasi atas: frosted glass */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] aside[class] {
-  background-color: var(--lm-glass-bg-strong) !important;
+  background-color: var(--lm-glass-nav) !important;
   -webkit-backdrop-filter: blur(24px) saturate(170%) !important;
   backdrop-filter: blur(24px) saturate(170%) !important;
   border-color: var(--lm-glass-border) !important;
-  box-shadow: 8px 0 28px -20px rgba(31, 41, 55, 0.18), 0 0 0 1px rgba(31, 41, 55, 0.04), inset -1px 0 0 rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 8px 0 32px -20px rgba(65, 75, 120, 0.2), 0 0 0 1px rgba(65, 75, 120, 0.04), inset -1px 0 0 rgba(255, 255, 255, 0.9) !important;
 }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] header[class*="sticky"] {
-  background-color: var(--lm-glass-bg) !important;
+  background-color: var(--lm-glass-nav) !important;
   -webkit-backdrop-filter: blur(var(--lm-blur)) saturate(170%) !important;
   backdrop-filter: blur(var(--lm-blur)) saturate(170%) !important;
   border-color: var(--lm-glass-border) !important;
-  box-shadow: 0 8px 24px -18px rgba(31, 41, 55, 0.2), 0 1px 0 rgba(31, 41, 55, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 8px 28px -18px rgba(65, 75, 120, 0.2), 0 1px 0 rgba(65, 75, 120, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Kotak dalam dan wadah grafik: permukaan lebih solid dari kartu agar angka dan label tetap tajam, tanpa blur */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="bg-black/30"][class*="shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"] {
+  background-color: var(--lm-glass-inner) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 1px 2px rgba(65, 75, 120, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
 }
 
 /* Kotak statistik: kaca ringan */
@@ -1247,7 +1262,10 @@ html[data-theme="light"] :is(button, a):not(:disabled):not(aside a):hover {
 /* Perangkat mobile: blur lebih ringan demi performa */
 @media (max-width: 767px) {
   html[data-theme="light"] {
-    --lm-blur: 12px;
+    --lm-blur: 14px;
+    --lm-glass-nav: rgba(255, 255, 255, 0.78);
+    --lm-glass-bg: rgba(255, 255, 255, 0.8);
+    --lm-glass-inner: rgba(255, 255, 255, 0.88);
   }
 }
 /* Fallback bila backdrop-filter tidak didukung: permukaan hampir solid */

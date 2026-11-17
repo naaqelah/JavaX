@@ -465,9 +465,9 @@ export default function Promotors() {
                 .getElementById("promoter-roster")
                 ?.scrollIntoView({ behavior: "smooth" });
             }}
-            className="mb-5 flex min-h-10 py-2.5 md:h-10 md:py-0 w-full items-center gap-2.5 rounded-xl border border-[#B82323]/25 bg-[#A21E1E]/10 px-3 text-left text-[14px] md:text-[12px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:brightness-110"
+            className="mb-5 flex min-h-9 py-1.5 md:h-10 md:py-0 w-full items-center gap-2.5 rounded-xl border border-[#B82323]/25 bg-[#A21E1E]/10 px-3 text-left text-[12px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition hover:brightness-110"
           >
-            <span className="grid h-7 w-7 max-md:h-9 max-md:w-9 shrink-0 place-items-center rounded-full bg-[#A21E1E]/30"><AlertTriangle size={14} /></span>
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#A21E1E]/30"><AlertTriangle size={14} /></span>
             {attention} item{attention > 1 ? "s" : ""} needs attention
             <span className="ml-auto flex items-center gap-1 text-[12px] text-white/55">View<ArrowRight size={14} /></span>
           </button>

@@ -285,7 +285,7 @@ const [projects] = useState(() => {
 
         {/* Attention Banner */}
         {attention > 0 && (
-          <div className="flex min-h-10 py-2.5 md:h-10 md:py-0 items-center gap-2.5 rounded-xl border border-[#B82323]/40 bg-gradient-to-b from-[#A21E1E] to-[#8F1A1A] px-3.5 text-[14px] md:text-[12px] font-medium text-white shadow-[0_6px_18px_-8px_rgba(162,30,30,0.5),inset_0_1px_0_rgba(255,255,255,0.18)]">
+          <div className="flex min-h-9 py-1.5 md:h-10 md:py-0 items-center gap-2.5 rounded-xl border border-[#B82323]/40 bg-gradient-to-b from-[#A21E1E] to-[#8F1A1A] px-3.5 text-[12px] font-medium text-white shadow-[0_6px_18px_-8px_rgba(162,30,30,0.5),inset_0_1px_0_rgba(255,255,255,0.18)]">
             <AlertTriangle size={16} />
             <span>
               {attention} item{attention > 1 ? "s" : ""} needs attention

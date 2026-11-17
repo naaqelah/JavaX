@@ -1075,6 +1075,43 @@ html[data-theme="light"] button[class*="2A1114"] > span[class*="bg-[#A21E1E]/"] 
   color: #ffffff !important;
 }
 
+/* ===== Pemilih bulan Marketing Performance (mode terang) ===== */
+/* Titik hijau "Memiliki data": hijau jelas, ukuran seragam */
+html[data-theme="light"] [class*="h-1.5"][class*="w-1.5"][class*="bg-emerald-"] {
+  background-color: #16A34A !important;
+}
+/* Bulan terpilih: merah #B91C1C solid, teks dan centang putih */
+html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] {
+  background-image: none !important;
+  background-color: #B91C1C !important;
+  border-color: #B91C1C !important;
+  box-shadow: 0 1px 2px rgba(153, 27, 27, 0.3) !important;
+  color: #ffffff !important;
+}
+html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] > span,
+html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] > svg {
+  color: #ffffff !important;
+}
+/* Bulan belum dipilih: putih dengan border abu-abu; hover memberi petunjuk bahwa bisa diklik */
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"] {
+  background-color: #ffffff !important;
+  border-color: #E5E7EB !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:hover {
+  background-color: #FEF2F2 !important;
+  border-color: #F5CFCF !important;
+}
+/* Bulan tanpa data (tidak ada titik hijau): abu-abu lebih redup, tetap bisa diklik */
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) {
+  background-color: #F8F9FB !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) > span {
+  color: #A3ADBA !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)):hover {
+  background-color: #FEF2F2 !important;
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

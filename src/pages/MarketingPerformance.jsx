@@ -1228,7 +1228,7 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
       <div className={`mt-3.5 p-3 md:p-4 ${INNER}`}>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <p className="text-xs font-medium text-white/60">Pilih bulan</p>
+            <p className="text-xs font-medium text-white/60">Klik bulan untuk memilih atau membandingkan</p>
             <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium tabular-nums text-white/70">
               {selectedPeriods.length} bulan dipilih
             </span>
@@ -1237,7 +1237,7 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
           <div className="flex items-center gap-3">
             <span className="hidden items-center gap-1.5 text-[11px] text-white/45 sm:inline-flex">
               <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Ada data
+              Memiliki data
             </span>
             <button
               type="button"
@@ -1277,24 +1277,25 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
         </div>
 
         {sortedPeriods.length > 0 && (
-          <p className="mt-3 text-xs leading-relaxed text-white/60">
-            <span className="text-white/45">Bulan utama:</span>{" "}
-            <b className="font-semibold text-white">{periodLabel(sortedPeriods[sortedPeriods.length - 1])}</b>
+          <div className="mt-3 space-y-1 text-xs leading-relaxed text-white/60">
+            <p>
+              <span className="text-white/45">Bulan utama:</span>{" "}
+              <b className="font-semibold text-white">{periodLabel(sortedPeriods[sortedPeriods.length - 1])}</b>
+            </p>
             {sortedPeriods.length > 1 && (
-              <>
-                {" · "}
-                <span className="text-white/45">Pembanding:</span>{" "}
+              <p>
+                <span className="text-white/45">Bulan pembanding:</span>{" "}
                 <b className="font-semibold text-white/85">
                   {sortedPeriods.slice(0, -1).map(periodLabel).join(", ")}
                 </b>
-              </>
+              </p>
             )}
-          </p>
+          </div>
         )}
 
         <p className="mt-3 inline-flex items-center gap-1.5 text-[11px] text-white/50 sm:hidden">
           <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          Titik hijau = bulan ini ada datanya
+          Titik hijau = Memiliki data
         </p>
       </div>
 

@@ -19,7 +19,6 @@ import {
   Eye,
   X,
   Clock3,
-  Paperclip,
 } from "lucide-react";
 
 // Desain token sama dengan Overview, MarketingPerformance, MyWork, SocialMedia, TeamScorecards & ContentCalendar
@@ -832,11 +831,6 @@ function ProjectDetail() {
             <Plus size={14} />
             Add
           </button>
-        </div>
-
-        <div className="flex items-center gap-2 text-xs text-white/55 md:text-[11px] md:text-white/45">
-          <Paperclip size={13} />
-          New items are added to the bottom of the checklist.
         </div>
 
         {/* Edit Task Modal */}

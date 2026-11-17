@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import GlassSelect from "../components/ui/GlassSelect";
 import {
   ArrowLeft,
   Calculator,
@@ -48,31 +49,15 @@ function FormField({ label, required, children }) {
   );
 }
 
+// Dropdown kustom (GlassSelect) menggantikan <select> bawaan agar popup mengikuti tema
 function SelectField({ value, onChange, options, placeholder }) {
   return (
-    <div className="relative">
-      <select
-        value={value}
-        onChange={onChange}
-        required
-        className={`${FIELD} appearance-none pr-9`}
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-
-        {options.map((option) => (
-          <option key={option} value={option} className="bg-[#141414]">
-            {option}
-          </option>
-        ))}
-      </select>
-
-      <ChevronDown
-        size={14}
-        className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-white/55"
-      />
-    </div>
+    <GlassSelect
+      value={value}
+      onChange={(next) => onChange({ target: { value: next } })}
+      options={options}
+      placeholder={placeholder}
+    />
   );
 }
 
@@ -97,6 +82,11 @@ export default function InventoryCreate() {
 
     if (!sku) {
       setError("SKU is required.");
+      return;
+    }
+
+    if (!form.kpi_1 || !form.person_1 || !form.person_2 || !form.kpi_2 || !form.person_3) {
+      setError("Please choose a KPI and a person in every dropdown.");
       return;
     }
 

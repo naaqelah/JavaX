@@ -594,23 +594,16 @@ export default function SocialMedia() {
 
         {/* CUSTOM PERIOD COMPARISON */}
         <section className={`mt-5 rounded-2xl p-4 md:p-5 ${GLASS}`}>
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <h2 className="text-base font-semibold tracking-tight text-white md:text-[15px]">Custom period comparison</h2>
-            <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300">
-              Demo data
-            </span>
-          </div>
+          <h2 className="mb-3.5 text-base font-semibold tracking-tight text-white md:text-[15px]">Select period</h2>
 
           <div className={`p-3 md:p-4 ${INNER}`}>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <p className="text-xs font-medium text-white/60">Select period</p>
-                <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[11px] font-medium tabular-nums text-white/70">
-                  {compareMonths.length} selected
-                </span>
-              </div>
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2.5">
+              <p className="w-full text-xs font-medium text-white/60 sm:w-auto">Click a month to select or compare</p>
+              <span className="whitespace-nowrap rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/70">
+                {compareMonths.length} {compareMonths.length === 1 ? "month" : "months"} selected
+              </span>
 
-              <div className="flex items-center gap-3">
+              <div className="ml-auto flex items-center gap-3">
                 <span className="hidden items-center gap-1.5 text-[11px] text-white/45 sm:inline-flex">
                   <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                   Has data
@@ -618,7 +611,7 @@ export default function SocialMedia() {
                 <button
                   type="button"
                   onClick={resetCompare}
-                  className="inline-flex h-11 items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.05] px-4 text-[12px] font-medium text-white/85 sm:h-7 sm:px-3 sm:text-[11px] transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
+                  className="inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.05] px-3.5 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97] sm:h-7 sm:px-3 sm:text-[11px]"
                 >
                   <RotateCcw size={11} />
                   Reset
@@ -653,9 +646,16 @@ export default function SocialMedia() {
               })}
             </div>
 
+            {compareMonths.length > 0 && (
+              <p className="mt-3 text-xs text-white/55">
+                <span className="text-white/45">Selected months:</span>{" "}
+                <span className="font-semibold text-white">{compareMonths.join(", ")}</span>
+              </p>
+            )}
+
             <p className="mt-3 inline-flex items-center gap-1.5 text-xs text-white/50 sm:hidden">
               <i className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-              Green dot = this month has data
+              Green dot = Has data
             </p>
           </div>
         </section>

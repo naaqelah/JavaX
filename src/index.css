@@ -1403,3 +1403,12 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
   border: 1px solid #E5E7EB !important;
   box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07), 0 1px 2px rgba(31, 41, 55, 0.05) !important;
 }
+
+/* Tab metrik Performance trend: ikon pada tab aktif mengikuti warna teks merah, bukan putih */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .sm-root [role="tab"][aria-selected="true"] svg {
+  color: #B91C1C !important;
+  stroke: currentColor !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .sm-root [role="tab"][aria-selected="false"] svg {
+  color: #374151 !important;
+}

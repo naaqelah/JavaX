@@ -206,9 +206,9 @@ html[data-theme="light"] :is(button, a)[class~="border-white/30"][class~="bg-whi
   background-color: var(--lm-red-hover) !important;
 }
 /* Input, select, textarea: permukaan putih, fokus merah */
-html[data-theme="light"] input,
-html[data-theme="light"] select,
-html[data-theme="light"] textarea {
+html[data-theme="light"] input[class],
+html[data-theme="light"] select[class],
+html[data-theme="light"] textarea[class] {
   background-color: var(--lm-card) !important;
   border-color: #D7DDE5 !important;
   color: var(--lm-text) !important;
@@ -217,9 +217,9 @@ html[data-theme="light"] input::placeholder,
 html[data-theme="light"] textarea::placeholder {
   color: #94A3B8 !important;
 }
-html[data-theme="light"] input:focus,
-html[data-theme="light"] select:focus,
-html[data-theme="light"] textarea:focus {
+html[data-theme="light"] input[class]:focus,
+html[data-theme="light"] select[class]:focus,
+html[data-theme="light"] textarea[class]:focus {
   border-color: #B91C1C !important;
   box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.14) !important;
   outline: none !important;
@@ -518,6 +518,7 @@ html[data-theme="light"] [class*="text-white/8"]:not([class*="A21E1E"]),
 html[data-theme="light"] [class*="text-white/9"]:not([class*="A21E1E"]) {
   color: var(--lm-text) !important;
 }
+html[data-theme="light"] label[class*="text-white"]:not([class*="A21E1E"]),
 html[data-theme="light"] label {
   color: #475569 !important;
 }
@@ -543,25 +544,25 @@ html[data-theme="light"] button[aria-haspopup="listbox"] svg {
 }
 
 /* ---- Form Assign a KPI dan kartu informasi (Team Scorecards) ---- */
-html[data-theme="light"] form[class*="backdrop-blur"],
-html[data-theme="light"] button[class*="backdrop-blur"],
-html[data-theme="light"] div[class*="backdrop-blur"]:has(> h3 > span[class*="from-[#A21E1E]/30"]) {
+html[data-theme="light"] form[class*="backdrop-blur"]:not([class*="inset-0"]):not([class*="bg-transparent"]),
+html[data-theme="light"] button[class*="backdrop-blur"]:not([class*="inset-0"]):not([class*="bg-transparent"]),
+html[data-theme="light"] div[class*="backdrop-blur"]:not([class*="inset-0"]):not([class*="bg-transparent"]):has(> h3 > span[class*="from-[#A21E1E]/30"]) {
   background-image: none !important;
   background-color: #ffffff !important;
   border-color: #E5E7EB !important;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05) !important;
 }
-html[data-theme="light"] h3 > span[class*="from-[#A21E1E]/30"] {
+html[data-theme="light"] h3 > span[class*="from-[#A21E1E]/30"][class*="h-9"][class*="rounded-lg"] {
   background-image: none !important;
   background-color: #FCE8E8 !important;
   border-color: #F5CFCF !important;
   box-shadow: none !important;
   color: #B91C1C !important;
 }
-html[data-theme="light"] h3 > span[class*="from-[#A21E1E]/30"] svg {
+html[data-theme="light"] h3 > span[class*="from-[#A21E1E]/30"][class*="h-9"][class*="rounded-lg"] svg {
   color: #B91C1C !important;
 }
-html[data-theme="light"] p[class*="sm:pl-12"] {
+html[data-theme="light"] p[class*="sm:pl-12"][class*="text-white/55"] {
   color: #64748B !important;
 }
 /* Tombol bulan (chip) di form: putih, border #E5E7EB, teks #475569, ikon charcoal */
@@ -615,7 +616,7 @@ html[data-theme="light"] .sm-root button[class*="rounded-full"][class*="bg-white
 }
 
 /* ---- Kanban Content Calendar ---- */
-html[data-theme="light"] section:has([class*="md:grid-cols-6"]) {
+html[data-theme="light"] section[class*="backdrop-blur"]:not([class*="inset-0"]):not([class*="bg-transparent"]):has([class*="md:grid-cols-6"]) {
   background-image: none !important;
   background-color: #F3F4F6 !important;
   border-color: #E5E7EB !important;

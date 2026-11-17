@@ -281,7 +281,7 @@ export default function MyWork() {
 
   <span>1 item needs attention</span>
 
-  <span className="ml-auto inline-flex items-center gap-1 text-[10px] text-white/60 transition group-hover:text-white">
+  <span className="ml-auto inline-flex items-center gap-1 text-[10px] not-dark:text-white text-white transition group-hover:text-white">
     View
     <ChevronRight size={14} />
   </span>

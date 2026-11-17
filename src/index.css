@@ -1355,3 +1355,9 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
   backdrop-filter: none !important;
   background-color: rgba(255, 255, 255, 0.78) !important;
 }
+
+/* Banner "item needs attention" (merah solid): teks "View" dan chevron harus putih, bukan charcoal */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] button[class*="bg-[#2A1114]"] span[class],
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] button[class*="bg-[#2A1114]"] svg {
+  color: #FFFFFF !important;
+}

@@ -232,11 +232,25 @@ html[data-theme="light"] [class*="to-black/"][class*="from-white/"] [class*="bor
 }
 
 /* Sidebar tetap gelap seperti referensi; menu aktif merah */
-html[data-theme="light"] aside {
+/* aside[class] / header[class] dibuat lebih spesifik agar menang atas aturan generik "bg-black" (kaca putih 55%) */
+html[data-theme="light"] aside[class] {
   background-color: #ffffff !important;
   background-image: none !important;
-  box-shadow: none !important;
-  border-color: rgba(79, 24, 24, 0.1) !important;
+  backdrop-filter: none !important;
+  box-shadow: 10px 0 28px -22px rgba(0, 0, 0, 0.28) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+/* Navbar atas: putih solid, garis bawah jelas, dan tombol terbaca (teks gelap) */
+html[data-theme="light"] header[class] {
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  box-shadow: 0 8px 24px -20px rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+html[data-theme="light"] header :is(button, a)[class*="bg-white/[0.05]"] {
+  color: rgba(29, 29, 31, 0.85) !important;
+  background-color: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
 }
 html[data-theme="light"] aside [class*="text-"] {
   color: rgba(79, 24, 24, 0.75) !important;
@@ -244,9 +258,11 @@ html[data-theme="light"] aside [class*="text-"] {
 html[data-theme="light"] aside [class*="text-white"] {
   color: #ffffff !important;
 }
+/* Menu aktif: merah solid dengan teks putih agar kontras jelas */
 html[data-theme="light"] aside a[class*="A21E1E"] {
-  background-color: rgba(196, 36, 40, 0.35) !important;
-  border-color: rgba(184, 35, 35, 0.6) !important;
+  background-color: #C42428 !important;
+  border-color: #9E1B1F !important;
+  box-shadow: 0 6px 16px -8px rgba(158, 27, 31, 0.55) !important;
 }
 html[data-theme="light"] aside a[class*="A21E1E"],
 html[data-theme="light"] aside a[class*="A21E1E"] * {

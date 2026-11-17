@@ -421,7 +421,22 @@ function GlassSelect({ label, value, options, onChange }) {
   );
 }
 
+// True saat tema terang aktif; ikut berubah ketika tema diganti dari menu Appearance
+function useIsLightTheme() {
+  const [light, setLight] = useState(() => document.documentElement.dataset.theme === "light");
+  useEffect(() => {
+    const el = document.documentElement;
+    const observer = new MutationObserver(() => setLight(el.dataset.theme === "light"));
+    observer.observe(el, { attributes: true, attributeFilter: ["data-theme"] });
+    // Tema bisa saja sudah dipasang Header sebelum pengamat ini terpasang
+    setLight(el.dataset.theme === "light");
+    return () => observer.disconnect();
+  }, []);
+  return light;
+}
+
 export default function Overview() {
+  const isLightTheme = useIsLightTheme();
   const [socialMetric, setSocialMetric] = useState("impressions");
   const [socialPlatform, setSocialPlatform] = useState("Instagram");
   const [assistantInput, setAssistantInput] = useState("");
@@ -459,8 +474,9 @@ export default function Overview() {
       {
         label: "Target",
         data: socialData[socialMetric].target,
-        backgroundColor: "rgba(255,255,255,0.06)",
-        borderColor: "rgba(255,255,255,0.32)",
+        // Mode terang: abu-abu medium solid agar terlihat di latar putih
+        backgroundColor: isLightTheme ? "#A1A1AA" : "rgba(255,255,255,0.06)",
+        borderColor: isLightTheme ? "#A1A1AA" : "rgba(255,255,255,0.32)",
         borderWidth: 1,
         borderRadius: barRadius,
         borderSkipped: false,
@@ -471,8 +487,8 @@ export default function Overview() {
       {
         label: "Actual",
         data: socialData[socialMetric].actual,
-        backgroundColor: barGradient("#C42B2B", "#8F2028"),
-        hoverBackgroundColor: barGradient("#E04848", "#A21E1E"),
+        backgroundColor: isLightTheme ? "#B91C1C" : barGradient("#C42B2B", "#8F2028"),
+        hoverBackgroundColor: isLightTheme ? "#991B1B" : barGradient("#E04848", "#A21E1E"),
         borderRadius: barRadius,
         borderSkipped: false,
         barPercentage: 0.82,
@@ -480,7 +496,7 @@ export default function Overview() {
         order: 1,
       },
     ],
-  }), [socialMetric]);
+  }), [socialMetric, isLightTheme]);
 
   const socialOptions = useMemo(() => ({
     responsive: true,

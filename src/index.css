@@ -1058,6 +1058,21 @@ html[data-theme="light"] div[class*="min-h-[96px]"] button:hover {
   }
 }
 
+/* ---- Grafik Social Media di Overview: legend dan tombol metrik aktif (mode terang) ---- */
+html[data-theme="light"] i[class*="border-white/40"][class*="bg-white/10"] {
+  background-color: #A1A1AA !important;
+  border-color: #A1A1AA !important;
+}
+html[data-theme="light"] i[class*="bg-[#B82323]"] {
+  background-color: #B91C1C !important;
+}
+/* Tombol metrik aktif: teks dan ikon putih murni */
+html[data-theme="light"] button[class*="bg-[#C42428]"][class*="text-white"],
+html[data-theme="light"] button[class*="bg-[#C42428]"][class*="text-white"] * {
+  color: #FFFFFF !important;
+  font-weight: 600;
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

@@ -1,3 +1,4 @@
+import PersonAvatar from "../components/ui/PersonAvatar";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useParams } from "react-router-dom";
@@ -34,10 +35,10 @@ const FIELD =
 const LABEL = "mb-1.5 block text-[12px] font-medium text-white/85";
 
 const initialMembers = [
-  { initials: "JS", name: "Jason Judah Pakasi" },
-  { initials: "AP", name: "Abraham Partogi Liem Silaen" },
-  { initials: "AE", name: "Amabel Eugenia" },
-  { initials: "EJ", name: "Ezra Judah" },
+  { initials: "JA", name: "Jason" },
+  { initials: "AG", name: "Agung" },
+  { initials: "AN", name: "Anabele" },
+  { initials: "CH", name: "Charlene" },
 ];
 
 const initialTasks = [
@@ -53,7 +54,7 @@ const initialTasks = [
     content: "Test 1",
     platform: "Instagram",
     contentType: "Video",
-    assignee: "Jason Judah Pakasi",
+    assignee: "Jason",
     notes: "",
     evidence: "screenshot_2026-10-31_19-46-00.png",
   },
@@ -119,11 +120,11 @@ function ProjectDetail() {
   const [contentTarget, setContentTarget] = useState(null);
 
   const [availableMembers] = useState([
-    "Yudi T. Sinambela",
-    "Lidia Wulan",
-    "Meyva Linda",
-    "Reinhart Okta Putra",
-    "Stephanie Jodie",
+    "Michael",
+    "Lidia",
+    "Bella",
+    "Reinhart",
+    "Jodie",
   ]);
 
   // Load project berdasarkan ID
@@ -402,18 +403,18 @@ function ProjectDetail() {
         className="pointer-events-none fixed inset-0 z-0 min-h-screen w-screen bg-[linear-gradient(180deg,#0a0a0a_0%,#070707_60%,#040404_100%)]"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-none space-y-5 px-3 pb-6 sm:px-4 md:px-4 lg:px-5">
+      <div className="relative z-10 mx-auto w-full max-w-none space-y-5 px-4 pb-6 lg:px-5">
         {/* Top Navigation */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             to="/projects"
-            className="inline-flex h-9 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.05] px-3.5 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
+            className="inline-flex h-11 items-center gap-2 rounded-lg md:h-9 border border-white/10 bg-white/[0.05] px-3.5 text-[12px] font-medium text-white/85 transition hover:border-white/25 hover:bg-white/[0.09] active:scale-[0.97]"
           >
             <ArrowLeft size={14} />
             Back
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="grid w-full grid-cols-2 items-center gap-2 sm:flex sm:w-auto">
             <button
               onClick={() => {
                 setEditForm({
@@ -425,7 +426,7 @@ function ProjectDetail() {
 
                 setShowEditProject(true);
               }}
-              className={PILL}
+              className={PILL + " max-md:h-11"}
             >
               <Pencil size={13} />
               Edit Project
@@ -433,7 +434,7 @@ function ProjectDetail() {
 
             <button
               onClick={handleDeleteProject}
-              className="inline-flex h-9 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#B82323]/50 bg-[#A21E1E] px-3.5 text-[12px] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(162,30,30,0.7)] transition hover:brightness-110 active:scale-[0.97]"
+              className="inline-flex h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#B82323]/50 bg-[#A21E1E] md:h-9 px-3.5 text-[12px] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(162,30,30,0.7)] transition hover:brightness-110 active:scale-[0.97]"
             >
               <Trash2 size={13} />
               Delete Project
@@ -442,16 +443,16 @@ function ProjectDetail() {
         </div>
 
         {/* Project Hero */}
-        <section className={`flex flex-col justify-between gap-5 rounded-2xl p-5 md:p-6 lg:flex-row lg:items-center ${GLASS}`}>
+        <section className={`flex flex-col justify-between gap-5 rounded-2xl p-4 sm:p-5 md:p-6 lg:flex-row lg:items-center ${GLASS}`}>
           <div className="min-w-0">
             <div className="mb-3 flex flex-wrap items-center gap-2.5">
-              <h1 className="text-xl font-semibold leading-tight tracking-tight text-white md:text-[22px]">{project?.name || "Project Name"}</h1>
-              <span className="rounded-full bg-amber-300/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-300 ring-1 ring-amber-300/25">
+              <h1 className="min-w-0 break-words text-xl font-semibold leading-tight tracking-tight text-white md:text-[22px]">{project?.name || "Project Name"}</h1>
+              <span className="rounded-full bg-amber-300/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-300 ring-1 ring-amber-300/25 md:py-0.5 md:text-[10px]">
                 In progress
               </span>
             </div>
 
-            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[12px] text-white/55">
+            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] text-white/60">
               <span className="flex items-center gap-1.5">
                 <CalendarDays size={13} />
                 Deadline {project.deadline
@@ -476,20 +477,18 @@ function ProjectDetail() {
               {members.map((member) => (
                 <div
                   key={member.name}
-                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] py-0.5 pl-0.5 pr-3 text-[11px] text-white/85"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] py-0.5 pl-0.5 pr-3.5 text-[12px] text-white/90 md:text-[11px]"
                 >
-                  <span className="grid h-6 w-6 place-items-center rounded-full bg-gradient-to-br from-[#A21E1E]/40 to-white/[0.06] text-[10px] font-semibold text-white">
-                    {member.initials}
-                  </span>
+                  <PersonAvatar name={member.name} className="h-8 w-8 text-[11px]" />
                   {member.name}
                 </div>
               ))}
 
               <button
                 onClick={() => setShowAddPeople(!showAddPeople)}
-                className="inline-flex items-center gap-1 rounded-full border border-dashed border-white/25 px-3 py-1.5 text-[11px] text-white/75 transition hover:border-white/40 hover:bg-white/[0.05]"
+                className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-full border border-dashed border-white/25 px-4 text-[13px] text-white/80 transition hover:border-white/40 hover:bg-white/[0.05] sm:w-auto md:h-auto md:gap-1 md:px-3 md:py-1.5 md:text-[11px]"
               >
-                <Plus size={13} />
+                <Plus size={14} />
                 Add people
               </button>
             </div>
@@ -510,7 +509,7 @@ function ProjectDetail() {
                     <button
                       key={name}
                       onClick={() => addMember(name)}
-                      className="block w-full rounded-lg px-3 py-2 text-left text-[11px] text-white/80 transition hover:bg-white/[0.07] hover:text-white"
+                      className="block w-full rounded-lg px-3 py-3 text-left text-[13px] text-white/80 transition hover:bg-white/[0.07] hover:text-white md:py-2 md:text-[11px]"
                     >
                       + {name}
                     </button>
@@ -520,21 +519,21 @@ function ProjectDetail() {
           </div>
 
           {/* Progress */}
-          <div className="flex shrink-0 items-center gap-4">
-            <div className="text-right">
+          <div className="flex w-full shrink-0 items-center justify-between gap-4 rounded-xl border border-white/10 bg-black/25 p-3.5 lg:w-auto lg:border-0 lg:bg-transparent lg:p-0">
+            <div className="lg:text-right">
               <div className="text-2xl font-semibold tabular-nums text-white">{progress}%</div>
-              <div className="mt-0.5 text-[11px] text-white/50">
+              <div className="mt-1 text-xs text-white/60 md:text-[11px]">
                 {completedTasks} of {tasks.length} tasks completed
               </div>
             </div>
 
             <div
-              className="grid h-14 w-14 place-items-center rounded-full"
+              className="grid h-16 w-16 shrink-0 place-items-center rounded-full lg:h-14 lg:w-14"
               style={{
                 background: `conic-gradient(#B82323 ${progress}%, rgba(255,255,255,0.1) 0)`,
               }}
             >
-              <div className="grid h-[44px] w-[44px] place-items-center rounded-full bg-[#1a0d10] text-[11px] font-semibold text-white">
+              <div className="grid h-[52px] w-[52px] place-items-center rounded-full bg-[#1a0d10] text-xs font-semibold text-white lg:h-[44px] lg:w-[44px] lg:text-[11px]">
                 {progress}%
               </div>
             </div>
@@ -542,11 +541,11 @@ function ProjectDetail() {
         </section>
 
         {/* Tasks Header */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-[15px] font-semibold tracking-tight text-white">Tasks checklist</h2>
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <h2 className="text-lg font-semibold tracking-tight text-white md:text-[15px]">Tasks checklist</h2>
           <button
             onClick={() => document.getElementById("new-task-input")?.focus()}
-            className={PILL}
+            className={PILL + " max-md:h-11 max-sm:w-full"}
           >
             <Plus size={13} />
             Add Checklist item
@@ -559,7 +558,7 @@ function ProjectDetail() {
             key={task.id}
             className={`rounded-2xl p-4 sm:p-5 ${GLASS}`}
           >
-            <div className="flex flex-wrap items-center gap-2.5">
+            <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-3 md:flex md:flex-wrap md:items-center md:gap-2.5">
               <button
                 onClick={() =>
                   updateTask(task.id, {
@@ -567,7 +566,7 @@ function ProjectDetail() {
                     status: !task.completed ? "Submitted on time" : "In Progress",
                   })
                 }
-                className={`grid h-5 w-5 shrink-0 place-items-center rounded-md transition ${
+                className={`relative mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-md transition before:absolute before:-inset-2.5 before:content-[''] md:mt-0 md:h-5 md:w-5 ${
                   task.completed
                     ? "bg-white text-[#120809] shadow-[0_4px_12px_-4px_rgba(255,255,255,0.4)]"
                     : "border border-white/20 bg-white/[0.05] text-white/60 hover:border-white/40"
@@ -578,20 +577,20 @@ function ProjectDetail() {
               </button>
 
               <span
-                className={`text-[13px] font-semibold ${
+                className={`min-w-0 break-words text-[15px] font-semibold leading-snug md:text-[13px] ${
                   task.completed ? "text-white/45 line-through" : "text-white"
                 }`}
               >
                 {task.title}
               </span>
 
-              <span className="rounded-full bg-[#B82323]/15 px-2 py-0.5 text-[10px] font-semibold text-[#E04848] ring-1 ring-[#B82323]/25">
+              <span className="rounded-full bg-[#B82323]/15 px-2.5 py-1 text-[11px] font-semibold text-[#E04848] ring-1 ring-[#B82323]/25 md:px-2 md:py-0.5 md:text-[10px]">
                 {task.priority}
               </span>
 
-              <div className="ml-auto flex flex-wrap items-center gap-2.5 text-[11px] text-white/50">
-                <span className="flex items-center gap-1">
-                  <CalendarDays size={12} />
+              <div className="col-span-3 flex flex-wrap items-center gap-x-3 gap-y-2.5 text-xs text-white/60 md:col-auto md:ml-auto md:gap-2.5 md:text-[11px] md:text-white/50">
+                <span className="flex items-center gap-1.5 md:gap-1">
+                  <CalendarDays size={13} />
                   Deadline {formatDeadline(task.deadline)}
                 </span>
 
@@ -601,7 +600,7 @@ function ProjectDetail() {
                 </span>
 
                 <span
-                  className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ring-1 ${
+                  className={`rounded-full px-2.5 py-1 text-[11px] font-medium ring-1 md:py-0.5 md:text-[10px] ${
                     task.completed
                       ? "bg-emerald-400/10 text-emerald-300 ring-emerald-400/25"
                       : "bg-white/[0.06] text-white/75 ring-white/15"
@@ -610,33 +609,40 @@ function ProjectDetail() {
                   {task.status}
                 </span>
 
-                <button
-                  onClick={() => setShowEditTask(task)}
-                  className="grid h-7 w-7 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-white/80 transition hover:border-white/25 hover:bg-white/[0.08] hover:text-white"
-                >
-                  <Pencil size={12} />
-                </button>
+                <div className="ml-auto flex items-center gap-2 md:contents">
+                  <button
+                    onClick={() => setShowEditTask(task)}
+                    aria-label="Edit task"
+                    title="Edit task"
+                    className="grid h-11 w-11 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-white/80 transition hover:border-white/25 hover:bg-white/[0.08] hover:text-white md:h-7 md:w-7"
+                  >
+                    <Pencil size={14} />
+                  </button>
 
-                <button
-                  onClick={() => deleteTask(task.id)}
-                  className="text-white/40 transition hover:text-[#C42B2B]"
-                  title="Delete task"
-                >
-                  <Trash2 size={14} />
-                </button>
+                  <button
+                    onClick={() => deleteTask(task.id)}
+                    className="grid h-11 w-11 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-white/55 transition hover:text-[#C42B2B] md:h-auto md:w-auto md:border-0 md:bg-transparent md:text-white/40"
+                    aria-label="Delete task"
+                    title="Delete task"
+                  >
+                    <Trash2 size={15} />
+                  </button>
 
-                <button
-                  onClick={() =>
-                    updateTask(task.id, { expanded: !task.expanded })
-                  }
-                  className="text-white/55 transition hover:text-white"
-                >
-                  {task.expanded ? (
-                    <ChevronUp size={16} />
-                  ) : (
-                    <ChevronDown size={16} />
-                  )}
-                </button>
+                  <button
+                    onClick={() =>
+                      updateTask(task.id, { expanded: !task.expanded })
+                    }
+                    aria-label={task.expanded ? "Collapse task" : "Expand task"}
+                    aria-expanded={task.expanded}
+                    className="grid h-11 w-11 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-white/70 transition hover:text-white md:h-auto md:w-auto md:border-0 md:bg-transparent md:text-white/55"
+                  >
+                    {task.expanded ? (
+                      <ChevronUp size={17} />
+                    ) : (
+                      <ChevronDown size={17} />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -644,19 +650,19 @@ function ProjectDetail() {
               <div className="mt-4 space-y-3">
                 {/* Content */}
                 <div className={`p-3.5 ${INNER}`}>
-                  <div className="mb-2.5 text-[10px] font-semibold uppercase tracking-wider text-white/45">
+                  <div className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-white/55 md:mb-2.5 md:text-[10px] md:text-white/45">
                     Content
                   </div>
 
-                  <div className="mb-2.5 flex flex-wrap gap-2">
+                  <div className="mb-3 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap md:mb-2.5">
                     <button
                       onClick={() => {
                         setContentTarget(task);
                         setShowContentModal(true);
                       }}
-                      className={PILL + " h-8 px-3"}
+                      className={PILL + " h-11 px-3 text-[13px] md:h-8 md:text-[12px]"}
                     >
-                      <Plus size={12} />
+                      <Plus size={13} />
                       New content
                     </button>
 
@@ -665,24 +671,24 @@ function ProjectDetail() {
                         setContentTarget(task);
                         setShowContentModal(true);
                       }}
-                      className={PILL + " h-8 px-3"}
+                      className={PILL + " h-11 px-3 text-[13px] md:h-8 md:text-[12px]"}
                     >
-                      <Link2 size={12} />
+                      <Link2 size={13} />
                       Link content
                     </button>
                   </div>
 
                   {task.content ? (
-                    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-white/[0.07] bg-black/40 p-2.5">
-                      <div className="grid h-8 w-8 place-items-center rounded-md border border-white/10 bg-white/[0.05] text-white/85">
-                        <span className="text-[11px] font-bold">IG</span>
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-lg border border-white/[0.07] bg-black/40 p-3 sm:flex sm:flex-wrap sm:items-center md:p-2.5">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.05] text-white/85 md:h-8 md:w-8">
+                        <span className="text-xs font-bold md:text-[11px]">IG</span>
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="text-[12px] font-semibold text-white">{task.content}</div>
-                        <div className="mt-0.5 text-[11px] text-white/50">
+                        <div className="break-words text-[14px] font-semibold leading-snug text-white md:text-[12px]">{task.content}</div>
+                        <div className="mt-1 break-words text-xs text-white/60 md:mt-0.5 md:text-[11px] md:text-white/50">
                           {task.platform} · {task.contentType} · {task.assignee}
                         </div>
-                        <div className="mt-1 text-[10px] text-emerald-300">
+                        <div className="mt-1.5 text-[11px] leading-relaxed text-emerald-300 md:mt-1 md:text-[10px]">
                           Idea › Drafting › In review › Approved › Scheduled › Published
                         </div>
                       </div>
@@ -695,13 +701,13 @@ function ProjectDetail() {
                             assignee: "",
                           })
                         }
-                        className="rounded-lg border border-white/10 px-2.5 py-1 text-[11px] text-[#C42B2B] transition hover:bg-[#A21E1E]/15"
+                        className="col-span-2 inline-flex h-11 w-full items-center justify-center rounded-lg border border-white/10 px-3 text-[13px] text-[#E04848] transition hover:bg-[#A21E1E]/15 sm:w-auto md:h-auto md:px-2.5 md:py-1 md:text-[11px] md:text-[#C42B2B]"
                       >
                         Unlink
                       </button>
                     </div>
                   ) : (
-                    <p className="text-[11px] text-white/45">
+                    <p className="text-xs text-white/55 md:text-[11px] md:text-white/45">
                       No linked content.
                     </p>
                   )}
@@ -709,12 +715,12 @@ function ProjectDetail() {
 
                 {/* Evidence */}
                 <div className={`p-3.5 ${INNER}`}>
-                  <div className="mb-2.5 text-[10px] font-semibold uppercase tracking-wider text-white/45">
+                  <div className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-white/55 md:mb-2.5 md:text-[10px] md:text-white/45">
                     Evidence
                   </div>
 
-                  <label className={`${PILL} mb-2.5 h-8 cursor-pointer px-3`}>
-                    <Plus size={12} />
+                  <label className={`${PILL} mb-3 h-11 w-full cursor-pointer px-3 text-[13px] sm:w-auto md:mb-2.5 md:h-8 md:text-[12px]`}>
+                    <Plus size={13} />
                     Add Evidence
                     <input
                       type="file"
@@ -730,40 +736,44 @@ function ProjectDetail() {
                   </label>
 
                   {task.evidence && (
-                    <div className="flex flex-wrap items-center gap-3 rounded-lg border border-white/[0.07] bg-black/40 p-2.5">
-                      <div className="grid h-8 w-8 place-items-center rounded-md border border-white/10 bg-white/[0.05] text-white/75">
-                        <FileImage size={15} />
+                    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-lg border border-white/[0.07] bg-black/40 p-3 sm:flex sm:flex-wrap sm:items-center md:p-2.5">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.05] text-white/75 md:h-8 md:w-8">
+                        <FileImage size={17} />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="break-all text-[12px] font-semibold text-white">
+                        <div className="text-[14px] font-semibold leading-snug text-white [overflow-wrap:anywhere] md:text-[12px]">
                           {task.evidence}
                         </div>
-                        <div className="mt-0.5 text-[10px] text-white/45">
+                        <div className="mt-1 text-[11px] text-white/55 md:mt-0.5 md:text-[10px] md:text-white/45">
                           Uploaded locally in this session
                         </div>
                       </div>
-                      <button
-                        onClick={() =>
-                          alert("File preview is not available in the frontend version yet.")
-                        }
-                        className={PILL + " h-7 px-2.5 text-[11px]"}
-                      >
-                        <Eye size={12} />
-                        View
-                      </button>
-                      <button
-                        onClick={() => updateTask(task.id, { evidence: "" })}
-                        className="text-white/40 transition hover:text-[#C42B2B]"
-                      >
-                        <X size={14} />
-                      </button>
+                      <div className="col-span-2 flex items-center gap-2 sm:contents">
+                        <button
+                          onClick={() =>
+                            alert("File preview is not available in the frontend version yet.")
+                          }
+                          className={PILL + " h-11 flex-1 px-3 text-[13px] sm:flex-none md:h-7 md:px-2.5 md:text-[11px]"}
+                        >
+                          <Eye size={13} />
+                          View
+                        </button>
+                        <button
+                          onClick={() => updateTask(task.id, { evidence: "" })}
+                          aria-label="Delete evidence"
+                          title="Delete evidence"
+                          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-white/60 transition hover:text-[#C42B2B] sm:border-0 sm:bg-transparent md:h-auto md:w-auto md:text-white/40"
+                        >
+                          <X size={15} />
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
 
                 {/* Notes */}
                 <div>
-                  <label className="mb-1.5 block text-[11px] text-white/55">
+                  <label className="mb-1.5 block text-xs text-white/60 md:text-[11px] md:text-white/55">
                     Task notes (optional)
                   </label>
                   <textarea
@@ -775,7 +785,7 @@ function ProjectDetail() {
                     rows={2}
                     className="w-full resize-y rounded-lg border border-white/10 bg-white/[0.05] p-3 text-[13px] text-white outline-none transition placeholder:text-white/35 focus:border-[#B82323]/60"
                   />
-                  <div className="mt-1 text-right text-[10px] text-white/40">
+                  <div className="mt-1.5 text-right text-[11px] text-white/45 md:mt-1 md:text-[10px] md:text-white/40">
                     Notes last only this session
                   </div>
                 </div>
@@ -795,20 +805,20 @@ function ProjectDetail() {
               if (event.key === "Enter") addTask();
             }}
             placeholder="Add a checklist item"
-            className={FIELD + " min-w-0 flex-1"}
+            className={FIELD + " h-11 min-w-0 flex-1 lg:h-10"}
           />
 
           <input
             type="datetime-local"
             value={newDeadline}
             onChange={(event) => setNewDeadline(event.target.value)}
-            className={FIELD + " lg:w-auto"}
+            className={FIELD + " h-11 lg:h-10 lg:w-auto"}
           />
 
           <select
             value={newPriority}
             onChange={(event) => setNewPriority(event.target.value)}
-            className={FIELD + " lg:w-auto"}
+            className={FIELD + " h-11 lg:h-10 lg:w-auto"}
           >
             <option>Medium</option>
             <option>High</option>
@@ -817,14 +827,14 @@ function ProjectDetail() {
 
           <button
             onClick={addTask}
-            className={PILL_PRIMARY + " h-10 px-4"}
+            className={PILL_PRIMARY + " h-11 w-full px-4 lg:h-10 lg:w-auto"}
           >
             <Plus size={14} />
             Add
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-[11px] text-white/45">
+        <div className="flex items-center gap-2 text-xs text-white/55 md:text-[11px] md:text-white/45">
           <Paperclip size={13} />
           Added to the bottom.
         </div>

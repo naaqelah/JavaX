@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import GlassSelect from "../components/ui/GlassSelect";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,6 +8,7 @@ import {
   ArrowRight,
   ArrowUp,
   ChevronDown,
+  ChevronRight,
   Coins,
   FileText,
   Filter,
@@ -14,12 +16,12 @@ import {
   Pencil,
   Plus,
   Search,
-  MoreVertical,
+  X,
 } from "lucide-react";
 
 // Desain token sama dengan halaman lain (Overview, Projects, ProjectDetail, dst.)
 const GLASS =
-  "rounded-[28px] border border-white/[0.14] bg-gradient-to-b from-white/[0.12] via-white/[0.04] to-white/[0.02] backdrop-blur-xl backdrop-saturate-[180%] shadow-[0_0_44px_-14px_rgba(162,30,30,0.65),0_18px_40px_-18px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.28)]";
+  "rounded-[28px] border border-white/[0.18] bg-gradient-to-b from-white/[0.16] via-white/[0.06] to-white/[0.03] backdrop-blur-2xl backdrop-saturate-[200%] shadow-[0_28px_60px_-24px_rgba(0,0,0,0.85),0_0_0_0.5px_rgba(255,255,255,0.06),inset_0_1px_0_rgba(255,255,255,0.35),inset_0_-1px_0_rgba(255,255,255,0.06)]";
 const INNER = "rounded-2xl border border-white/[0.10] bg-black/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]";
 const TILE =
   "rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-black/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-colors duration-200 hover:border-white/20";
@@ -54,7 +56,7 @@ const initialLogs = [
     delta: -10,
     balance: 90,
     note: "Giveaway",
-    by: "Reinhart Okta Putra",
+    by: "Reinhart",
     by_at: "2 Nov 2026, 20:54",
     date: "2 Nov 2026",
     time: "20:54",
@@ -67,7 +69,7 @@ const initialLogs = [
     delta: -10,
     balance: 90,
     note: "Giveaway",
-    by: "Reinhart Okta Putra",
+    by: "Reinhart",
     by_at: "2 Nov 2026, 20:54",
     date: "1 Nov 2026",
     time: "16:30",
@@ -93,7 +95,7 @@ const initialLogs = [
     delta: -10,
     balance: 90,
     note: "Giveaway",
-    by: "Reinhart Okta Putra",
+    by: "Reinhart",
     by_at: "2 Nov 2026, 20:54",
     date: "1 Oct 2026",
     time: "16:30",
@@ -171,7 +173,7 @@ function MerchandiseSection({ items, onAdjust }) {
       <SectionTitle>Merchandise</SectionTitle>
 
       <div className="overflow-x-auto rounded-2xl max-md:overflow-visible">
-        <div className={`min-w-[900px] overflow-hidden rounded-2xl ${GLASS} backdrop-blur-none max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
+        <div className={`min-w-[900px] overflow-hidden rounded-2xl ${GLASS} backdrop-blur-none max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-none max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
           <div className={`grid ${MERCH_COLS} items-center gap-2.5 border-b border-white/[0.12] bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white/55 max-md:hidden`}>
             {[
               "Item",
@@ -192,7 +194,7 @@ function MerchandiseSection({ items, onAdjust }) {
           {items.map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className={`grid min-h-[52px] ${MERCH_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-x-4 max-md:gap-y-3 max-md:rounded-2xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-4 max-md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`}
+              className={`grid min-h-[52px] ${MERCH_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-x-4 max-md:gap-y-3 max-md:rounded-2xl max-md:border max-md:border-white/[0.18] max-md:bg-gradient-to-b max-md:from-white/[0.14] max-md:to-white/[0.04] max-md:backdrop-blur-2xl max-md:backdrop-saturate-[200%] max-md:p-4 max-md:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.3)]`}
             >
               <div className="font-semibold text-white max-md:col-start-1 max-md:row-start-1 max-md:text-[15px]">{item.name}</div>
               <div className="text-white/55 max-md:col-span-2 max-md:-mt-1 max-md:text-[12px]">
@@ -230,7 +232,7 @@ function EquipmentSection({ items, onAdjust }) {
       <SectionTitle>Equipment</SectionTitle>
 
       <div className="overflow-x-auto max-md:overflow-visible">
-        <div className={`min-w-[760px] overflow-hidden ${GLASS} backdrop-blur-none max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
+        <div className={`min-w-[760px] overflow-hidden ${GLASS} backdrop-blur-none max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-none max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
           <div className={`grid ${EQUIP_COLS} items-center gap-2.5 border-b border-white/[0.12] bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white/55 max-md:hidden`}>
             {["Item", "Category", "On hand", "Unit cost", "Stock value", "Adjust"].map((heading) => (
               <div key={heading} className={heading === "Adjust" ? "text-center" : ""}>
@@ -242,7 +244,7 @@ function EquipmentSection({ items, onAdjust }) {
           {items.map((item, index) => (
             <div
               key={`${item.name}-${index}`}
-              className={`grid min-h-[52px] ${EQUIP_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-x-4 max-md:gap-y-3 max-md:rounded-2xl max-md:border max-md:border-white/[0.08] max-md:bg-black/40 max-md:p-4 max-md:shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]`}
+              className={`grid min-h-[52px] ${EQUIP_COLS} items-center gap-2.5 border-b border-white/[0.06] px-4 py-2 text-[13px] text-white/90 transition-colors duration-150 last:border-b-0 hover:bg-white/[0.035] max-md:mb-3 max-md:min-h-0 max-md:grid-cols-2 max-md:gap-x-4 max-md:gap-y-3 max-md:rounded-2xl max-md:border max-md:border-white/[0.18] max-md:bg-gradient-to-b max-md:from-white/[0.14] max-md:to-white/[0.04] max-md:backdrop-blur-2xl max-md:backdrop-saturate-[200%] max-md:p-4 max-md:shadow-[0_18px_40px_-20px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.3)]`}
             >
               <div className="font-semibold text-white max-md:col-span-2 max-md:text-[15px]">
                 {item.name}
@@ -287,7 +289,101 @@ function LogType({ type }) {
   );
 }
 
+// Detail satu catatan log. Semua nilai berasal dari data log; stok sebelum = saldo - perubahan.
+function LogDetailModal({ log, onClose }) {
+  useEffect(() => {
+    if (!log) return undefined;
+    const onKey = (event) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [log, onClose]);
+
+  if (!log) return null;
+
+  const isIn = log.type === "in";
+  const before = log.balance - log.delta;
+  const rows = [
+    ["Note", log.note || "—"],
+    ["Recorded by", log.by],
+    ["Recorded at", log.by_at],
+    ["Date", log.date],
+    ["Time", log.time],
+  ];
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[10001] flex items-end justify-center bg-black/70 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Log detail ·  ${log.item}`}
+        className={`max-h-[90vh] w-full max-w-[440px] overflow-y-auto rounded-t-2xl bg-[#1a0d10]/95 p-5 shadow-2xl sm:rounded-2xl ${GLASS}`}
+      >
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-white/45">Log detail</p>
+            <h2 className="mt-1 truncate text-[17px] font-semibold text-white">{log.item}</h2>
+            <p className="mt-0.5 text-[12px] text-white/55">Type: {log.item_type}</p>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-2">
+            <LogType type={log.type} />
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close log detail"
+              className="grid h-9 w-9 place-items-center rounded-lg text-white/55 transition hover:bg-white/10 hover:text-white"
+            >
+              <X size={16} />
+            </button>
+          </div>
+        </div>
+
+        <div className={`grid grid-cols-3 items-center gap-2 p-3 text-center ${INNER}`}>
+          <div>
+            <p className="text-[11px] text-white/50">Before</p>
+            <p className="mt-1 text-lg font-semibold tabular-nums text-white/80">{before}</p>
+          </div>
+          <div>
+            <p className="text-[11px] text-white/50">Change</p>
+            <p className={`mt-1 text-lg font-semibold tabular-nums ${isIn ? "text-emerald-300" : "text-[#E04848]"}`}>
+              {log.delta > 0 ? "+" : ""}{log.delta}
+            </p>
+          </div>
+          <div>
+            <p className="text-[11px] text-white/50">After</p>
+            <p className="mt-1 text-lg font-semibold tabular-nums text-white">{log.balance}</p>
+          </div>
+        </div>
+
+        <dl className="mt-4 divide-y divide-white/[0.07] text-[13px]">
+          {rows.map(([label, value]) => (
+            <div key={label} className="flex items-start justify-between gap-4 py-2.5">
+              <dt className="shrink-0 text-white/55">{label}</dt>
+              <dd className="min-w-0 text-right font-medium text-white/90">{value}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-5 flex justify-end">
+          <button type="button" onClick={onClose} className={PILL + " h-10 px-5"}>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 function LogSection({ logs }) {
+  const [selectedLog, setSelectedLog] = useState(null);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
   const [itemFilter, setItemFilter] = useState("");
@@ -356,7 +452,7 @@ function LogSection({ logs }) {
       </div>
 
       <div className="overflow-x-auto rounded-2xl max-md:overflow-visible">
-        <div className={`min-w-[900px] overflow-hidden rounded-2xl ${GLASS} max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
+        <div className={`min-w-[900px] overflow-hidden rounded-2xl ${GLASS} max-md:min-w-0 max-md:overflow-visible max-md:border-0 max-md:bg-none max-md:bg-transparent max-md:shadow-none max-md:backdrop-blur-none`}>
           <div className={`grid ${LOG_COLS} items-center gap-2.5 border-b border-white/[0.12] bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider text-white/55 max-md:hidden`}>
             {["Type", "Item", "Stock Change", "Note", "By", "Date", ""].map((heading, index) => (
               <div key={index}>{heading}</div>
@@ -405,11 +501,12 @@ function LogSection({ logs }) {
 
               <button
                 type="button"
-                title="More options"
-                onClick={() => alert("Log options are not connected to the backend yet.")}
-                className="grid h-7 w-7 place-items-center rounded-lg text-white/45 transition hover:bg-white/[0.07] hover:text-white max-md:col-start-3 max-md:row-start-1"
+                title="View detail"
+                aria-label={`View detail of ${log.item} log`}
+                onClick={() => setSelectedLog(log)}
+                className="grid h-9 w-9 place-items-center rounded-lg text-white/55 transition hover:bg-white/[0.07] hover:text-white active:scale-[0.95] max-md:col-start-3 max-md:row-start-1 max-md:justify-self-end"
               >
-                <MoreVertical size={15} />
+                <ChevronRight size={18} />
               </button>
             </div>
           ))}
@@ -421,6 +518,8 @@ function LogSection({ logs }) {
           )}
         </div>
       </div>
+
+      <LogDetailModal log={selectedLog} onClose={() => setSelectedLog(null)} />
     </section>
   );
 }
@@ -624,7 +723,7 @@ export default function Inventory() {
             ? item.on_hand + amount
             : Math.max(0, item.on_hand - amount),
         note: note || "Stock adjustment",
-        by: "Reinhart Okta Putra",
+        by: "Reinhart",
         by_at: new Date().toLocaleString("en-GB"),
         date: new Date().toLocaleDateString("en-GB", {
           day: "numeric",

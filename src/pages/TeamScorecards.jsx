@@ -1,9 +1,5 @@
 import { Fragment, useMemo, useState } from "react";
-import LidiaImage from "../assets/images/LIDIA.JPG";
-import BellaImage from "../assets/images/BELLA.JPG";
-import MichaelImage from "../assets/images/MICHAEL.JPG";
-import JasonImage from "../assets/images/JASON.JPG";
-import JodieImage from "../assets/images/JODIE.JPG";
+import PersonAvatar from "../components/ui/PersonAvatar";
 import GlassSelect from "../components/ui/GlassSelect";
 import { MONTH_OPTIONS } from "../components/ui/monthOptions";
 import PersonKpiList from "../components/analytics/PersonKpiList";
@@ -41,19 +37,6 @@ const initialPeople = [
   { id: 5, name: "Jodie", role: "Content Strategist", kpis: 1, composite: null, tier: "no_data" },
   { id: 6, name: "Lidia", role: "Marketing Operations Executive", kpis: 1, composite: null, tier: "no_data" },
 ];
-
-// Posisi foto per orang (default 50% 18%). Nilai Y lebih besar = wajah naik di lingkaran.
-const photoPosition = {
-  Lidia: "50% 70%",
-};
-
-const profileImages = {
-  Lidia: LidiaImage,
-  Bella: BellaImage,
-  Michael: MichaelImage,
-  Jason: JasonImage,
-  Jodie: JodieImage,
-};
 
 const months = [
   "October 2026",
@@ -321,14 +304,7 @@ export default function TeamScorecards() {
                   onClick={() => setOpenPerson(open ? null : person.id)}
                   className="flex w-full items-center gap-3.5 px-4 pb-3 pt-4 text-left"
                 >
-                  <span className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full border border-white/15 bg-black">
-                    <img
-                      src={profileImages[person.name]}
-                      alt={person.name}
-                      className="h-full w-full scale-[1.3] object-cover"
-                      style={{ objectPosition: photoPosition[person.name] || "50% 18%" }}
-                    />
-                  </span>
+                  <PersonAvatar name={person.name} className="h-10 w-10" />
 
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[15px] font-semibold text-white">{person.name}</span>
@@ -413,14 +389,7 @@ export default function TeamScorecards() {
                   <RowChevron size={14} className={`text-white/55 transition-transform duration-200 ${openPerson === person.id ? "" : "-rotate-90"}`} />
 
                   <div className="flex items-center gap-3 whitespace-nowrap text-[13px] font-semibold text-white">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full border border-white/15 bg-black shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-                      <img
-                        src={profileImages[person.name]}
-                        alt={person.name}
-                        className="h-full w-full scale-[1.3] object-cover"
-                        style={{ objectPosition: photoPosition[person.name] || "50% 18%" }}
-                      />
-                    </span>
+                    <PersonAvatar name={person.name} className="h-10 w-10" />
                     {person.name}
                   </div>
 

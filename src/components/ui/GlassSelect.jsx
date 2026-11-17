@@ -41,7 +41,7 @@ export default function GlassSelect({ value, onChange, options, placeholder = "S
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="flex h-10 w-full items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.05] px-3.5 text-left text-[13px] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition hover:border-white/20 hover:bg-white/[0.08] focus:border-[#B82323]/60 focus:outline-none"
+        className="flex h-11 w-full items-center sm:h-10 justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.05] px-3.5 text-left text-[13px] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] transition hover:border-white/20 hover:bg-white/[0.08] focus:border-[#B82323]/60 focus:outline-none"
       >
         {icon && <span className="shrink-0 text-white/55">{icon}</span>}
         <span className={`min-w-0 flex-1 truncate ${current ? "text-white" : "text-white/40"}`}>
@@ -70,7 +70,7 @@ export default function GlassSelect({ value, onChange, options, placeholder = "S
                     onChange(item.value);
                     setOpen(false);
                   }}
-                  className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-[13px] transition ${
+                  className={`flex w-full items-center justify-between gap-3 rounded-lg px-3 py-3 text-left text-[13px] sm:py-2 transition ${
                     selected
                       ? "bg-white/15 text-white"
                       : "text-white/70 hover:bg-white/[0.07] hover:text-white"

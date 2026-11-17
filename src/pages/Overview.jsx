@@ -143,9 +143,9 @@ ChartJS.defaults.font.family = "Plus Jakarta Sans, Inter, system-ui, sans-serif"
 // =====================================================
 
 const GLASS =
-  "rounded-[28px] border border-white/[0.12] bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-white/[0.01] backdrop-blur-xl backdrop-saturate-[180%] shadow-[0_0_40px_-16px_rgba(162,30,30,0.55),0_18px_40px_-20px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.22)]";
-const INNER = "rounded-2xl border border-white/[0.10] bg-black/30 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]";
-const TILE = "rounded-xl border border-white/[0.08] bg-gradient-to-br from-white/[0.04] to-black/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-colors duration-200 hover:border-white/20";
+  "rounded-[22px] border border-white/[0.07] bg-[#121212] shadow-[0_12px_32px_-20px_rgba(0,0,0,0.9)]";
+const INNER = "rounded-xl border border-white/[0.06] bg-white/[0.025]";
+const TILE = "rounded-xl border border-white/[0.06] bg-white/[0.02] transition-colors duration-200 hover:border-white/[0.14]";
 
 // Skala ukuran font untuk halaman ini:
 // 10 (meta/caps) · 11 (caption) · 12 (label) · 13 (body/judul kecil) · 15 (judul kartu) · 16 (nilai kecil) · 20+ (angka utama)
@@ -182,13 +182,13 @@ function teamSegmentFill(context, hover) {
 const compactNumber = (value) => Number(value).toLocaleString("en-US");
 
 const tooltipStyle = {
-  backgroundColor: "rgba(24,9,12,0.94)",
+  backgroundColor: "rgba(28,28,30,0.96)",
   titleColor: "#ffffff",
-  bodyColor: "#e8dcde",
-  borderColor: "rgba(255,255,255,0.14)",
+  bodyColor: "#d4d4d8",
+  borderColor: "rgba(255,255,255,0.08)",
   borderWidth: 1,
   padding: 10,
-  cornerRadius: 10,
+  cornerRadius: 8,
   boxPadding: 4,
   displayColors: true,
   usePointStyle: true,
@@ -854,7 +854,7 @@ export default function Overview() {
                   ["engagement", "Engagement"],
                   ["posts", "Posts"],
                 ].map(([key, label]) => (
-                  <button key={key} onClick={() => setSocialMetric(key)} className={`rounded-lg px-2 py-2 text-[11px] font-medium transition active:scale-[0.97] ${socialMetric === key ? "bg-white font-semibold text-[#120809] shadow-[0_6px_18px_-8px_rgba(255,255,255,0.25)]" : "text-white/70 hover:bg-white/5 hover:text-white"}`}>
+                  <button key={key} onClick={() => setSocialMetric(key)} className={`rounded-lg px-2 py-2 text-[11px] font-medium transition active:scale-[0.97] ${socialMetric === key ? "bg-[#C42428] font-semibold text-white shadow-[0_6px_16px_-8px_rgba(196,36,40,0.7)]" : "text-white/70 hover:bg-white/5 hover:text-white"}`}>
                     {label}
                   </button>
                 ))}
@@ -919,7 +919,7 @@ export default function Overview() {
           </div>
 
           <div className="contents">
-            <Panel className="flex flex-1 flex-col overflow-hidden xl:col-start-3 xl:row-start-1 bg-gradient-to-b from-[#A21E1E]/25 via-[#2a1114]/60 to-black/40">
+            <Panel className="flex flex-1 flex-col overflow-hidden xl:col-start-3 xl:row-start-1 bg-gradient-to-b from-[#A21E1E]/10 via-transparent to-transparent">
               <CardHeading icon={<Users size={17} />} title="Team Scorecards" status="Need Attention" to="/team-scorecards" />
               <div className="relative mx-auto h-[165px] w-full max-w-[260px] drop-shadow-[0_12px_28px_rgba(162,30,30,0.35)]">
                 <Doughnut data={teamChart} options={teamOptions} />

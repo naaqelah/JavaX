@@ -1,3 +1,5 @@
+import PersonAvatar from "../components/ui/PersonAvatar";
+import { TEAM } from "../data/people";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -23,17 +25,7 @@ const FIELD =
   "h-10 w-full rounded-lg border border-white/10 bg-white/[0.05] px-3.5 text-[13px] text-white outline-none transition placeholder:text-white/35 focus:border-[#B82323]/60 [color-scheme:dark]";
 const LABEL = "mb-1.5 block text-[12px] font-medium text-white/85";
 
-const teamMembers = [
-  "Abraham Partogi Liem Silaen",
-  "Amabel Eugenia",
-  "Ezra Judah",
-  "Jason Judah Pakasi",
-  "Yudi T. Sinambela",
-  "Lidia Wulan",
-  "Meyva Linda",
-  "Reinhart Okta Putra",
-  "Stephanie Jodie",
-];
+const teamMembers = TEAM.map((person) => person.name);
 
 const categories = [
   { name: "All", count: 3, icon: Grid3X3 },
@@ -231,6 +223,7 @@ function ProjectCreate() {
                   onChange={() => toggleMember(member)}
                   className="h-3.5 w-3.5 accent-[#A21E1E]"
                 />
+                <PersonAvatar name={member} className="h-8 w-8 text-[11px]" />
                 {member}
               </label>
             ))}

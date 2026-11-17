@@ -1,4 +1,5 @@
 import { Fragment, useMemo, useState } from "react";
+import PersonAvatar from "../components/ui/PersonAvatar";
 import GlassSelect from "../components/ui/GlassSelect";
 import { MONTH_OPTIONS } from "../components/ui/monthOptions";
 import { CalendarDays } from "lucide-react";
@@ -28,7 +29,7 @@ const initialProjects = [
   {
     id: 1,
     name: "Test Notification",
-    owner: "Jason Judah Pakasi",
+    owner: "Jason",
     category: "Web",
     done: 8,
     total: 8,
@@ -37,7 +38,7 @@ const initialProjects = [
   {
     id: 2,
     name: "Q3 Creative Refresh",
-    owner: "Abraham Partogi Liem Silaen",
+    owner: "Agung",
     category: "Content Production",
     done: 20,
     total: 20,
@@ -46,7 +47,7 @@ const initialProjects = [
   {
     id: 3,
     name: "Test Colab",
-    owner: "Abraham Partogi Liem Silaen",
+    owner: "Anabele",
     category: "Social Media",
     done: 1,
     total: 3,
@@ -55,7 +56,7 @@ const initialProjects = [
   {
     id: 4,
     name: "Brand Guidelines",
-    owner: "Abraham Partogi Liem Silaen",
+    owner: "Charlene",
     category: "Brand Identity",
     done: 20,
     total: 20,
@@ -64,7 +65,7 @@ const initialProjects = [
   {
     id: 5,
     name: "Influencer Brief",
-    owner: "Abraham Partogi Liem Silaen",
+    owner: "Michael",
     category: "Partnerships",
     done: 20,
     total: 20,
@@ -73,7 +74,7 @@ const initialProjects = [
   {
     id: 6,
     name: "Launch Video",
-    owner: "Abraham Partogi Liem Silaen",
+    owner: "Lidia",
     category: "Video Production",
     done: 20,
     total: 20,
@@ -358,9 +359,7 @@ const [projects] = useState(() => {
                       </div>
 
                       <div className="flex min-w-0 items-center gap-2.5 text-[12px] text-white/75 max-md:col-start-1 max-md:row-start-2">
-                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-white/10 bg-gradient-to-br from-[#A21E1E]/40 to-white/[0.06] text-[11px] font-semibold text-white">
-                          {project.owner.charAt(0).toUpperCase()}
-                        </span>
+                        <PersonAvatar name={project.owner} className="h-10 w-10 text-[12px]" />
                         <span className="truncate">{project.owner}</span>
                       </div>
 

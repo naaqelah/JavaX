@@ -20,10 +20,10 @@ const FIELD =
   "h-10 w-full rounded-lg border border-white/10 bg-white/[0.05] px-3.5 text-[13px] text-white outline-none transition placeholder:text-white/35 hover:border-white/20 focus:border-[#B82323]/60 [color-scheme:dark]";
 
 const people = [
-  "Reinhart Okta Putra",
-  "Jason Judah Pakasi",
-  "Abraham Partogi Liem Silaen",
-  "Amabel Eugenia",
+  "Reinhart",
+  "Jason",
+  "Agung",
+  "Anabele",
 ];
 
 const kpis = ["Operational", "Marketing", "Finance"];

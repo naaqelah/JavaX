@@ -656,7 +656,7 @@ export default function SocialMedia() {
         </section>
 
         {/* Performance Panel */}
-        <section className={`rounded-2xl p-4 md:p-5 ${GLASS}`}>
+        <section className={`mt-5 rounded-2xl p-4 md:p-5 ${GLASS}`}>
           <div className="mb-5 space-y-4">
             <div>
               <h2 className="text-base font-semibold tracking-tight text-white md:text-[15px]">
@@ -701,7 +701,7 @@ export default function SocialMedia() {
           </div>
 
           {/* Social Channels */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 [scrollbar-width:thin]">
             {channels.map((channel) => {
               const isConnected = Boolean(connected[channel.name]);
               const tracked = channel.tracked || isConnected;
@@ -709,7 +709,7 @@ export default function SocialMedia() {
               return (
                 <div
                   key={channel.name}
-                  className={`flex min-h-[316px] min-w-0 w-full flex-col p-4 ${INNER}`}
+                  className={`flex min-h-[316px] w-[300px] shrink-0 snap-start flex-col p-4 sm:w-[320px] ${INNER}`}
                 >
                   {/* Channel Header */}
                   <div className="flex min-w-0 items-center gap-2.5 border-b border-white/[0.07] pb-3">

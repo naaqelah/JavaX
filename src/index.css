@@ -1330,3 +1330,12 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
   background-color: rgba(255, 255, 255, 0.85) !important;
   box-shadow: 0 2px 8px rgba(31, 41, 55, 0.12) !important;
 }
+/* Item menu profil (tautan) tidak boleh putih solid: transparan agar blur panel terlihat merata */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] a[class] {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] a[class]:hover {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}

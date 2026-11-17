@@ -258,11 +258,22 @@ html[data-theme="light"] aside [class*="text-"] {
 html[data-theme="light"] aside [class*="text-white"] {
   color: #ffffff !important;
 }
-/* Menu aktif: merah solid dengan teks putih agar kontras jelas */
+/* Menu aktif: merah dengan gradasi kaca ala Apple (kilau putih di atas), teks putih agar kontras jelas */
 html[data-theme="light"] aside a[class*="A21E1E"] {
   background-color: #C42428 !important;
-  border-color: #9E1B1F !important;
-  box-shadow: 0 6px 16px -8px rgba(158, 27, 31, 0.55) !important;
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0) 52%),
+    linear-gradient(135deg, #D8393D 0%, #B01F23 100%) !important;
+  border-color: rgba(158, 27, 31, 0.85) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+    0 8px 18px -10px rgba(158, 27, 31, 0.6) !important;
+}
+/* Penanda aktif di tepi kiri: putih */
+html[data-theme="light"] aside a[class*="A21E1E"] > span[aria-hidden="true"] {
+  background-color: #ffffff !important;
+  box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.75) !important;
 }
 html[data-theme="light"] aside a[class*="A21E1E"],
 html[data-theme="light"] aside a[class*="A21E1E"] * {

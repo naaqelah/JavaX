@@ -346,7 +346,7 @@ html[data-theme="light"] button[class*="2A1114"] *,
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] *,
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] * {
   color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
 }
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] > span[class*="bg-[#A21E1E]/"],
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] > span[class*="bg-[#C42428]/"] {

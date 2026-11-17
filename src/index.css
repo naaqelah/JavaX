@@ -1075,41 +1075,57 @@ html[data-theme="light"] button[class*="2A1114"] > span[class*="bg-[#A21E1E]/"] 
   color: #ffffff !important;
 }
 
-/* ===== Pemilih bulan Marketing Performance (mode terang) ===== */
-/* Titik hijau "Memiliki data": hijau jelas, ukuran seragam */
+/* ===== Pemilih bulan Marketing Performance dan Social Media (mode terang) =====
+   Ketersediaan data (titik hijau) dibedakan dari status pilihan (merah). Aturan sama untuk semua bulan. */
+/* Titik hijau "Memiliki data": hijau jelas, ukuran seragam, di sudut kanan atas (centang di kiri atas) */
 html[data-theme="light"] [class*="h-1.5"][class*="w-1.5"][class*="bg-emerald-"] {
   background-color: #16A34A !important;
 }
-/* Bulan terpilih: merah #B91C1C solid, teks dan centang putih */
+/* 1) Bulan tersedia: putih, border #E5E7EB, bulan charcoal #1F2937, tahun abu #6B7280 */
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"] {
+  background-color: #FFFFFF !important;
+  border-color: #E5E7EB !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"] > span:nth-of-type(1) {
+  color: #1F2937 !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"] > span:nth-of-type(2) {
+  color: #6B7280 !important;
+}
+/* Hover konsisten untuk semua bulan yang belum dipilih */
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:hover {
+  background-color: #FEF2F2 !important;
+  border-color: #F5CFCF !important;
+}
+/* 3) Bulan tanpa data (tidak ada titik hijau): #F3F4F6, teks abu redup. Tetap tampil bisa diklik */
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) {
+  background-color: #F3F4F6 !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) > span:nth-of-type(1),
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) > span:nth-of-type(2) {
+  color: #9CA3AF !important;
+}
+html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)):hover {
+  background-color: #FEF2F2 !important;
+}
+/* 2) Bulan terpilih: merah #B91C1C, bulan putih, tahun putih 90%, centang putih */
 html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] {
   background-image: none !important;
   background-color: #B91C1C !important;
   border-color: #B91C1C !important;
   box-shadow: 0 1px 2px rgba(153, 27, 27, 0.3) !important;
-  color: #ffffff !important;
+  color: #FFFFFF !important;
 }
-html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] > span,
+html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] > span:nth-of-type(1),
 html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] > svg {
-  color: #ffffff !important;
+  color: #FFFFFF !important;
 }
-/* Bulan belum dipilih: putih dengan border abu-abu; hover memberi petunjuk bahwa bisa diklik */
-html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"] {
-  background-color: #ffffff !important;
-  border-color: #E5E7EB !important;
+html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"] > span:nth-of-type(2) {
+  color: rgba(255, 255, 255, 0.9) !important;
 }
-html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:hover {
-  background-color: #FEF2F2 !important;
-  border-color: #F5CFCF !important;
-}
-/* Bulan tanpa data (tidak ada titik hijau): abu-abu lebih redup, tetap bisa diklik */
-html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) {
-  background-color: #F8F9FB !important;
-}
-html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)) > span {
-  color: #A3ADBA !important;
-}
-html[data-theme="light"] button[aria-pressed="false"][class*="h-12"][class*="flex-col"]:not(:has(> i)):hover {
-  background-color: #FEF2F2 !important;
+html[data-theme="light"] button[aria-pressed="true"][class*="h-12"][class*="flex-col"]:hover {
+  background-color: #991B1B !important;
+  border-color: #991B1B !important;
 }
 
 /* ===== Kartu KPI Marketing Performance (mode terang): grafik Actual vs Target ===== */

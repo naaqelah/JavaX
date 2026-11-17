@@ -923,6 +923,140 @@ html[data-theme="light"] button[title="View detail"]:hover {
   }
 }
 
+/* ===== Halaman Promoter (mode terang) ===== */
+/* Notifikasi "needs attention": merah lembut, border #FECACA, teks #991B1B */
+html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] {
+  background-color: #FEECEC !important;
+  border-color: #FECACA !important;
+  box-shadow: none !important;
+  color: #991B1B !important;
+}
+html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] * {
+  color: #991B1B !important;
+}
+html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] > span:first-child {
+  background-color: #FEE2E2 !important;
+}
+html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] > span:first-child svg {
+  color: #B91C1C !important;
+}
+/* Kartu section (Import, Add accounts, roster): putih, border #E5E7EB, tanpa gradasi pink */
+html[data-theme="light"] section[class*="mb-5"][class*="rounded-2xl"][class*="backdrop-blur"] {
+  background-image: none !important;
+  background-color: #ffffff !important;
+  border-color: #E5E7EB !important;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06) !important;
+}
+html[data-theme="light"] section[class*="mb-5"][class*="rounded-2xl"] p[class*="text-white/55"],
+html[data-theme="light"] section[class*="mb-5"][class*="rounded-2xl"] form div[class*="text-white/50"],
+html[data-theme="light"] section[class*="mb-5"][class*="rounded-2xl"] form p[class*="text-white/50"] {
+  color: #64748B !important;
+}
+html[data-theme="light"] section[class*="mb-5"][class*="rounded-2xl"] form div[class*="text-white/50"] svg {
+  color: #94A3B8 !important;
+}
+/* Ikon kalender Reporting Period: merah lembut */
+html[data-theme="light"] section[class*="mb-5"] div[class*="from-[#A21E1E]/30"] {
+  background-image: none !important;
+  background-color: #FEECEC !important;
+  border-color: #FECACA !important;
+  box-shadow: none !important;
+  color: #B91C1C !important;
+}
+html[data-theme="light"] section[class*="mb-5"] div[class*="from-[#A21E1E]/30"] svg {
+  color: #B91C1C !important;
+}
+/* Pilihan native <select>: popup mengikuti tema terang */
+html[data-theme="light"] select,
+html[data-theme="light"] input {
+  color-scheme: light !important;
+}
+/* Avatar inisial: merah JAVA FX solid dengan huruf putih */
+html[data-theme="light"] [class*="from-[#A21E1E]/40"] {
+  background-image: linear-gradient(135deg, #D83B3B 0%, #B91C1C 100%) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+
+/* ---- Tabel Promoter ---- */
+@media (min-width: 768px) {
+  html[data-theme="light"] div[class*="min-w-[1030px]"][class*="overflow-hidden"] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05) !important;
+  }
+  html[data-theme="light"] div[class*="min-h-[96px]"][class*="grid-cols-["] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border-bottom-color: #E5E7EB !important;
+    box-shadow: none !important;
+  }
+  html[data-theme="light"] div[class*="min-h-[96px]"][class*="grid-cols-["]:hover {
+    background-color: #F8FAFC !important;
+  }
+}
+/* Badge verifikasi: Verified hijau, Not found merah lembut, Missing amber */
+html[data-theme="light"] div[class*="min-h-[96px]"] span[class*="bg-emerald-"][class*="ring-1"] {
+  background-color: #DCFCE7 !important;
+  color: #15803D !important;
+  box-shadow: inset 0 0 0 1px #BBF7D0 !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] span[class*="bg-[#A21E1E]/"][class*="ring-1"] {
+  background-color: #FEECEC !important;
+  color: #B91C1C !important;
+  box-shadow: inset 0 0 0 1px #FECACA !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] span[class*="bg-amber-"][class*="ring-1"] {
+  background-color: #FEF3C7 !important;
+  color: #B45309 !important;
+  box-shadow: inset 0 0 0 1px #FDE68A !important;
+}
+/* Checklist: kotak seragam, merah saat tercentang */
+html[data-theme="light"] div[class*="min-h-[96px]"] span[class*="border-[1.5px]"] {
+  border-color: #CBD5E1 !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] span[class*="border-[1.5px]"][class*="bg-emerald-400"] {
+  background-color: #B91C1C !important;
+  border-color: #B91C1C !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] span[class*="border-[1.5px]"] svg {
+  color: #ffffff !important;
+}
+/* Progress: track #E5E7EB, isi #B91C1C; teks 0/3 sekunder */
+html[data-theme="light"] div[class*="min-h-[96px]"] div[class*="h-1.5"][class*="rounded-full"] {
+  background-color: #E5E7EB !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] div[class*="h-1.5"] > div {
+  background-image: none !important;
+  background-color: #B91C1C !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] small {
+  color: #64748B !important;
+}
+/* Tombol View: putih, border #E5E7EB, hover halus */
+html[data-theme="light"] div[class*="min-h-[96px]"] button {
+  background-color: #ffffff !important;
+  border-color: #E5E7EB !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+}
+html[data-theme="light"] div[class*="min-h-[96px]"] button:hover {
+  background-color: #F8FAFC !important;
+}
+/* Mobile: baris menjadi kartu putih */
+@media (max-width: 767px) {
+  html[data-theme="light"] div[class*="min-h-[96px]"][class*="max-md:rounded-xl"] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border: 1px solid #E5E7EB !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05) !important;
+  }
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

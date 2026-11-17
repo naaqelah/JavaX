@@ -1219,9 +1219,6 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
           </p>
 
         </div>
-        <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-300">
-          Data contoh
-        </span>
       </div>
 
       {/* PILIH PERIODE */}

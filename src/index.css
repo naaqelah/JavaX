@@ -1430,3 +1430,24 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] span[class*="h-[7px]"][class*="bg-green-300"] { background-color: #86efac !important; }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] span[class*="h-[7px]"][class*="bg-violet-300"] { background-color: #c4b5fd !important; }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] span[class*="h-[7px]"][class*="bg-pink-300"] { background-color: #f9a8d4 !important; }
+
+/* Item dropdown kustom (GlassSelect): transparan, hover halus, item terpilih merah lembut dengan teks merah */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="listbox"] [role="option"] > button[class] {
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #374151 !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="listbox"] [role="option"] > button[class]:hover {
+  background-color: rgba(185, 28, 28, 0.07) !important;
+  color: #1F2937 !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="listbox"] [role="option"][aria-selected="true"] > button[class] {
+  background-color: #FCE8E8 !important;
+  color: #B91C1C !important;
+  font-weight: 600 !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="listbox"] [role="option"][aria-selected="true"] > button[class] svg {
+  color: #B91C1C !important;
+}

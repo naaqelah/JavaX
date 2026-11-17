@@ -778,6 +778,151 @@ html[data-theme="light"] a[class*="min-h-[64px]"] span[class*="text-emerald-"] {
   border-color: #BBE5C6 !important;
 }
 
+/* ===== Inventory (mode terang): Merchandise, Equipment, Log ===== */
+/* Kontainer tabel (desktop): putih, border #E5E7EB, radius 16px, bayangan sangat halus */
+@media (min-width: 768px) {
+  html[data-theme="light"] div[class*="min-w-[900px]"][class*="overflow-hidden"],
+  html[data-theme="light"] div[class*="min-w-[760px]"][class*="overflow-hidden"] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05) !important;
+  }
+  /* Header tabel */
+  html[data-theme="light"] div[class*="grid-cols-["][class*="uppercase"][class*="bg-white/[0.04]"] {
+    background-color: #F8FAFC !important;
+    border-bottom-color: #E5E7EB !important;
+    color: #64748B !important;
+    min-height: 52px;
+  }
+  html[data-theme="light"] div[class*="grid-cols-["][class*="uppercase"][class*="bg-white/[0.04]"] > div {
+    color: #64748B !important;
+    font-weight: 600;
+  }
+  /* Header kolom angka rata kanan: Merchandise (kolom 3-6) dan Equipment (kolom 3-5) */
+  html[data-theme="light"] div[class*="grid-cols-["][class*="uppercase"]:has(> :nth-child(8)) > :nth-child(n+3):nth-child(-n+6),
+  html[data-theme="light"] div[class*="grid-cols-["][class*="uppercase"]:has(> :nth-child(6)):not(:has(> :nth-child(7))) > :nth-child(n+3):nth-child(-n+5) {
+    text-align: right;
+  }
+  /* Baris Merchandise/Equipment/Log */
+  html[data-theme="light"] div[class*="min-h-[52px]"][class*="grid-cols-["],
+  html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border-bottom-color: #E5E7EB !important;
+    min-height: 64px;
+    box-shadow: none !important;
+  }
+  html[data-theme="light"] div[class*="min-h-[52px]"][class*="grid-cols-["]:hover,
+  html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["]:hover {
+    background-color: #F8FAFC !important;
+  }
+  /* Angka stok dan mata uang rata kanan */
+  html[data-theme="light"] div[class*="min-h-[52px]"][class*="grid-cols-["] > div[class*="tabular-nums"] {
+    text-align: right;
+  }
+}
+html[data-theme="light"] div[class*="min-h-[52px]"][class*="grid-cols-["] > div:first-child {
+  color: #20242D !important;
+}
+html[data-theme="light"] div[class*="min-h-[52px]"][class*="grid-cols-["] > div[class*="text-white/55"] {
+  color: #64748B !important;
+}
+
+/* Badge status stok: Normal hijau, Low stock merah lembut */
+html[data-theme="light"] div[class*="min-h-[52px]"] span[class*="bg-emerald-"] {
+  background-color: #DCFCE7 !important;
+  color: #15803D !important;
+  box-shadow: inset 0 0 0 1px #BBF7D0 !important;
+  min-height: 24px;
+}
+html[data-theme="light"] div[class*="min-h-[52px]"] span[class*="bg-[#A21E1E]/"] {
+  background-color: #FEECEC !important;
+  color: #B91C1C !important;
+  box-shadow: inset 0 0 0 1px #FECACA !important;
+  min-height: 24px;
+}
+/* Tombol Adjust: putih, border #E5E7EB, teks #475569, ukuran seragam */
+html[data-theme="light"] div[class*="min-h-[52px]"] button {
+  background-color: #ffffff !important;
+  border-color: #E5E7EB !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+  height: 32px;
+  min-width: 88px;
+  justify-content: center;
+}
+html[data-theme="light"] div[class*="min-h-[52px]"] button:hover {
+  background-color: #F8FAFC !important;
+}
+
+/* ---- Log ---- */
+html[data-theme="light"] input[placeholder="Search"] {
+  border-color: #E5E7EB !important;
+}
+html[data-theme="light"] div.relative > svg[class*="absolute"][class*="left-3.5"] {
+  color: #64748B !important;
+}
+html[data-theme="light"] section:has(input[placeholder="Search"]) button[aria-haspopup="listbox"] {
+  border-color: #E5E7EB !important;
+  color: #374151 !important;
+}
+/* Badge tipe transaksi (IN/OUT) */
+html[data-theme="light"] span[class*="tracking-wider"][class*="ring-1"][class*="bg-[#A21E1E]/"] {
+  background-color: #FEECEC !important;
+  color: #B91C1C !important;
+  box-shadow: inset 0 0 0 1px #FECACA !important;
+}
+html[data-theme="light"] span[class*="tracking-wider"][class*="ring-1"][class*="bg-emerald-"] {
+  background-color: #DCFCE7 !important;
+  color: #15803D !important;
+  box-shadow: inset 0 0 0 1px #BBF7D0 !important;
+}
+/* Informasi item, note, by, tanggal */
+html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] > div:nth-child(2) {
+  color: #64748B !important;
+}
+html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] > div:nth-child(2) > b {
+  color: #20242D !important;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] > div:nth-child(4) {
+  color: #374151 !important;
+}
+html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] > div:nth-child(5) > span:first-child {
+  color: #374151 !important;
+}
+html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] > div:nth-child(5) > span:last-child,
+html[data-theme="light"] div[class*="min-h-[64px]"][class*="grid-cols-["] > div:nth-child(6) {
+  color: #64748B !important;
+}
+/* Tombol detail */
+html[data-theme="light"] button[title="View detail"] {
+  background-color: #ffffff !important;
+  border: 1px solid #E5E7EB !important;
+  color: #64748B !important;
+}
+html[data-theme="light"] button[title="View detail"]:hover {
+  background-color: #F8FAFC !important;
+  color: #20242D !important;
+}
+/* Mobile: tiap baris menjadi kartu putih bersih, tanpa gradasi pink */
+@media (max-width: 767px) {
+  html[data-theme="light"] div[class*="min-h-[52px]"][class*="max-md:rounded-2xl"],
+  html[data-theme="light"] div[class*="min-h-[64px]"][class*="max-md:rounded-xl"] {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    border: 1px solid #E5E7EB !important;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05) !important;
+  }
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

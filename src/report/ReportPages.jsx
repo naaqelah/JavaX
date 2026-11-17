@@ -4,7 +4,10 @@
 // Tailwind, supaya tidak terpengaruh aturan tema terang/gelap dashboard dan aman saat dicetak.
 import "./report.css";
 import { fmtGrowth, fmtInt, fmtPct, fmtRp, fmtRpShort, fmtShort, num } from "./calc";
-import { ANALYST_METRICS, MONTHS, parsePeriod, periodLabel } from "./store";
+import { ANALYST_METRICS, MONTHS, fmtDate, isWeekly, labelOf, parsePeriod, typeLabel } from "./store";
+
+// Judul yang bisa disunting pengguna (report.labels); kosong = judul bawaan
+const L = (report, key, fallback) => report.labels?.[key]?.trim() || fallback;
 
 const two = (value) => String(value).padStart(2, "0");
 
@@ -46,15 +49,19 @@ function Stat({ label, value, growth, note, invert }) {
     </div>
   );
 }
-function Gallery({ images, cols = 4, max = 8, light }) {
+// layout: { cols, h (tinggi foto, px), dates (tampilkan tanggal), hide (sembunyikan semua foto) }
+function Gallery({ images, cols = 4, max = 8, light, layout }) {
+  if (layout?.hide) return null;
   const shown = (images || []).slice(0, max);
   if (!shown.length) return null;
+  const columns = Math.max(1, Math.min(Number(layout?.cols) || cols, shown.length > 1 ? 6 : 1));
   return (
-    <div className="rp-gallery" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
+    <div className="rp-gallery" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, "--rp-img-h": layout?.h ? `${layout.h}px` : undefined }}>
       {shown.map((image, index) => (
         <figure key={index} className={light ? "rp-figure rp-figure-light" : "rp-figure"}>
           <img src={image.src} alt={image.caption || ""} />
           {image.caption && <figcaption>{image.caption}</figcaption>}
+          {layout?.dates && image.date && <small className="rp-figdate">{fmtDate(image.date)}</small>}
         </figure>
       ))}
     </div>
@@ -63,8 +70,21 @@ function Gallery({ images, cols = 4, max = 8, light }) {
 
 // ---------------------------------------------------------------- Cover
 function Cover({ report }) {
-  const { year, month } = parsePeriod(report.period);
+  const weekly = isWeekly(report);
   const [first, ...rest] = report.meta.department.split(" ");
+  let year; let big;
+  if (weekly) {
+    const a = report.range.start.split("-").map(Number);
+    const b = report.range.end.split("-").map(Number);
+    year = a[0] === b[0] ? a[0] : `${a[0]} – ${b[0]}`;
+    const name = (m) => MONTHS[m - 1].slice(0, 3).toUpperCase();
+    big = a[1] === b[1] ? `${a[2]}–${b[2]} ${name(a[1])}` : `${a[2]} ${name(a[1])} – ${b[2]} ${name(b[1])}`;
+  } else {
+    const parts = parsePeriod(report.period);
+    year = parts.year;
+    big = MONTHS[parts.month - 1].toUpperCase();
+  }
+  const kind = weekly ? "WEEKLY" : "MONTHLY";
   return (
     <div className="rp-page rp-cover">
       <div className="rp-cover-bar rp-cover-bar-top" />
@@ -77,10 +97,10 @@ function Cover({ report }) {
         <span>{rest.join(" ").toUpperCase()}</span>
       </div>
       <div className="rp-cover-title">
-        <small>{year}</small>
-        <b>{MONTHS[month - 1].toUpperCase()}</b>
-        <span>MONTHLY</span>
-        <b>REPORT</b>
+        <small>{L(report, "coverYear", String(year))}</small>
+        <b className={big.length > 9 ? "rp-cover-long" : ""}>{L(report, "coverMain", big)}</b>
+        <span>{L(report, "coverKind", kind)}</span>
+        <b>{L(report, "coverWord", "REPORT")}</b>
       </div>
       <div className="rp-cover-logo">{report.meta.company}</div>
     </div>
@@ -94,8 +114,10 @@ function TitlePage({ report, no }) {
       {report.meta.authorPhoto && <img className="rp-title-photo" src={report.meta.authorPhoto} alt="" />}
       <div className="rp-title-box">
         <span className="rp-serif rp-title-small">{report.meta.department}&rsquo;s</span>
-        <b className="rp-serif rp-title-big">Monthly Report</b>
-        <small>Monthly Performance Recap &amp; Strategic Plan, {periodLabel(report.period)}</small>
+        <b className="rp-serif rp-title-big">{L(report, "titleMain", typeLabel(report))}</b>
+        <small>{L(report, "subtitle", isWeekly(report)
+          ? `Weekly Performance Recap & Next Week Plan, ${labelOf(report)}`
+          : `Monthly Performance Recap & Strategic Plan, ${labelOf(report)}`)}</small>
         {report.meta.author && (
           <div className="rp-title-by">
             <em>BY</em>
@@ -154,7 +176,7 @@ function ExecLeft({ report, data, texts, no }) {
   return (
     <div className="rp-page rp-red">
       <Ribbon no="01" label="INTRODUCTION" />
-      <h1 className="rp-serif rp-h1">Executive<br />Summary <small>{periodLabel(report.period).toUpperCase()}</small></h1>
+      <h1 className="rp-serif rp-h1">{L(report, "execTitle", isWeekly(report) ? "Weekly\nSummary" : "Executive\nSummary")} <small>{labelOf(report).toUpperCase()}</small></h1>
       <div className="rp-tiles">
         {tiles.map(([label, value]) => (
           <div key={label} className="rp-tile"><b>{value}</b><span>{label}</span></div>
@@ -172,7 +194,7 @@ function ExecRight({ report, data, texts, no }) {
     <div className="rp-page rp-red">
       {bars.length > 0 && (
         <>
-          <h3 className="rp-h3 rp-center">KEY MARKETING KPI ACHIEVEMENT &ndash; {periodLabel(report.period).toUpperCase()}</h3>
+          <h3 className="rp-h3 rp-center">{L(report, "kpiChartTitle", `KEY MARKETING KPI ACHIEVEMENT – ${labelOf(report).toUpperCase()}`)}</h3>
           <div className="rp-bars">
             <div className="rp-bars-target" style={{ bottom: `${(100 / top) * 100}%` }}><span>Target 100%</span></div>
             {bars.map((row) => (
@@ -200,7 +222,7 @@ function ExecRight({ report, data, texts, no }) {
       </table>
       {texts.strategicNotes && (
         <div className="rp-block">
-          <h3 className="rp-h3">STRATEGIC NOTES</h3>
+          <h3 className="rp-h3">{L(report, "strategicTitle", "STRATEGIC NOTES")}</h3>
           <Text>{texts.strategicNotes}</Text>
         </div>
       )}
@@ -210,11 +232,11 @@ function ExecRight({ report, data, texts, no }) {
 }
 
 // ---------------------------------------------------------------- Department update (satu spread)
-function UpdateSpread({ update, no }) {
+function UpdateSpread({ report, update, no, layout }) {
   return (
     <div className="rp-wide rp-dark">
       <Ribbon no="01" label="INTRODUCTION" />
-      <h1 className="rp-serif rp-h1">Update:<br />{update.title}</h1>
+      <h1 className="rp-serif rp-h1">{L(report, "updatePrefix", "Update:")}<br />{update.title}</h1>
       <div className="rp-update-cols">
         <div>
           <Block dark title="STATUS">{update.status}</Block>
@@ -222,7 +244,7 @@ function UpdateSpread({ update, no }) {
         </div>
         <div><Block dark title="NEXT ACTION">{update.nextAction}</Block></div>
       </div>
-      <Gallery images={update.images} cols={4} max={8} light />
+      <Gallery images={update.images} cols={4} max={8} light layout={layout} />
       <PageNo n={no} />
       <PageNo n={no + 1} right />
     </div>
@@ -261,7 +283,7 @@ function Donut({ platforms, rate }) {
     </div>
   );
 }
-function SocialOverview({ data, texts, no }) {
+function SocialOverview({ report, data, texts, no }) {
   const social = data.social;
   const ads = social.filled.filter((platform) => platform.n.adCost !== null);
   const rateShift = social.growth.engagementRate;
@@ -279,7 +301,7 @@ function SocialOverview({ data, texts, no }) {
   return (
     <div className="rp-page rp-dark">
       <Ribbon no="02" label="COMMUNITY AND CONTENT" />
-      <h1 className="rp-serif rp-h1">Social Media<br />Overview</h1>
+      <h1 className="rp-serif rp-h1">{L(report, "socialTitle", "Social Media\nOverview")}</h1>
       <Donut platforms={social.filled} rate={social.engagementRate} />
       <div className="rp-stats" style={{ gridTemplateColumns: `repeat(${stats.length}, 1fr)` }}>
         {stats.map((stat) => <Stat key={stat.label} {...stat} />)}
@@ -303,7 +325,7 @@ function SocialOverview({ data, texts, no }) {
     </div>
   );
 }
-function PlatformPage({ platform, no, right }) {
+function PlatformPage({ platform, no, right, layout }) {
   const [header, ...others] = platform.images || [];
   return (
     <div className="rp-page rp-dark">
@@ -322,7 +344,7 @@ function PlatformPage({ platform, no, right }) {
         )}
         <Block title="INSIGHTS">{platform.insights}</Block>
         <Block title="NEXT PLAN">{platform.nextPlan}</Block>
-        <Gallery images={others} cols={Math.min(3, Math.max(1, others.length))} max={3} />
+        <Gallery images={others} cols={Math.min(3, Math.max(1, others.length))} max={3} layout={layout} />
       </div>
       <PageNo n={no} right={right} />
     </div>
@@ -333,7 +355,7 @@ function FillerPage({ no, right }) {
 }
 
 // ---------------------------------------------------------------- Content production (spread)
-function ProductionSpread({ report, data, no }) {
+function ProductionSpread({ report, data, no, layout }) {
   const production = report.production;
   const tiles = [
     ["CONTENT PRODUCED", production.produced], ["CONTENT PUBLISHED", production.published],
@@ -346,7 +368,7 @@ function ProductionSpread({ report, data, no }) {
     <div className="rp-wide rp-dark">
       <Ribbon no="03" label="CREATIVE PRODUCTION" />
       <div className="rp-half">
-        <h1 className="rp-serif rp-h1">Content Production<br />&amp; Publishing</h1>
+        <h1 className="rp-serif rp-h1">{L(report, "productionTitle", "Content Production\n& Publishing")}</h1>
         <div className="rp-tiles rp-tiles-3">
           {tiles.map(([label, value]) => <div key={label} className="rp-tile"><b>{fmtInt(num(value))}</b><span>{label}</span></div>)}
         </div>
@@ -368,7 +390,7 @@ function ProductionSpread({ report, data, no }) {
       {production.images.length > 0 && (
         <div className="rp-panel-red">
           <div className="rp-vtitle">CONTENT HIGHLIGHTS</div>
-          <Gallery images={production.images} cols={2} max={6} light />
+          <Gallery images={production.images} cols={2} max={6} light layout={layout} />
         </div>
       )}
       <PageNo n={no} />
@@ -396,7 +418,7 @@ function CampaignSpread({ report, data, texts, no }) {
     <div className="rp-wide rp-dark">
       <Ribbon no="04" label="PERFORMANCE MARKETING" />
       <div className="rp-half">
-        <h1 className="rp-serif rp-h1">Campaign<br />Performance</h1>
+        <h1 className="rp-serif rp-h1">{L(report, "campaignTitle", "Campaign\nPerformance")}</h1>
         <div className="rp-stats" style={{ gridTemplateColumns: `repeat(${stats.length}, 1fr)` }}>
           {stats.map((stat) => <Stat key={stat.label} {...stat} />)}
         </div>
@@ -452,13 +474,13 @@ function CampaignSpread({ report, data, texts, no }) {
 }
 
 // ---------------------------------------------------------------- Analyst (spread)
-function AnalystSpread({ data, texts, no }) {
+function AnalystSpread({ report, data, texts, no }) {
   const { rows, totals, scorecard } = data.analysts;
   return (
     <div className="rp-wide rp-dark">
       <Ribbon no="05" label="MARKET RESEARCH & TRADING INTELLIGENCE" />
       <div className="rp-half">
-        <h1 className="rp-serif rp-h1">Analyst<br />Performance</h1>
+        <h1 className="rp-serif rp-h1">{L(report, "analystTitle", "Analyst\nPerformance")}</h1>
         <table className="rp-table rp-analyst">
           <thead><tr><th>Analyst</th>{ANALYST_METRICS.map(([key, label]) => <th key={key}>{label}</th>)}</tr></thead>
           <tbody>
@@ -496,7 +518,7 @@ function AnalystSpread({ data, texts, no }) {
 }
 
 // ---------------------------------------------------------------- Program (spread)
-function ProgramSpread({ program, no }) {
+function ProgramSpread({ program, no, layout }) {
   return (
     <div className="rp-wide rp-dark">
       <Ribbon no="06" label="PROGRESS AND PLANNING" />
@@ -513,7 +535,7 @@ function ProgramSpread({ program, no }) {
       {program.images.length > 0 && (
         <div className="rp-panel-red">
           <div className="rp-vtitle">HIGHLIGHTS</div>
-          <Gallery images={program.images} cols={2} max={6} light />
+          <Gallery images={program.images} cols={2} max={6} light layout={layout} />
         </div>
       )}
       <PageNo n={no} />
@@ -527,7 +549,7 @@ function ActionPlanPage({ report, no }) {
   return (
     <div className="rp-page rp-dark">
       <Ribbon no="06" label="PROGRESS AND PLANNING" />
-      <h1 className="rp-serif rp-h1">Action<br />Plan</h1>
+      <h1 className="rp-serif rp-h1">{L(report, "actionTitle", "Action\nPlan")}</h1>
       <table className="rp-table rp-action">
         <thead><tr><th>PRIORITY</th><th>ACTION</th><th>OWNER</th><th>TARGET</th></tr></thead>
         <tbody>
@@ -543,7 +565,7 @@ function ActionPlanPage({ report, no }) {
 function OutroPage({ report, texts, no, right }) {
   return (
     <div className="rp-page rp-red rp-outro">
-      <b className="rp-serif rp-outro-title">Thank You</b>
+      <b className="rp-serif rp-outro-title">{L(report, "outroTitle", "Thank You")}</b>
       <Text>{texts.outro}</Text>
       {report.meta.author && (
         <div className="rp-outro-by"><b className="rp-serif">{report.meta.author}</b><span>{report.meta.authorTitle}</span></div>
@@ -554,52 +576,186 @@ function OutroPage({ report, texts, no, right }) {
   );
 }
 
-// Menyusun daftar halaman (setengah spread) sesuai bagian yang aktif dan data yang ada,
-// lalu menghitung nomor halaman dan daftar isi.
+// ---------------------------------------------------------------- Weekly: aktivitas
+function ActivitiesPage({ report, no }) {
+  return (
+    <div className="rp-page rp-dark">
+      <Ribbon no="01" label="WEEKLY REPORT" />
+      <h1 className="rp-serif rp-h1">{L(report, "activitiesTitle", "Weekly\nActivities")}</h1>
+      <table className="rp-table rp-action">
+        <thead><tr><th>DATE</th><th>ACTIVITY</th><th>STATUS</th><th>PIC</th></tr></thead>
+        <tbody>
+          {report.activities.filter((item) => item.activity).map((item, index) => (
+            <tr key={index}>
+              <th>{item.date ? fmtDate(item.date) : "—"}</th>
+              <td className="rp-note">{item.activity}</td>
+              <td>{item.status || "—"}</td>
+              <td>{item.pic || "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <PageNo n={no} />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------- Weekly: evaluasi dan rencana minggu depan
+function EvaluationSpread({ report, data, texts, no }) {
+  const missed = data.kpiRows.filter((row) => row.status.tone === "warn");
+  const plan = report.actionPlan.filter((item) => item.action);
+  return (
+    <div className="rp-wide rp-dark">
+      <Ribbon no="05" label="EVALUATION & PLAN" />
+      <div className="rp-half">
+        <h1 className="rp-serif rp-h1">{L(report, "evaluationTitle", "Weekly\nEvaluation")}</h1>
+        <Text>{texts.evaluation}</Text>
+        {missed.length > 0 && (
+          <div className="rp-block">
+            <h3 className="rp-h3">NOT ACHIEVED</h3>
+            <table className="rp-table rp-kpi-table"><tbody>
+              {missed.map((row) => (
+                <tr key={row.key}><th>{row.label}</th><td><b>{row.format(row.actual)}</b></td><td className="rp-status rp-warn">{row.status.label}</td></tr>
+              ))}
+            </tbody></table>
+          </div>
+        )}
+      </div>
+      <div className="rp-half">
+        <h1 className="rp-serif rp-h1">{L(report, "nextWeekTitle", "Next Week\nPlan")}</h1>
+        <Text>{texts.nextWeek}</Text>
+        {plan.length > 0 && (
+          <table className="rp-table rp-action">
+            <thead><tr><th>PRIORITY</th><th>ACTION</th><th>OWNER</th><th>TARGET</th></tr></thead>
+            <tbody>
+              {plan.map((item, index) => (
+                <tr key={index}><th>{item.priority || index + 1}</th><td className="rp-note">{item.action}</td><td>{item.owner || "—"}</td><td>{item.target || "—"}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+      <PageNo n={no} />
+      <PageNo n={no + 1} right />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------- Bagian bebas buatan pengguna
+function CustomPage({ section, no, layout }) {
+  return (
+    <div className="rp-page rp-dark">
+      <Ribbon no="--" label={section.ribbon || "REPORT"} />
+      <h1 className="rp-serif rp-h1">{section.title}</h1>
+      <Text>{section.body}</Text>
+      <Gallery images={section.images} cols={3} max={6} light layout={layout} />
+      <PageNo n={no} />
+    </div>
+  );
+}
+function CustomSpread({ section, no, layout }) {
+  return (
+    <div className="rp-wide rp-dark">
+      <Ribbon no="--" label={section.ribbon || "REPORT"} />
+      <div className="rp-half">
+        <h1 className="rp-serif rp-h1">{section.title}</h1>
+        <Text>{section.body}</Text>
+      </div>
+      <div className="rp-panel-red">
+        <Gallery images={section.images} cols={2} max={6} light layout={layout} />
+      </div>
+      <PageNo n={no} />
+      <PageNo n={no + 1} right />
+    </div>
+  );
+}
+
+// Menyusun daftar halaman (setengah spread) dari urutan bagian (report.order), bagian yang tampil,
+// dan data yang ada; lalu menghitung nomor halaman dan daftar isi.
 export function buildSheets(report, data, texts) {
   const on = report.sections || {};
+  const weekly = isWeekly(report);
   const items = []; // { span: 1 | 2, render(no, right), toc?: [group, title] }
   const add = (span, render, toc) => items.push({ span, render, toc });
-
-  if (on.execSummary) {
-    add(1, (no) => <ExecLeft report={report} data={data} texts={texts} no={no} />, ["Introduction", "Executive Summary"]);
-    add(1, (no) => <ExecRight report={report} data={data} texts={texts} no={no} />, ["Introduction", "Monthly KPI Scorecard"]);
-  }
-  if (on.updates)
-    report.updates.filter((update) => update.title).forEach((update) =>
-      add(2, (no) => <UpdateSpread update={update} no={no} />, ["Introduction", `Update: ${update.title}`]));
-  if (on.social && data.social.filled.length) {
-    add(1, (no) => <SocialOverview data={data} texts={texts} no={no} />, ["Community & Content", "Social Media Performance"]);
-    data.social.filled.forEach((platform) =>
-      add(1, (no, right) => <PlatformPage platform={platform} no={no} right={right} />,
-        ["Community & Content", `${platform.name}${platform.handle ? ` - ${platform.handle}` : ""}`]));
-  }
   const align = () => {
     const used = items.reduce((total, item) => total + item.span, 0);
     if (used % 2) add(1, (no, right) => <FillerPage no={no} right={right} />);
   };
-  if (on.production && (num(report.production.published) !== null || num(report.production.produced) !== null)) {
-    align();
-    add(2, (no) => <ProductionSpread report={report} data={data} no={no} />, ["Creative Production", "Content Production & Publishing"]);
-  }
-  if (on.campaign && data.spend !== null) {
-    align();
-    add(2, (no) => <CampaignSpread report={report} data={data} texts={texts} no={no} />, ["Performance Marketing", "Campaign Performance"]);
-  }
-  if (on.analyst && data.analysts.rows.length) {
-    align();
-    add(2, (no) => <AnalystSpread data={data} texts={texts} no={no} />, ["Market Research & Trading Intelligence", "Analyst Performance"]);
-  }
-  if (on.programs)
-    report.programs.filter((program) => program.title).forEach((program) => {
+  const layoutOf = (id) => report.layout?.[id];
+
+  const builders = {
+    execSummary() {
+      add(1, (no) => <ExecLeft report={report} data={data} texts={texts} no={no} />, ["Introduction", weekly ? "Weekly Summary" : "Executive Summary"]);
+      add(1, (no) => <ExecRight report={report} data={data} texts={texts} no={no} />, ["Introduction", weekly ? "Weekly KPI Scorecard" : "Monthly KPI Scorecard"]);
+    },
+    updates() {
+      report.updates.filter((update) => update.title).forEach((update) =>
+        add(2, (no) => <UpdateSpread report={report} update={update} no={no} layout={layoutOf("updates")} />, ["Introduction", `Update: ${update.title}`]));
+    },
+    activities() {
+      if (!report.activities.some((item) => item.activity)) return;
+      add(1, (no) => <ActivitiesPage report={report} no={no} />, ["Introduction", "Weekly Activities"]);
+    },
+    social() {
+      if (!data.social.filled.length) return;
+      add(1, (no) => <SocialOverview report={report} data={data} texts={texts} no={no} />, ["Community & Content", "Social Media Performance"]);
+      data.social.filled.forEach((platform) =>
+        add(1, (no, right) => <PlatformPage platform={platform} no={no} right={right} layout={layoutOf("social")} />,
+          ["Community & Content", `${platform.name}${platform.handle ? ` - ${platform.handle}` : ""}`]));
+    },
+    production() {
+      if (num(report.production.published) === null && num(report.production.produced) === null) return;
       align();
-      add(2, (no) => <ProgramSpread program={program} no={no} />, ["Progress & Planning", program.title]);
-    });
-  align();
-  if (on.actionPlan && report.actionPlan.length)
-    add(1, (no) => <ActionPlanPage report={report} no={no} />, ["Progress & Planning", "Action Plan"]);
-  if (on.outro)
-    add(1, (no, right) => <OutroPage report={report} texts={texts} no={no} right={right} />, ["Progress & Planning", "Outro"]);
+      add(2, (no) => <ProductionSpread report={report} data={data} no={no} layout={layoutOf("production")} />, ["Creative Production", "Content Production & Publishing"]);
+    },
+    campaign() {
+      if (data.spend === null) return;
+      align();
+      add(2, (no) => <CampaignSpread report={report} data={data} texts={texts} no={no} />, ["Performance Marketing", "Campaign Performance"]);
+    },
+    analyst() {
+      if (!data.analysts.rows.length) return;
+      align();
+      add(2, (no) => <AnalystSpread report={report} data={data} texts={texts} no={no} />, ["Market Research & Trading Intelligence", "Analyst Performance"]);
+    },
+    programs() {
+      report.programs.filter((program) => program.title).forEach((program) => {
+        align();
+        add(2, (no) => <ProgramSpread program={program} no={no} layout={layoutOf("programs")} />, ["Progress & Planning", program.title]);
+      });
+    },
+    evaluation() {
+      if (!texts.evaluation && !texts.nextWeek && !report.actionPlan.some((item) => item.action)) return;
+      align();
+      add(2, (no) => <EvaluationSpread report={report} data={data} texts={texts} no={no} />, ["Progress & Planning", "Evaluation & Next Week Plan"]);
+    },
+    actionPlan() {
+      if (!report.actionPlan.some((item) => item.action)) return;
+      align();
+      add(1, (no) => <ActionPlanPage report={report} no={no} />, ["Progress & Planning", "Action Plan"]);
+    },
+    outro() {
+      align();
+      add(1, (no, right) => <OutroPage report={report} texts={texts} no={no} right={right} />, ["Progress & Planning", "Outro"]);
+    },
+  };
+
+  (report.order || []).forEach((id) => {
+    if (on[id] === false) return;
+    if (id.startsWith("custom:")) {
+      const section = (report.custom || []).find((item) => item.id === id);
+      if (!section || !section.title) return;
+      const layout = layoutOf(id);
+      if (section.images?.length && !layout?.hide) {
+        align();
+        add(2, (no) => <CustomSpread section={section} no={no} layout={layout} />, [section.group || "Additional", section.title]);
+      } else {
+        add(1, (no) => <CustomPage section={section} no={no} layout={layout} />, [section.group || "Additional", section.title]);
+      }
+      return;
+    }
+    builders[id]?.();
+  });
   align();
 
   // Nomor halaman: sampul = 1, halaman judul = 2, daftar isi = 3, isi mulai dari 4

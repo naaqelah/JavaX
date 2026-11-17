@@ -36,7 +36,7 @@
 .rp-doc .rp-ribbon-label { font-size: 17px; font-weight: 400; letter-spacing: 0.5px; color: #fff; }
 
 /* Tipografi */
-.rp-doc .rp-h1 { font-size: 60px; line-height: 1.04; font-weight: 800; color: #fff; margin: 14px 0 34px; }
+.rp-doc .rp-h1 { white-space: pre-line; font-size: 60px; line-height: 1.04; font-weight: 800; color: #fff; margin: 14px 0 34px; }
 .rp-doc .rp-h1 small { font-family: "Montserrat", sans-serif; font-size: 20px; font-weight: 400; letter-spacing: 0.5px; }
 .rp-doc .rp-h3 { font-size: 19px; font-weight: 800; letter-spacing: 0.3px; color: #fff; margin-bottom: 12px; }
 .rp-doc .rp-h4 { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 8px; }
@@ -59,6 +59,7 @@
 .rp-doc .rp-cover-title { position: absolute; left: 88px; top: 412px; line-height: 1; }
 .rp-doc .rp-cover-title small { display: block; font-size: 30px; font-weight: 700; }
 .rp-doc .rp-cover-title b { display: block; font-size: 78px; font-weight: 800; }
+.rp-doc .rp-cover-title b.rp-cover-long { font-size: 46px; }
 .rp-doc .rp-cover-title span { display: block; font-size: 78px; font-weight: 300; margin-top: 34px; }
 .rp-doc .rp-cover-logo { position: absolute; right: 90px; bottom: 84px; font-size: 62px; font-weight: 300; letter-spacing: 6px; color: #fff; }
 
@@ -157,11 +158,12 @@
 /* Galeri */
 .rp-doc .rp-gallery { display: grid; gap: 16px; margin-top: 26px; position: relative; z-index: 2; }
 .rp-doc .rp-figure { background: transparent; border-radius: 10px; overflow: hidden; }
-.rp-doc .rp-figure img { display: block; width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
+.rp-doc .rp-figure img { display: block; width: 100%; height: var(--rp-img-h, 150px); object-fit: cover; border-radius: 10px; }
 .rp-doc .rp-figure figcaption { font-size: 11.5px; font-weight: 800; color: var(--rp-red-2); text-align: center; padding: 8px 4px 2px; text-transform: uppercase; }
 .rp-doc .rp-figure-light { background: #f3f3f3; padding: 10px 10px 8px; }
-.rp-doc .rp-wide > .rp-gallery .rp-figure img { height: 168px; }
-.rp-doc .rp-panel-red .rp-figure img { height: 150px; }
+.rp-doc .rp-wide > .rp-gallery .rp-figure img { height: var(--rp-img-h, 168px); }
+.rp-doc .rp-panel-red .rp-figure img { height: var(--rp-img-h, 150px); }
+.rp-doc .rp-figdate { display: block; text-align: center; font-size: 10px; font-weight: 600; color: #666; padding: 2px 0 4px; }
 .rp-doc .rp-update-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 124px; }
 .rp-doc .rp-update-cols .rp-block:first-child { margin-top: 0; }
 

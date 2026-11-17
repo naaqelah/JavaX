@@ -2,7 +2,7 @@
 // tanpa data pembanding tidak ada kalimat pertumbuhan; tanpa angka tidak ada kalimat.
 // Narasi ditulis dalam bahasa Indonesia mengikuti PDF acuan dan selalu bisa disunting.
 import { fmtGrowth, fmtInt, fmtPct, fmtRp } from "./calc";
-import { periodLabelId, previousPeriod } from "./store";
+import { isWeekly, labelOfId } from "./store";
 
 const join = (parts) => parts.filter(Boolean).join(" ");
 const list = (items) =>
@@ -11,8 +11,9 @@ const trend = (value) => (value >= 0 ? "naik" : "turun");
 const withGrowth = (text, value) => (value === null || value === undefined ? text : `${text} (${trend(value)} ${fmtGrowth(value)})`);
 
 export function generateTexts(report, data) {
-  const period = periodLabelId(report.period);
-  const prevLabel = periodLabelId(previousPeriod(report.period));
+  const weekly = isWeekly(report);
+  const period = labelOfId(report);
+  const prevLabel = weekly ? "minggu sebelumnya" : "bulan sebelumnya";
   const g = data.growth;
   const met = data.kpiRows.filter((row) => row.status.tone === "good");
   const missed = data.kpiRows.filter((row) => row.status.tone === "warn");
@@ -24,7 +25,7 @@ export function generateTexts(report, data) {
     data.ftd !== null && withGrowth(`FTD ${fmtInt(data.ftd)} akun`, g.ftd),
   ].filter(Boolean);
   const execSummary = join([
-    acquisition.length ? `Sepanjang ${period}, ${list(acquisition)}.` : "",
+    acquisition.length ? `Sepanjang ${weekly ? "minggu" : ""} ${period}, ${list(acquisition)}.`.replace("  ", " ") : "",
     data.deposit !== null && data.spend !== null
       ? `Total deposit yang diperoleh sebesar ${fmtRp(data.deposit)} dari total belanja iklan ${fmtRp(data.spend)}${data.roas !== null ? `, menghasilkan ROAS ${fmtPct(data.roas)}` : ""}.`
       : data.deposit !== null ? `Total deposit yang diperoleh sebesar ${fmtRp(data.deposit)}.` : "",
@@ -39,7 +40,7 @@ export function generateTexts(report, data) {
   const strategicNotes = join([
     up.length ? `Volume ${list(up)} tumbuh dibanding ${prevLabel}.` : "",
     down.length ? `Volume ${list(down)} menurun dibanding ${prevLabel} dan perlu dievaluasi.` : "",
-    g.roas !== null ? `ROAS ${trend(g.roas)} ${fmtGrowth(g.roas)} dibanding bulan sebelumnya${g.roas < 0 ? ", sehingga efisiensi belanja iklan menjadi prioritas bulan berikutnya" : ""}.` : "",
+    g.roas !== null ? `ROAS ${trend(g.roas)} ${fmtGrowth(g.roas)} dibanding ${prevLabel}${g.roas < 0 ? `, sehingga efisiensi belanja iklan menjadi prioritas ${weekly ? "minggu" : "bulan"} berikutnya` : ""}.` : "",
     g.cpl !== null ? `Biaya per lead ${g.cpl <= 0 ? "membaik" : "meningkat"} (${fmtGrowth(g.cpl)}).` : "",
     missed.length ? `Prioritas perbaikan: ${list(missed.map((row) => row.label))}.` : met.length ? "Seluruh KPI bertarget tercapai pada periode ini." : "",
   ]);
@@ -86,16 +87,28 @@ export function generateTexts(report, data) {
     analystMissed.length ? `Belum mencapai target pada ${list(analystMissed.map((row) => `${row.label} (${fmtPct(row.achievement)})`))}.` : "",
   ]);
   const analystPlan = analystMissed.length
-    ? `Fokus bulan berikutnya: mengejar target ${list(analystMissed.map((row) => row.label))}.`
+    ? `Fokus ${weekly ? "minggu" : "bulan"} berikutnya: mengejar target ${list(analystMissed.map((row) => row.label))}.`
     : analystMet.length ? "Pertahankan produktivitas dan konsistensi pada seluruh kategori." : "";
 
   // ---------- Outro ----------
   const outro = join([
-    met.length || missed.length ? `Periode ${period} ditutup dengan ${met.length} dari ${met.length + missed.length} KPI bertarget tercapai.` : "",
-    missed.length ? `Fokus bulan berikutnya adalah ${list(missed.map((row) => row.label))}.` : "",
+    met.length || missed.length ? `${weekly ? "Minggu" : "Periode"} ${period} ditutup dengan ${met.length} dari ${met.length + missed.length} KPI bertarget tercapai.` : "",
+    missed.length ? `Fokus ${weekly ? "minggu" : "bulan"} berikutnya adalah ${list(missed.map((row) => row.label))}.` : "",
   ]);
 
-  return { execSummary, strategicNotes, socialNote, campaignSummary, campaignInsights, campaignNextPlan, analystInsights, analystPlan, outro };
+  // ---------- Evaluasi mingguan dan rencana minggu berikutnya ----------
+  const evaluation = join([
+    met.length || missed.length ? `${met.length} dari ${met.length + missed.length} KPI bertarget tercapai minggu ini.` : "",
+    up.length ? `Volume ${list(up)} naik dibanding ${prevLabel}.` : "",
+    down.length ? `Volume ${list(down)} turun dibanding ${prevLabel}.` : "",
+    missed.length ? `Belum tercapai: ${list(missed.map((row) => row.label))}.` : "",
+  ]);
+  const nextWeek = join([
+    missed.length ? `Fokus minggu depan: memperbaiki ${list(missed.map((row) => row.label))}.` : met.length ? "Pertahankan performa dan konsistensi eksekusi minggu depan." : "",
+    missed.some((row) => row.key === "cpa" || row.key === "cpl") ? "Optimalkan penargetan untuk menekan biaya akuisisi." : "",
+  ]);
+
+  return { evaluation, nextWeek, execSummary, strategicNotes, socialNote, campaignSummary, campaignInsights, campaignNextPlan, analystInsights, analystPlan, outro };
 }
 
 // Teks yang ditampilkan: suntingan pengguna bila ada, kalau tidak narasi otomatis.

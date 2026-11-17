@@ -36,7 +36,16 @@ export const fmtRpShort = (value) => (value === null ? "N/A" : `Rp${fmtShort(val
 export const fmtGrowth = (value) =>
   value === null ? null : `${value >= 0 ? "+" : ""}${value.toLocaleString("id-ID", { maximumFractionDigits: 1 })}%`;
 
-function core(report) {
+// Nilai yang ditimpa pengguna (angka valid) mengalahkan hasil hitung otomatis
+const withOverrides = (values, overrides) => {
+  const next = { ...values };
+  Object.entries(overrides || {}).forEach(([key, value]) => {
+    if (key in next && num(value) !== null) next[key] = num(value);
+  });
+  return next;
+};
+
+function core(report, useOverrides = true) {
   const kpi = report?.kpi || {};
   const leads = num(kpi.leads?.actual);
   const registration = num(kpi.registration?.actual);
@@ -46,7 +55,7 @@ function core(report) {
   const impressions = num(report?.ads?.impressions);
   const clicks = num(report?.ads?.clicks);
   const cpm = div(spend, impressions);
-  return {
+  const values = {
     leads, registration, ftd, deposit, spend,
     roas: pct(deposit, spend),
     cpl: div(spend, leads),
@@ -61,9 +70,10 @@ function core(report) {
     leadToFtd: pct(ftd, leads),
     budgetUse: pct(spend, num(kpi.adSpend?.target)),
   };
+  return useOverrides ? withOverrides(values, report?.overrides) : values;
 }
 
-function social(report) {
+function social(report, useOverrides = true) {
   const platforms = (report?.platforms || []).map((platform) => ({
     ...platform,
     n: {
@@ -75,16 +85,21 @@ function social(report) {
   const total = (field) => sum(platforms.map((platform) => platform.n[field]));
   const impressions = total("impressions");
   const engagement = total("engagement");
-  return {
-    platforms,
-    // Platform dianggap terisi bila ada minimal satu angka
-    filled: platforms.filter((platform) => Object.values(platform.n).some((value) => value !== null)),
+  const values = {
     impressions, engagement,
     followers: total("followers"),
     views: total("views"),
     posts: total("posts"),
-    // Engagement rate = total engagement / total impression x 100
-    engagementRate: pct(engagement, impressions),
+  };
+  const merged = useOverrides ? withOverrides(values, report?.overrides) : values;
+  const rate = pct(merged.engagement, merged.impressions);
+  return {
+    platforms,
+    // Platform dianggap terisi bila ada minimal satu angka
+    filled: platforms.filter((platform) => Object.values(platform.n).some((value) => value !== null)),
+    ...merged,
+    // Engagement rate = total engagement / total impression x 100 (bisa ditimpa)
+    engagementRate: useOverrides && num(report?.overrides?.engagementRate) !== null ? num(report.overrides.engagementRate) : rate,
   };
 }
 
@@ -133,6 +148,7 @@ export function derive(report, previous) {
 
   return {
     ...now,
+    auto: { ...core(report, false), ...(() => { const { impressions: i, engagement: e, followers: fo, views: v, engagementRate: er } = social(report, false); return { sImpressions: i, sEngagement: e, sFollowers: fo, sViews: v, engagementRate: er }; })() },
     hasPrevious: Boolean(previous),
     growth: Object.fromEntries(
       ["leads", "registration", "ftd", "deposit", "spend", "roas", "cpl", "cpa"].map((key) => [key, delta(key)])
@@ -191,6 +207,30 @@ export function validate(report, data) {
   if (on.updates) need(report.updates.length > 0, "Updates", "No department update added");
   if (on.programs) need(report.programs.length > 0, "Progress", "No program added");
   if (on.actionPlan) need(report.actionPlan.length > 0, "Action Plan", "No action item added");
-  need(data.hasPrevious, "Comparison", "No report for the previous month, so growth figures are hidden");
+  need(data.hasPrevious, "Comparison", `No report for the previous ${report.type === "weekly" ? "week" : "month"}, so growth figures are hidden`);
   return issues;
 }
+
+// Angka yang boleh ditimpa pengguna. "key" = kunci di report.overrides; "from" = kunci di data.auto
+export const OVERRIDE_FIELDS = [
+  { key: "leads", label: "Total Leads", fmt: fmtInt },
+  { key: "registration", label: "Registration", fmt: fmtInt },
+  { key: "ftd", label: "FTD", fmt: fmtInt },
+  { key: "deposit", label: "Total Deposit (Rp)", fmt: fmtRp },
+  { key: "spend", label: "Ad Spend (Rp)", fmt: fmtRp },
+  { key: "roas", label: "ROAS (%)", fmt: (value) => fmtPct(value, 1) },
+  { key: "cpl", label: "CPL (Rp)", fmt: fmtRp },
+  { key: "cpr", label: "CPR (Rp)", fmt: fmtRp },
+  { key: "cpa", label: "CPA (Rp)", fmt: fmtRp },
+  { key: "cpm", label: "CPM (Rp)", fmt: fmtRp },
+  { key: "cpc", label: "CPC (Rp)", fmt: fmtRp },
+  { key: "ctr", label: "CTR (%)", fmt: (value) => fmtPct(value, 2) },
+  { key: "revPerFtd", label: "Revenue per FTD (Rp)", fmt: fmtRp },
+  { key: "leadToReg", label: "Leads to Registration (%)", fmt: (value) => fmtPct(value, 1) },
+  { key: "regToFtd", label: "Registration to FTD (%)", fmt: (value) => fmtPct(value, 1) },
+  { key: "impressions", label: "Social: total impression", from: "sImpressions", fmt: fmtInt },
+  { key: "engagement", label: "Social: total engagement", from: "sEngagement", fmt: fmtInt },
+  { key: "followers", label: "Social: total followers", from: "sFollowers", fmt: fmtInt },
+  { key: "views", label: "Social: total views", from: "sViews", fmt: fmtInt },
+  { key: "engagementRate", label: "Social: engagement rate (%)", fmt: (value) => fmtPct(value, 1) },
+];

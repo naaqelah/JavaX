@@ -701,7 +701,7 @@ export default function SocialMedia() {
           </div>
 
           {/* Social Channels */}
-          <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 [scrollbar-width:thin]">
+          <div className="flex flex-col gap-3 sm:-mx-1 sm:flex-row sm:snap-x sm:snap-mandatory sm:overflow-x-auto sm:px-1 sm:pb-3 sm:[scrollbar-width:thin]">
             {channels.map((channel) => {
               const isConnected = Boolean(connected[channel.name]);
               const tracked = channel.tracked || isConnected;
@@ -709,7 +709,7 @@ export default function SocialMedia() {
               return (
                 <div
                   key={channel.name}
-                  className={`flex min-h-[316px] w-[300px] shrink-0 snap-start flex-col p-4 sm:w-[320px] ${INNER}`}
+                  className={`flex min-h-[316px] w-full min-w-0 flex-col p-4 sm:w-[320px] sm:shrink-0 sm:snap-start ${INNER}`}
                 >
                   {/* Channel Header */}
                   <div className="flex min-w-0 items-center gap-2.5 border-b border-white/[0.07] pb-3">

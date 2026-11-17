@@ -415,6 +415,103 @@ html[data-theme="light"] [class*="bg-white/[0.12]"][class*="rounded-full"] {
   color: #202124 !important;
 }
 
+/* ===== Tabel perbandingan Marketing Performance (mode terang saja) =====
+   Header burgundy #351B20, isi putih dengan baris selang-seling halus, kategori merah lembut. */
+html[data-theme="light"] .mp-root table {
+  background: #ffffff;
+}
+/* Header */
+html[data-theme="light"] .mp-root thead th.mp-table-head-cell {
+  background: #351B20 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #351B20 !important;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  vertical-align: middle;
+}
+html[data-theme="light"] .mp-root thead th.mp-table-head-period {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+/* Sel isi: putih, selang-seling #F8F9FB, garis antarbaris #E5E7EB, teks #374151 */
+html[data-theme="light"] .mp-root tbody tr td[class] {
+  background-color: #ffffff !important;
+  color: #374151 !important;
+  border-bottom: 1px solid #E5E7EB !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  vertical-align: middle;
+}
+html[data-theme="light"] .mp-root tbody tr:nth-child(even) td:not([colspan]) {
+  background-color: #F8F9FB !important;
+}
+html[data-theme="light"] .mp-root tbody tr:hover td:not([colspan]) {
+  background-color: #F3F4F6 !important;
+}
+/* Kolom indikator: putih/sama dengan baris, tanpa bayangan berlebih, pemisah tipis di kanan */
+html[data-theme="light"] .mp-root tbody tr td.sticky {
+  box-shadow: none !important;
+  border-right: 1px solid #E5E7EB !important;
+  color: #374151 !important;
+}
+/* Kolom angka: rata kanan dengan jarak cukup dari tepi */
+html[data-theme="light"] .mp-root tbody tr td:not(.sticky):not([colspan]) {
+  padding-left: 14px;
+  padding-right: 14px;
+  font-variant-numeric: tabular-nums;
+}
+/* Kategori kelompok indikator */
+html[data-theme="light"] .mp-root tbody tr td[colspan] {
+  background-color: #FCE8E8 !important;
+  color: #B91C1C !important;
+  border-top: 1px solid #F5CFCF !important;
+  border-bottom: 1px solid #F5CFCF !important;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+html[data-theme="light"] .mp-root tbody tr td[colspan] * {
+  color: #B91C1C !important;
+}
+/* N/A di kolom nilai: teks sekunder */
+html[data-theme="light"] .mp-root tbody tr td span[class*="text-white/40"] {
+  color: #64748B !important;
+}
+/* Kolom Perubahan: lencana seragam, tanpa glow */
+html[data-theme="light"] .mp-root tbody tr td span[class*="rounded-full"] {
+  box-shadow: none !important;
+  min-height: 22px;
+  padding: 2px 9px !important;
+  font-size: 11px;
+  line-height: 1.2;
+}
+html[data-theme="light"] .mp-root tbody tr td span[class*="bg-emerald-"] {
+  background-color: #DCFCE7 !important;
+  color: #15803D !important;
+  border: 1px solid #BBF7D0;
+}
+html[data-theme="light"] .mp-root tbody tr td span[class*="bg-[#B83A3A]"] {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+  border: 1px solid #FECACA;
+}
+/* N/A di kolom Perubahan: lencana netral dengan ukuran yang sama */
+html[data-theme="light"] .mp-root tbody tr td span[class*="text-[11px]"][class*="text-white/40"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 2px 9px;
+  border-radius: 9999px;
+  background-color: #F1F5F9;
+  border: 1px solid #E5E7EB;
+  color: #64748B !important;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */
 @keyframes mp-bar-grow {
   from {

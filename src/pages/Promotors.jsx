@@ -321,6 +321,17 @@ export default function Promotors() {
     localStorage.setItem("jgf-promotors", JSON.stringify(updated));
   };
 
+  // Klik Post: centang sampai post tersebut; klik post yang sudah tercentang membatalkan dari post itu
+  const togglePost = (promoterId, index) => {
+    savePromotors(
+      promotors.map((item) => {
+        if (item.id !== promoterId) return item;
+        const nextDone = index < item.done ? index : index + 1;
+        return { ...item, done: Math.min(nextDone, item.total) };
+      })
+    );
+  };
+
   const updatePair = (index, field, value) => {
     setPairs((previous) =>
       previous.map((pair, i) =>
@@ -829,9 +840,14 @@ export default function Promotors() {
                     {Array.from(
                       { length: promoter.total },
                       (_, index) => (
-                        <span
+                        <button
+                          type="button"
                           key={index}
-                          className="inline-flex items-center gap-2 text-[12px] text-white/85"
+                          role="checkbox"
+                          aria-checked={index < promoter.done}
+                          aria-label={`Post ${index + 1}`}
+                          onClick={() => togglePost(promoter.id, index)}
+                          className="inline-flex cursor-pointer items-center gap-2 rounded-md py-1 pr-1 text-[12px] text-white/85 transition hover:text-white active:scale-[0.97]"
                         >
                           <span
                             className={`relative grid h-[16px] w-[16px] place-items-center rounded-full border-[1.5px] ${
@@ -845,7 +861,7 @@ export default function Promotors() {
                             )}
                           </span>
                           Post
-                        </span>
+                        </button>
                       )
                     )}
                   </div>

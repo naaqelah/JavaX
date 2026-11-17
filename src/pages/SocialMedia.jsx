@@ -709,7 +709,7 @@ export default function SocialMedia() {
               return (
                 <div
                   key={channel.name}
-                  className={`flex h-full min-h-[300px] min-w-0 w-full flex-col p-4 ${INNER}`}
+                  className={`flex min-h-[316px] min-w-0 w-full flex-col p-4 ${INNER}`}
                 >
                   {/* Channel Header */}
                   <div className="flex min-w-0 items-center gap-2.5 border-b border-white/[0.07] pb-3">

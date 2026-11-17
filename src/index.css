@@ -1171,28 +1171,28 @@ html[data-theme="light"] span[class*="rounded-lg"][class*="bg-white/[0.05]"]:has
 /* Atmosfer latar: wash periwinkle/lavender/pink + bola warna lembut di belakang panel kaca (diganti lebih ringan di mobile) */
 html[data-theme="light"] {
   --lm-orbs:
-    /* bola ungu-magenta (kiri bawah) dengan kilau */
+    /* bola merah (kiri bawah) dengan kilau */
     radial-gradient(circle 70px at 5% 80%, rgba(255, 255, 255, 0.5), transparent 70%),
-    radial-gradient(circle 300px at 7% 90%, rgba(190, 80, 214, 0.72) 0%, rgba(160, 64, 200, 0.5) 46%, rgba(140, 56, 190, 0) 72%),
-    /* bola emas (kanan tengah) */
-    radial-gradient(circle 230px at 99% 56%, rgba(255, 196, 96, 0.7) 0%, rgba(255, 184, 80, 0.42) 52%, rgba(255, 184, 80, 0) 76%),
-    /* bola kaca biru (kanan atas) */
-    radial-gradient(circle 270px at 90% 4%, rgba(98, 132, 255, 0.5) 0%, rgba(140, 160, 255, 0.28) 52%, rgba(140, 160, 255, 0) 76%),
-    /* semburat pink-lilac (bawah tengah) */
-    radial-gradient(circle 320px at 62% 102%, rgba(238, 164, 224, 0.55) 0%, rgba(238, 164, 224, 0) 72%);
+    radial-gradient(circle 320px at 7% 90%, rgba(220, 38, 38, 0.62) 0%, rgba(200, 40, 50, 0.42) 46%, rgba(185, 28, 28, 0) 72%),
+    /* bola coral (kanan tengah) */
+    radial-gradient(circle 240px at 99% 56%, rgba(251, 113, 133, 0.6) 0%, rgba(248, 113, 113, 0.36) 52%, rgba(248, 113, 113, 0) 76%),
+    /* bola merah tua (kanan atas) */
+    radial-gradient(circle 280px at 90% 4%, rgba(190, 30, 45, 0.42) 0%, rgba(225, 80, 90, 0.24) 52%, rgba(225, 80, 90, 0) 76%),
+    /* semburat rose (bawah tengah) */
+    radial-gradient(circle 330px at 62% 102%, rgba(244, 114, 140, 0.5) 0%, rgba(244, 114, 140, 0) 72%);
   --lm-orbs-soft:
-    radial-gradient(circle 220px at 4% 94%, rgba(190, 80, 214, 0.42), transparent 72%),
-    radial-gradient(circle 190px at 100% 56%, rgba(255, 196, 96, 0.4), transparent 74%),
-    radial-gradient(circle 200px at 92% 2%, rgba(98, 132, 255, 0.3), transparent 74%);
+    radial-gradient(circle 220px at 4% 94%, rgba(220, 38, 38, 0.4), transparent 72%),
+    radial-gradient(circle 190px at 100% 56%, rgba(251, 113, 133, 0.38), transparent 74%),
+    radial-gradient(circle 200px at 92% 2%, rgba(190, 30, 45, 0.28), transparent 74%);
 }
 html[data-theme="light"] {
-  background-color: #E9ECFB !important;
+  background-color: #FBE9EA !important;
   background-image:
     var(--lm-orbs),
-    radial-gradient(1300px 900px at 8% 6%, rgba(198, 214, 255, 0.85) 0%, rgba(214, 226, 255, 0.7) 40%, transparent 74%),
-    radial-gradient(1200px 820px at 92% 30%, rgba(214, 204, 252, 0.8) 0%, rgba(226, 218, 255, 0.6) 40%, transparent 74%),
-    radial-gradient(1200px 840px at 70% 96%, rgba(246, 204, 230, 0.6) 0%, rgba(249, 222, 240, 0.5) 40%, transparent 74%),
-    linear-gradient(180deg, #EEF2FD 0%, #E9ECFB 55%, #F1E9F8 100%) !important;
+    radial-gradient(1300px 900px at 8% 6%, rgba(254, 205, 211, 0.85) 0%, rgba(254, 220, 224, 0.7) 40%, transparent 74%),
+    radial-gradient(1200px 820px at 92% 30%, rgba(252, 196, 202, 0.75) 0%, rgba(253, 214, 218, 0.55) 40%, transparent 74%),
+    radial-gradient(1200px 840px at 70% 96%, rgba(251, 176, 188, 0.6) 0%, rgba(252, 205, 212, 0.45) 40%, transparent 74%),
+    linear-gradient(180deg, #FDF0F1 0%, #FBE9EA 55%, #F9E1E4 100%) !important;
   background-attachment: fixed !important;
 }
 html[data-theme="light"] body {

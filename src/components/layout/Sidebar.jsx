@@ -13,6 +13,7 @@ import {
   Terminal,
   Bot,
   RefreshCw,
+  FileText,
   PanelLeft,
   X,
 } from "lucide-react";
@@ -35,6 +36,7 @@ const navigation = [
       { label: "Marketing Performance", path: "/marketing-performance", icon: ChartNoAxesCombined },
       { label: "Social Media", path: "/social-media", icon: Share2 },
       { label: "Team Scorecards", path: "/team-scorecards", icon: Users },
+      { label: "Monthly Report", path: "/monthly-report", icon: FileText },
     ],
   },
   {

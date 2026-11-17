@@ -21,6 +21,7 @@ import Inventory from "./pages/Inventory";
 import InventoryCreate from "./pages/InventoryCreate";
 import Promotors from "./pages/Promotors";
 import PromoterDetail from "./pages/PromoterDetail";
+import MonthlyReport from "./pages/MonthlyReport";
 
 const routes = [
   "/my-work",
@@ -40,6 +41,7 @@ const routes = [
   "/agent-office",
   "/integrations",
   "/team-scorecards",
+  "/monthly-report",
 ];
 
 function getPage(path) {
@@ -85,6 +87,9 @@ function getPage(path) {
 
     case "/promotors/:id":
       return <PromoterDetail />;
+
+    case "/monthly-report":
+      return <MonthlyReport />;
 
     case "/ai-assistant":
     case "/agent-office":

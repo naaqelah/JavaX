@@ -346,7 +346,7 @@ html[data-theme="light"] button[class*="2A1114"] *,
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] *,
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] * {
   color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
 }
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] > span[class*="bg-[#A21E1E]/"],
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] > span[class*="bg-[#C42428]/"] {
@@ -1323,7 +1323,7 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 /* Pill pilihan Appearance: kaca tipis, yang aktif lebih terang */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] {
   background-color: rgba(255, 255, 255, 0.35) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
 }
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] button[aria-pressed="true"],
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] [role="menu"][class][class] div[class*="rounded-"][class*="border"] button[aria-checked="true"] {

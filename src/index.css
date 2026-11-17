@@ -1361,3 +1361,18 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] button[class*="bg-[#2A1114]"] svg {
   color: #FFFFFF !important;
 }
+
+/* Kolom "Ask anything..." (AI Assistant, Overview): input menyatu dengan pil, tanpa kotak putih/border; ikon kirim putih */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] input[aria-label="Ask AI Assistant"][class] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-radius: 0 !important;
+  color: #1F2937 !important;
+}
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] button[aria-label="Send"][class],
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] button[aria-label="Send"][class] svg {
+  color: #FFFFFF !important;
+}

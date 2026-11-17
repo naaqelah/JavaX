@@ -1395,3 +1395,11 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
   border: 1px solid #E5E7EB !important;
   box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07), 0 1px 2px rgba(31, 41, 55, 0.05) !important;
 }
+
+/* Social Media (mode terang): kartu channel diberi outline tipis dan bayangan kecil */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] div[class*="min-h-[316px]"][class] {
+  background-color: rgba(255, 255, 255, 0.86) !important;
+  background-image: none !important;
+  border: 1px solid #E5E7EB !important;
+  box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07), 0 1px 2px rgba(31, 41, 55, 0.05) !important;
+}

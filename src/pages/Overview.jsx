@@ -60,7 +60,8 @@ const donutTrack = {
     ctx.beginPath();
     ctx.arc(arc.x, arc.y, radius, 0, Math.PI * 2);
     ctx.lineWidth = outer - inner;
-    ctx.strokeStyle = options.color;
+    // Mode terang: jalur abu sangat halus (putih transparan tidak terlihat di latar putih)
+    ctx.strokeStyle = document.documentElement.dataset.theme === "light" ? "rgba(32,33,36,0.06)" : options.color;
     ctx.stroke();
     ctx.restore();
   },
@@ -172,10 +173,22 @@ const TEAM_SEGMENTS = [
   { normal: null, hover: null },
 ];
 
+// Mode terang: abu netral untuk yang aman, merah untuk yang perlu perhatian (putih tidak terlihat di latar putih)
+const TEAM_SEGMENTS_LIGHT = [
+  { normal: ["#C4C9D2", "#8F95A0"], hover: ["#D0D4DB", "#9CA2AC"] },
+  { normal: ["#E04444", "#991B1B"], hover: ["#E85A5A", "#B91C1C"] },
+  { normal: null, hover: null },
+];
+
 function teamSegmentFill(context, hover) {
-  const segment = TEAM_SEGMENTS[context.dataIndex];
+  const light = document.documentElement.dataset.theme === "light";
+  const segments = light ? TEAM_SEGMENTS_LIGHT : TEAM_SEGMENTS;
+  const segment = segments[context.dataIndex];
   const colors = segment && (hover ? segment.hover : segment.normal);
-  if (!colors) return hover ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.12)";
+  if (!colors) {
+    if (light) return hover ? "rgba(32,33,36,0.16)" : "rgba(32,33,36,0.1)";
+    return hover ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.12)";
+  }
   return barGradient(colors[0], colors[1])(context);
 }
 

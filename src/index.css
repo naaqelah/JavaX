@@ -70,21 +70,24 @@ button {
    Dipilih lewat menu Appearance. Kelas utilitas gelap dipetakan ke palet terang.
    Semua aturan berada di bawah html[data-theme="light"], jadi Dark Mode tidak terpengaruh. */
 html[data-theme="light"] {
-  --lm-bg: #F4F5F7;
-  --lm-bg2: #ECEEF2;
+  --lm-bg: #FFFFFF;
+  --lm-bg2: #F1F1F2;
   --lm-card: #FFFFFF;
-  --lm-text: #20242D;
-  --lm-text2: #5B6472;
-  --lm-muted: #87909D;
-  --lm-border: #E4E7EC;
-  --lm-divider: #ECEEF1;
+  --lm-text: #202124;
+  --lm-text2: #77777D;
+  --lm-muted: #929299;
+  --lm-border: #E8DCDC;
+  --lm-divider: #F1E8E8;
   --lm-red: #B91C1C;
   --lm-red-hover: #991B1B;
-  --lm-red-soft: #FEE2E2;
-  --lm-success: #15803D;
-  --lm-warning: #B45309;
+  --lm-red-soft: #F9E4E4;
+  --lm-tint: #F8EAEA;
+  --lm-surface: #F7F7F8;
+  --lm-red-grad: #D83B3B;
+  --lm-success: #166534;
+  --lm-warning: #92400E;
   --lm-info: #2563EB;
-  --lm-shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 20px -10px rgba(16, 24, 40, 0.12);
+  --lm-shadow: 0 1px 2px rgba(32, 33, 36, 0.04), 0 8px 20px -14px rgba(153, 27, 27, 0.16);
   color-scheme: light;
 }
 html[data-theme="light"],
@@ -129,13 +132,13 @@ html[data-theme="light"] [class*="bg-black/"],
 html[data-theme="light"] [class*="bg-[#0"],
 html[data-theme="light"] [class*="bg-[#1"],
 html[data-theme="light"] [class*="bg-[#2"] {
-  background-color: #F7F8FA !important;
+  background-color: #F7F7F8 !important;
 }
 html[data-theme="light"] [class~="bg-black"] {
   background-color: var(--lm-card) !important;
 }
 html[data-theme="light"] [class*="bg-white/"] {
-  background-color: #F7F8FA !important;
+  background-color: #F7F7F8 !important;
 }
 html[data-theme="light"] [class*="bg-white/1"],
 html[data-theme="light"] [class*="bg-white/[0.1"],
@@ -152,7 +155,7 @@ html[data-theme="light"] [class*="border-white/[0.0"] {
 /* Kartu (panel dengan backdrop-blur): putih bersih, border tipis, bayangan lembut */
 html[data-theme="light"] [class*="backdrop-blur"]:not([class*="inset-0"]):not([class*="bg-transparent"]) {
   background-color: var(--lm-card) !important;
-  background-image: none !important;
+  background-image: linear-gradient(180deg, var(--lm-tint) 0%, rgba(248, 234, 234, 0.45) 22%, #ffffff 52%) !important;
   -webkit-backdrop-filter: none !important;
   backdrop-filter: none !important;
   border: 1px solid var(--lm-border) !important;
@@ -188,7 +191,7 @@ html[data-theme="light"] :is(button, a)[class*="bg-white/"] {
   background-color: var(--lm-card) !important;
 }
 html[data-theme="light"] :is(button, a)[class*="bg-white/"]:hover {
-  background-color: var(--lm-bg) !important;
+  background-color: var(--lm-surface) !important;
   border-color: #D5D9E0 !important;
 }
 /* Filter / toggle aktif: merah. Tidak aktif: abu terang (aturan di atas) */
@@ -241,9 +244,9 @@ html[data-theme="light"] [class*="text-[#F08B8B]"],
 html[data-theme="light"] [class*="text-[#C42B2B]"] { color: var(--lm-red) !important; }
 /* Latar lencana status: tint lembut */
 html[data-theme="light"] [class*="bg-amber-"],
-html[data-theme="light"] [class*="bg-yellow-"] { background-color: #FEF3C7 !important; }
+html[data-theme="light"] [class*="bg-yellow-"] { background-color: #FDF1DC !important; }
 html[data-theme="light"] [class*="bg-emerald-"],
-html[data-theme="light"] [class*="bg-green-"] { background-color: #DCFCE7 !important; }
+html[data-theme="light"] [class*="bg-green-"] { background-color: #E6F4EA !important; }
 html[data-theme="light"] [class*="bg-sky-"],
 html[data-theme="light"] [class*="bg-blue-"],
 html[data-theme="light"] [class*="bg-cyan-"] { background-color: #DBEAFE !important; }
@@ -273,7 +276,7 @@ html[data-theme="light"] aside a:not([class*="A21E1E"]) svg {
   color: var(--lm-text2) !important;
 }
 html[data-theme="light"] aside a:not([class*="A21E1E"]):hover {
-  background-color: var(--lm-bg) !important;
+  background-color: var(--lm-surface) !important;
 }
 html[data-theme="light"] aside a:not([class*="A21E1E"]):hover svg {
   color: var(--lm-text) !important;
@@ -283,7 +286,7 @@ html[data-theme="light"] aside a[class*="A21E1E"] {
   background-color: var(--lm-red) !important;
   background-image:
     linear-gradient(180deg, rgba(255, 255, 255, 0.34) 0%, rgba(255, 255, 255, 0.08) 48%, rgba(255, 255, 255, 0) 52%),
-    linear-gradient(135deg, #CF2D2D 0%, #B91C1C 55%, #991B1B 100%) !important;
+    linear-gradient(135deg, #D83B3B 0%, #B91C1C 58%, #991B1B 100%) !important;
   border-color: transparent !important;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
@@ -315,7 +318,7 @@ html[data-theme="light"] header[class*="sticky"] button[class~="bg-black"] {
 }
 html[data-theme="light"] header[class*="sticky"] :is(button, a)[class*="bg-white/"]:hover,
 html[data-theme="light"] header[class*="sticky"] button[class~="bg-black"]:hover {
-  background-color: var(--lm-bg) !important;
+  background-color: var(--lm-surface) !important;
 }
 
 /* ---- Banner "needs attention": merah solid, teks putih ---- */
@@ -374,6 +377,42 @@ html[data-theme="light"] [class*="to-black/"][class*="from-white/"] {
   background-color: var(--lm-card) !important;
   border-color: var(--lm-border) !important;
   box-shadow: var(--lm-shadow) !important;
+}
+
+/* ---- Hapus overlay ungu/biru/gelap pada kartu: pink sangat lembut ke putih ---- */
+html[data-theme="light"] [class*="from-[#3b2a8a]"],
+html[data-theme="light"] [class*="via-[#1b1550]"],
+html[data-theme="light"] [class*="to-[#0b0a1d]"],
+html[data-theme="light"] [class*="from-[#A21E1E]/"][class*="via-[#2a1114]"] {
+  background-color: #ffffff !important;
+  background-image: linear-gradient(180deg, #F9EEEE 0%, rgba(245, 229, 229, 0.4) 24%, #ffffff 55%) !important;
+}
+
+/* ---- Progress bar: track #F1F1F2, isi gradasi merah ---- */
+html[data-theme="light"] [class*="rounded-full"][class*="overflow-hidden"][class*="bg-white/"] {
+  background-color: #F1F1F2 !important;
+}
+html[data-theme="light"] [class*="from-[#8F2028]"],
+html[data-theme="light"] [class*="from-[#741818]"],
+html[data-theme="light"] [class*="from-[#E04848]"][class*="to-[#8F1A1A]"] {
+  background-image: linear-gradient(90deg, #E04444 0%, #991B1B 100%) !important;
+}
+
+/* ---- Gradasi putih/abu di mode gelap diganti abu netral agar terlihat di latar putih ---- */
+html[data-theme="light"] [class*="from-[#FFFFFF]"] {
+  background-image: linear-gradient(90deg, #C4C9D2 0%, #8F95A0 100%) !important;
+  color: #202124 !important;
+}
+
+/* ---- Glow gauge/donat: merah sangat halus ---- */
+html[data-theme="light"] [class*="drop-shadow-"] {
+  filter: drop-shadow(0 8px 20px rgba(185, 28, 28, 0.12)) !important;
+}
+
+/* ---- Lencana netral ---- */
+html[data-theme="light"] [class*="bg-white/[0.12]"][class*="rounded-full"] {
+  background-color: #F1F1F2 !important;
+  color: #202124 !important;
 }
 
 /* Batang grafik Actual vs Target tumbuh dari dasar saat pertama tampil */

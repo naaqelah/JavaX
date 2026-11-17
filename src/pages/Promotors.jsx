@@ -860,7 +860,7 @@ export default function Promotors() {
                               <Check size={10} className="text-white" />
                             )}
                           </span>
-                          Post
+                          Post {index + 1}
                         </button>
                       )
                     )}

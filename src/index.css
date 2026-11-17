@@ -336,6 +336,7 @@ html[data-theme="light"] header[class*="sticky"] button[class~="bg-black"]:hover
 html[data-theme="light"] button[class*="2A1114"],
 html[data-theme="light"] [style*="background-color: rgb(42, 17, 20)"],
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"],
+html[data-theme="light"] button[class*="bg-[#A21E1E]/10"][class*="px-3"],
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] {
   background-color: var(--lm-red) !important;
   background-image: none !important;
@@ -344,11 +345,13 @@ html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] {
 }
 html[data-theme="light"] button[class*="2A1114"] *,
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] *,
+html[data-theme="light"] button[class*="bg-[#A21E1E]/10"][class*="px-3"] *,
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] * {
   color: #ffffff !important;
   border-color: rgba(255, 255, 255, 0.4) !important;
 }
 html[data-theme="light"] div[class*="bg-[#A21E1E]/10"][class*="px-3"] > span[class*="bg-[#A21E1E]/"],
+html[data-theme="light"] button[class*="bg-[#A21E1E]/10"][class*="px-3"] > span[class*="bg-[#A21E1E]/"],
 html[data-theme="light"] div[class*="bg-[#C42428]/10"][class*="px-3"] > span[class*="bg-[#C42428]/"] {
   background-color: rgba(255, 255, 255, 0.22) !important;
 }
@@ -936,22 +939,6 @@ html[data-theme="light"] button[title="View detail"]:hover {
 }
 
 /* ===== Halaman Promoter (mode terang) ===== */
-/* Notifikasi "needs attention": merah lembut, border #FECACA, teks #991B1B */
-html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] {
-  background-color: #FEECEC !important;
-  border-color: #FECACA !important;
-  box-shadow: none !important;
-  color: #991B1B !important;
-}
-html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] * {
-  color: #991B1B !important;
-}
-html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] > span:first-child {
-  background-color: #FEE2E2 !important;
-}
-html[data-theme="light"] button[class*="min-h-10"][class*="bg-[#A21E1E]/10"] > span:first-child svg {
-  color: #B91C1C !important;
-}
 /* Kartu section (Import, Add accounts, roster): putih, border #E5E7EB, tanpa gradasi pink */
 html[data-theme="light"] section[class*="mb-5"][class*="rounded-2xl"][class*="backdrop-blur"] {
   background-image: none !important;

@@ -1182,6 +1182,11 @@ html[data-theme="light"] body {
   background-attachment: fixed !important;
 }
 
+/* Pembungkus utama aplikasi (AppLayout, bg-[#060606]) harus transparan agar latar atmosfer terlihat di balik kaca */
+html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="bg-[#060606]"] {
+  background-color: transparent !important;
+}
+
 /* Kartu dashboard, dropdown (listbox), popover, menu profil: kaca putih transparan.
    Tabel data (backdrop-blur-none) dan overlay (inset-0) sengaja tidak ikut. */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme] [class*="backdrop-blur"]:not([class*="backdrop-blur-none"]):not([class*="inset-0"]):not([class*="bg-transparent"]),

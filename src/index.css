@@ -1388,16 +1388,7 @@ html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-th
   color: #FFFFFF !important;
 }
 
-/* Marketing Performance (mode terang): wadah section tanpa panel abu-abu di belakang kartu;
-   kartu KPI diberi outline tipis dan bayangan kecil */
-html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .mp-root section[class][class*="rounded-[28px]"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
+/* Marketing Performance (mode terang): kartu KPI diberi outline tipis dan bayangan kecil (panel section tetap) */
 html[data-theme="light"][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme][data-theme] .mp-root article[class] {
   background-color: rgba(255, 255, 255, 0.86) !important;
   background-image: none !important;

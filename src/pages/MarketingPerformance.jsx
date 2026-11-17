@@ -1214,10 +1214,6 @@ function PeriodComparison({ kpiSections, selectedPeriods, setSelectedPeriods }) 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="max-w-[640px]">
           <SectionTitle className="mb-1">Select period</SectionTitle>
-          <p className="text-xs leading-relaxed text-white/55">
-            Select one month to see its results, or several months to compare. All figures and charts on this page update accordingly.
-          </p>
-
         </div>
       </div>
 

@@ -269,15 +269,20 @@ const barValueLabels = {
     const { ctx } = chart;
     ctx.save();
     const barCount = chart.data.datasets.length * chart.data.labels.length;
-    ctx.font = `600 ${barCount > 9 ? 10 : 12}px 'Plus Jakarta Sans', Inter, system-ui, sans-serif`;
+    ctx.font = `600 ${barCount > 9 ? 9 : 10}px 'Plus Jakarta Sans', Inter, system-ui, sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "bottom";
-    ctx.fillStyle = "#ffffff";
+    // Mode terang: teks gelap agar terbaca di latar putih; mode gelap tetap putih
+    ctx.fillStyle = document.documentElement.dataset.theme === "light" ? "#1F2937" : "#ffffff";
     chart.data.datasets.forEach((dataset, i) => {
       chart.getDatasetMeta(i).data.forEach((bar, j) => {
         const value = dataset.data[j];
         if (value == null) return;
-        ctx.fillText(Number(value).toLocaleString("id-ID"), bar.x, bar.y - 8);
+        // Format ringkas (50,5K) supaya tidak saling tumpang tindih antar batang
+        const text = Math.abs(value) >= 1000
+          ? `${(value / 1000).toLocaleString("id-ID", { maximumFractionDigits: 1 })}K`
+          : Number(value).toLocaleString("id-ID");
+        ctx.fillText(text, bar.x, bar.y - 6);
       });
     });
     ctx.restore();

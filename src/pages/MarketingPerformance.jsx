@@ -2015,3 +2015,41 @@ export default function MarketingPerformance() {
     </div>
   );
 }
+
+// ---------------------------------------------------------------------------------
+// Dibaca oleh Report Generator (hanya baca; tidak mengubah dashboard).
+// Angka yang sama dengan yang ditampilkan dashboard: kartu Actual/Target (termasuk hasil suntingan di "marketing-kpi-values")
+// dikalikan faktor periode, dan data per minggu. Bulan di luar PERIODS_WITH_DATA = null (tidak ada data).
+// ---------------------------------------------------------------------------------
+export function getDashboardKpi(period) {
+  if (!PERIODS_WITH_DATA.includes(period)) return null;
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem("marketing-kpi-values") || "{}") || {}; } catch { saved = {}; }
+  const out = {};
+  sections.forEach((section) => section.cards.forEach((card) => {
+    const metric = saved[card[0]];
+    const actual = metric ? Number(metric.actual) : parseMetricValue(card[3]);
+    const target = metric ? Number(metric.target) : parseMetricValue(card[4]);
+    out[card[0]] = { actual: actual * getPeriodFactor(period), target };
+  }));
+  return out;
+}
+
+// Minggu ke-n (1-4) pada bulan tanggal mulai; null bila bulan itu tidak punya data
+export function getDashboardWeek(isoStart) {
+  const period = String(isoStart || "").slice(0, 7);
+  if (!PERIODS_WITH_DATA.includes(period)) return null;
+  const index = Math.min(3, Math.floor((Number(String(isoStart).slice(8, 10)) - 1) / 7));
+  const week = weeks[index];
+  const values = getWeekValues(week, period);
+  if (!values) return null;
+  const factor = getPeriodFactor(period);
+  return {
+    label: week.label,
+    leads: values.leads,
+    leadsTarget: Math.round(week.leads * factor),
+    spend: values.spend * 1_000_000,
+    ftd: week.ftd == null ? null : Math.round(week.ftd * factor),
+    ftdTarget: week.ftdTarget == null ? null : Math.round(week.ftdTarget * factor),
+  };
+}

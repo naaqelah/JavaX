@@ -152,6 +152,7 @@ export const ANALYST_METRICS = [
   ["article", "JavaFX Article"],
   ["video", "Education Video"],
   ["webinar", "Webinar"],
+  ["live", "Live Market"],
 ];
 
 // Katalog bagian yang bisa dipakai. "types" = jenis laporan yang memakainya secara bawaan.
@@ -192,6 +193,43 @@ const emptyPlatform = ([key, name]) => ({
   postBreakdown: "", adCost: "", newFollowers: "", insights: "", nextPlan: "", images: [],
 });
 
+// Isi tambahan deck laporan mingguan (slide 16:9). Kosong = bagian itu tidak tampil / tampil sebagai strip.
+export const DECK_SECTIONS = [
+  ["social", "Content and Community"],
+  ["production", "Creative Production"],
+  ["campaign", "Performance Marketing"],
+  ["analyst", "Market Research and Trading Intelligence"],
+];
+export const DECK_BACKGROUNDS = [
+  ["cover", "Cover"], ["exec", "Summary & thank you"], ["social", "Social media"],
+  ["production", "Production"], ["campaign", "Campaign"], ["analyst", "Analyst"],
+];
+export const emptyDeck = () => ({
+  designer: "",
+  headline: "",
+  backgrounds: {},
+  dividers: Object.fromEntries(DECK_SECTIONS.map(([key]) => [key, { pic: "", team: "" }])),
+  highlights: [],          // 4 x { title, text } (kartu Social Media Performance)
+  topHeadline: "", nextFocus: "", themes: [], nextStrategy: [],
+  prodTiles: { marketReview: "", shorts: "", live: "", webinar: "", reels: "", feeds: "", ads: "" },
+  topYoutube: [],          // { title, type, views, likes, subs }
+  liveSessions: [],        // { name, views, wow, likes }
+  topIgFb: [],             // { title, views, likes }
+  topTiktok: [],           // { title, account, views, likes }
+  webinar: { status: "", result: "" },
+  newContent: [],          // { title, url, image }
+  channelTable: [],        // { channel, spend, leads, regs, ftd, deposit }
+  campaigns: [],           // { campaign, channel, spend, leads, reg, ftd, cpl, cpa, deposit }
+  trends: [],              // { week, spend, leads, reg, ftd, deposit }
+  recommendations: [], analystActions: [],
+  // template bulanan Hijau
+  kol: [],                 // { name, activity, collab }
+  podcast: { summary: "", notes: "", episodes: [] },
+  adsItems: [],            // judul 6 item iklan
+  captions: { highlight: "", channel: "", cost: "", campaigns: "" },
+  labels: {},              // teks tetap template Hijau yang diganti pengguna (kartu nama, label baris, penanda tangan); kosong = teks template
+});
+
 const emptyTexts = () => ({
   execSummary: "", strategicNotes: "", socialNote: "", campaignSummary: "", campaignInsights: "",
   campaignNextPlan: "", analystInsights: "", analystPlan: "", outro: "", evaluation: "", nextWeek: "",
@@ -217,6 +255,7 @@ export function emptyReport(type, key, end) {
       authorTitle: "",
       coverImage: null,
       authorPhoto: null,
+      theme: "red",      // laporan bulanan: "red" atau "green"
     },
     order,
     sections: Object.fromEntries(order.map((id) => [id, true])),
@@ -242,6 +281,8 @@ export function emptyReport(type, key, end) {
       insights: "", nextPlan: "", images: [],
     },
     analysts: [],
+    deck: emptyDeck(),
+    team: {},          // foto tim + kartu nama per halaman: { social|production|campaign|analyst: { image, members } }
     analystTargets: Object.fromEntries(ANALYST_METRICS.map(([key2]) => [key2, ""])),
     updates: [],
     activities: [],
@@ -274,6 +315,8 @@ export function migrate(report) {
     text: { ...emptyTexts(), ...report.text },
     production: { ...base.production, ...report.production },
     kpi: { ...base.kpi, ...report.kpi },
+    team: report.team || {},
+    deck: { ...emptyDeck(), ...report.deck },
     ads: { ...base.ads, ...report.ads },
   };
 }

@@ -22,7 +22,7 @@
 .rp-doc .rp-wide > .rp-h1, .rp-doc .rp-wide > .rp-update-cols, .rp-doc .rp-wide > .rp-gallery { width: 100%; }
 .rp-doc .rp-half { width: 670px; flex: none; position: relative; }
 .rp-doc .rp-dark { background: var(--rp-dark); }
-.rp-doc .rp-red { background: var(--rp-red); }
+.rp-doc .rp-red { background: var(--rp-page, var(--rp-red)); }
 .rp-doc .rp-band { position: absolute; left: 0; right: 0; bottom: 0; height: 190px; background: var(--rp-red); }
 .rp-doc .rp-vband { position: absolute; top: 0; bottom: 0; left: 260px; width: 290px; background: var(--rp-red-deep); }
 .rp-doc .rp-pageno { position: absolute; bottom: 34px; left: 62px; font-size: 18px; font-weight: 300; color: #fff; letter-spacing: 1px; z-index: 3; }
@@ -32,7 +32,7 @@
 /* Pita nomor bagian */
 .rp-doc .rp-ribbon { position: absolute; top: 0; left: 62px; display: flex; align-items: center; gap: 12px; z-index: 3; }
 .rp-doc .rp-ribbon-no { display: grid; place-items: center; width: 56px; height: 62px; padding-bottom: 12px; background: var(--rp-red-deep); color: #fff; font-weight: 800; font-size: 20px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%); }
-.rp-doc .rp-red .rp-ribbon-no { background: #6a0d18; }
+.rp-doc .rp-red .rp-ribbon-no { background: var(--rp-ribbon, #6a0d18); }
 .rp-doc .rp-ribbon-label { font-size: 17px; font-weight: 400; letter-spacing: 0.5px; color: #fff; }
 
 /* Tipografi */
@@ -47,24 +47,44 @@
 .rp-doc .rp-block { margin-top: 26px; }
 
 /* Sampul */
-.rp-doc .rp-cover { background: #000; padding: 0; }
-.rp-doc .rp-cover-bar { position: absolute; left: 230px; width: 166px; background: var(--rp-red-2); overflow: hidden; }
-.rp-doc .rp-cover-bar-top { top: 0; height: 370px; }
-.rp-doc .rp-cover-bar-bottom { top: 752px; bottom: 0; }
-.rp-doc .rp-cover-bar img { position: absolute; left: 0; bottom: 0; width: 100%; height: 45%; object-fit: cover; mix-blend-mode: multiply; }
-.rp-doc .rp-cover-strip { position: absolute; top: 0; bottom: 0; right: 0; width: 70px; background: #606060; }
+.rp-doc .rp-cover { background: var(--rp-cover, #a31b1e); padding: 0; }
+.rp-doc .rp-cover-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: multiply; opacity: .55; }
+.rp-doc .rp-cover-shade { position: absolute; inset: 0; background: linear-gradient(180deg, var(--rp-shade-1, rgba(120,10,18,.35)) 0%, var(--rp-shade-2, rgba(160,20,28,.15)) 45%, var(--rp-shade-3, rgba(230,40,44,.35)) 100%); }
+.rp-doc .rp-cover-band { position: absolute; left: 0; right: 0; top: 369px; height: 385px; background: rgba(22,2,6,.72); }
+.rp-doc .rp-cover-year { position: absolute; left: -14px; top: 56px; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 230px; font-weight: 800; line-height: 1; letter-spacing: 6px; color: rgba(0,0,0,.28); }
 .rp-doc .rp-cover-dept { position: absolute; top: 78px; right: 90px; text-align: right; line-height: 1.02; }
 .rp-doc .rp-cover-dept b { display: block; font-size: 38px; font-weight: 800; }
 .rp-doc .rp-cover-dept span { display: block; font-size: 38px; font-weight: 300; }
 .rp-doc .rp-cover-title { position: absolute; left: 88px; top: 412px; line-height: 1; }
-.rp-doc .rp-cover-title small { display: block; font-size: 30px; font-weight: 700; }
+.rp-doc .rp-cover-title small { display: block; font-size: 28px; font-weight: 700; }
 .rp-doc .rp-cover-title b { display: block; font-size: 78px; font-weight: 800; }
 .rp-doc .rp-cover-title b.rp-cover-long { font-size: 46px; }
 .rp-doc .rp-cover-title span { display: block; font-size: 78px; font-weight: 300; margin-top: 34px; }
 .rp-doc .rp-cover-logo { position: absolute; right: 90px; bottom: 84px; font-size: 62px; font-weight: 300; letter-spacing: 6px; color: #fff; }
 
+/* Tema hijau (template Green): hanya mengganti warna lewat variabel */
+.rp-doc.rp-theme-green {
+  --rp-red: #0a4a45; --rp-red-2: #0b6b63; --rp-red-deep: #073d38; --rp-dark: #031a17; --rp-page: #031d1a;
+  --rp-ribbon: #0b6b63; --rp-cover: #0b5c54; --rp-bar: #7fb8b4; --rp-total: #d7e9e7;
+  --rp-shade-1: rgba(2,40,36,.45); --rp-shade-2: rgba(6,60,54,.2); --rp-shade-3: rgba(14,120,108,.4);
+}
+
+/* Foto tim + kartu nama */
+.rp-doc .rp-team { position: absolute; left: 62px; bottom: 84px; width: 670px; height: 150px; display: flex; gap: 14px; align-items: stretch; z-index: 2; }
+.rp-doc .rp-team img { flex: none; width: 250px; height: 100%; object-fit: cover; object-position: center 18%; border-radius: 10px; background: #111; }
+.rp-doc .rp-team-tall { height: 330px; }
+.rp-doc .rp-team-tall img { width: 230px; object-position: center 80%; }
+.rp-doc .rp-team-wide { height: 260px; }
+.rp-doc .rp-team-wide img { width: 340px; object-position: center 30%; }
+.rp-doc .rp-team-tall ul { justify-content: flex-end; }
+.rp-doc .rp-team ul { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 5px; margin: 0; padding: 0; list-style: none; }
+.rp-doc .rp-team li { display: flex; flex-direction: column; gap: 1px; padding: 4px 10px; background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+.rp-doc .rp-team li b { color: var(--rp-red-2); font-size: 11.5px; font-weight: 800; text-transform: uppercase; line-height: 1.15; }
+.rp-doc .rp-team li strong { color: #333; font-size: 8.5px; font-weight: 700; text-transform: uppercase; line-height: 1.15; }
+.rp-doc .rp-team li span { color: #777; font-size: 8.5px; line-height: 1.2; }
+
 /* Halaman judul dan daftar isi */
-.rp-doc .rp-title-photo { position: absolute; left: 0; top: 0; width: 150px; height: 933px; object-fit: cover; }
+.rp-doc .rp-title-photo { position: absolute; left: 0; top: 0; width: 487px; height: 933px; object-fit: cover; object-position: 40% top; -webkit-mask-image: linear-gradient(to right, #000 78%, transparent); mask-image: linear-gradient(to right, #000 78%, transparent); }
 .rp-doc .rp-title-box { position: absolute; right: 36px; top: 470px; text-align: right; }
 .rp-doc .rp-title-small { display: block; font-size: 29px; }
 .rp-doc .rp-title-big { display: block; font-size: 60px; font-weight: 800; line-height: 1.1; }
@@ -85,7 +105,7 @@
 
 /* Kotak angka */
 .rp-doc .rp-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 38px 18px; margin: 96px 0 70px; }
-.rp-doc .rp-tiles-3 { grid-template-columns: repeat(3, 1fr); margin: 10px 0 40px; }
+.rp-doc .rp-tiles-3 { grid-template-columns: repeat(3, 1fr); gap: 22px 18px; margin: 6px 0 24px; }
 .rp-doc .rp-tile b { display: block; font-size: 31px; font-weight: 800; color: #fff; }
 .rp-doc .rp-tile span { display: block; margin-top: 6px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.3px; color: #fff; line-height: 1.3; }
 .rp-doc .rp-exec-text { font-size: 13px; }
@@ -105,7 +125,7 @@
 /* Grafik batang pencapaian KPI */
 .rp-doc .rp-bars { position: relative; display: flex; align-items: flex-end; justify-content: space-around; height: 290px; margin: 26px 20px 46px 40px; border-left: 1px solid rgba(255, 255, 255, 0.5); border-bottom: 1px solid rgba(255, 255, 255, 0.5); }
 .rp-doc .rp-bar-col { position: relative; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; width: 76px; height: 100%; }
-.rp-doc .rp-bar-col i { display: block; width: 100%; background: #f6c4b8; border-radius: 8px 8px 0 0; }
+.rp-doc .rp-bar-col i { display: block; width: 100%; background: var(--rp-bar, #f6c4b8); border-radius: 8px 8px 0 0; }
 .rp-doc .rp-bar-col em { font-style: normal; font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; }
 .rp-doc .rp-bar-col span { position: absolute; top: calc(100% + 8px); font-size: 12px; font-weight: 800; color: #fff; white-space: nowrap; }
 .rp-doc .rp-bars-target { position: absolute; left: 0; right: 0; border-top: 2px dotted #fff; }
@@ -128,7 +148,7 @@
 .rp-doc .rp-table .rp-note { text-align: left; font-size: 11.5px; line-height: 1.5; }
 .rp-doc .rp-table .rp-stars { font-size: 15px; letter-spacing: 2px; white-space: nowrap; }
 .rp-doc .rp-kpi-table { margin-top: 18px; }
-.rp-doc .rp-total td { background: #e9d7d7 !important; }
+.rp-doc .rp-total td { background: var(--rp-total, #e9d7d7) !important; }
 .rp-doc .rp-analyst { font-size: 11.5px; }
 .rp-doc .rp-analyst thead th { font-size: 10.5px; }
 .rp-doc .rp-ads { margin-top: 30px; }
@@ -174,8 +194,11 @@
 .rp-doc .rp-vtitle { position: absolute; left: 22px; top: 50%; writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg); font-size: 34px; font-weight: 800; color: #fff; letter-spacing: 1px; white-space: nowrap; }
 
 /* Batang horizontal */
-.rp-doc .rp-hbar { display: grid; grid-template-columns: 150px 1fr 60px; align-items: center; gap: 12px; margin-top: 10px; font-size: 12.5px; font-weight: 600; color: #fff; }
-.rp-doc .rp-hbar i { display: block; height: 14px; background: rgba(255, 255, 255, 0.12); border-radius: 7px; overflow: hidden; }
+.rp-doc .rp-hbars { display: grid; grid-template-columns: 1fr 1fr; column-gap: 28px; }
+.rp-doc .rp-hbars > h3 { grid-column: 1 / -1; }
+.rp-doc .rp-hbars .rp-hbar { grid-template-columns: 88px 1fr 34px; gap: 8px; font-size: 11px; }
+.rp-doc .rp-hbar { display: grid; grid-template-columns: 150px 1fr 60px; align-items: center; gap: 12px; margin-top: 5px; font-size: 12.5px; font-weight: 600; color: #fff; }
+.rp-doc .rp-hbar i { display: block; height: 10px; background: rgba(255, 255, 255, 0.12); border-radius: 7px; overflow: hidden; }
 .rp-doc .rp-hbar i b { display: block; height: 100%; background: var(--rp-red-2); border-radius: 7px; }
 .rp-doc .rp-hbar em { font-style: normal; font-weight: 800; text-align: right; }
 
@@ -201,7 +224,7 @@
 .rp-doc .rp-program-left { margin-top: 40px; }
 .rp-doc .rp-program-head { background: linear-gradient(90deg, var(--rp-red), var(--rp-red-2)); padding: 26px 24px 70px; }
 .rp-doc .rp-program-head b { display: block; font-size: 19px; font-weight: 800; color: #fff; line-height: 1.2; }
-.rp-doc .rp-program-head span { display: block; margin-top: 6px; font-size: 11px; font-weight: 700; color: #f6c4b8; text-transform: uppercase; }
+.rp-doc .rp-program-head span { display: block; margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--rp-bar, #f6c4b8); text-transform: uppercase; }
 .rp-doc .rp-program-body { background: #fff; border-radius: 18px; margin-top: -40px; padding: 4px 24px 28px; position: relative; }
 .rp-doc .rp-program-body .rp-block:first-child { margin-top: 20px; }
 

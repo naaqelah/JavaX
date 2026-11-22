@@ -1111,3 +1111,14 @@ export default function SocialMedia() {
     </div>
   );
 }
+
+// Dibaca oleh Report Generator (hanya baca). Dashboard hanya punya angka satu bulan (Oktober 2026) untuk Instagram, TikTok, YouTube.
+export function getDashboardSocial(period) {
+  if (period !== "2026-10") return null;
+  const num = (text) => Number(String(text).replace(/\./g, ""));
+  const pick = (name) => {
+    const channel = channels.find((item) => item.name === name);
+    return channel?.stats ? { followers: num(channel.audience), impressions: num(channel.stats.Impressions), engagement: num(channel.stats.Engagement), posts: num(channel.stats.Post) } : null;
+  };
+  return { instagram: pick("Instagram"), "tiktok-official": pick("TikTok"), youtube: pick("Youtube") };
+}

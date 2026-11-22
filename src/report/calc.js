@@ -154,6 +154,7 @@ export function derive(report, previous) {
       ["leads", "registration", "ftd", "deposit", "spend", "roas", "cpl", "cpa"].map((key) => [key, delta(key)])
     ),
     previous: before,
+    previousSocial: socialBefore,
     kpiRows: rows,
     social: {
       ...socialNow,

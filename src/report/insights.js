@@ -111,8 +111,30 @@ export function generateTexts(report, data) {
   return { evaluation, nextWeek, execSummary, strategicNotes, socialNote, campaignSummary, campaignInsights, campaignNextPlan, analystInsights, analystPlan, outro };
 }
 
+// Kata sandi seperti {leads} atau {leadsTrend} di dalam teks diganti dengan angka laporan saat ini,
+// jadi narasi ikut berubah ketika angka diedit.
+const abs = (value) => Math.abs(value).toLocaleString("id-ID", { maximumFractionDigits: 1 });
+function tokens(data) {
+  const juta = (value) => (value === null ? "" : `Rp ${(value / 1e6).toLocaleString("id-ID", { maximumFractionDigits: 1 })} juta`);
+  const map = {
+    leads: fmtInt(data.leads), registration: fmtInt(data.registration), ftd: fmtInt(data.ftd),
+    deposit: fmtRp(data.deposit), depositJuta: juta(data.deposit), spend: fmtRp(data.spend),
+    roas: fmtPct(data.roas), roasPrev: data.previous?.roas == null ? "" : fmtPct(data.previous.roas),
+    cpl: fmtRp(data.cpl), cpa: fmtRp(data.cpa), cpm: fmtRp(data.cpm), cpc: fmtRp(data.cpc), ctr: fmtPct(data.ctr, 2),
+  };
+  Object.entries(data.growth || {}).forEach(([key, value]) => {
+    map[`${key}Growth`] = value === null ? "" : fmtGrowth(value);
+    map[`${key}Abs`] = value === null ? "" : `${abs(value)}%`;
+    map[`${key}Trend`] = value === null ? "" : `${value >= 0 ? "naik" : "turun"} ${abs(value)}%`;
+  });
+  return map;
+}
+const fillTokens = (text, map) =>
+  String(text || "").replace(/\{(\w+)\}/g, (match, key) => (key in map ? map[key] : match)).replace(/\s*\(\s*\)/g, "");
+
 // Teks yang ditampilkan: suntingan pengguna bila ada, kalau tidak narasi otomatis.
 export const resolveTexts = (report, data) => {
   const auto = generateTexts(report, data);
-  return Object.fromEntries(Object.keys(auto).map((key) => [key, report.text?.[key]?.trim() ? report.text[key] : auto[key]]));
+  const map = tokens(data);
+  return Object.fromEntries(Object.keys(auto).map((key) => [key, fillTokens(report.text?.[key]?.trim() ? report.text[key] : auto[key], map)]));
 };

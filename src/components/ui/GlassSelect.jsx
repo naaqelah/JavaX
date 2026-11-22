@@ -1,5 +1,6 @@
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Check, ChevronDown } from "lucide-react";
 
 // Dropdown kustom bergaya kaca gelap. Pengganti <select> bawaan yang popup-nya
@@ -8,17 +9,45 @@ import { Check, ChevronDown } from "lucide-react";
 export default function GlassSelect({ value, onChange, options, placeholder = "Select", label, className = "", icon = null }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const listRef = useRef(null);
+  const [pos, setPos] = useState(null);
 
   const items = options.map((opt) =>
     typeof opt === "string" ? { value: opt, label: opt } : opt
   );
   const current = items.find((item) => item.value === value);
 
+  // Daftar dirender lewat portal di <body> supaya tidak tertimpa kartu (stacking context) di bawahnya.
+  useLayoutEffect(() => {
+    if (!open) return;
+    const place = () => {
+      const r = ref.current?.getBoundingClientRect();
+      if (!r) return;
+      const below = window.innerHeight - r.bottom - 12;
+      const flip = below < 160 && r.top > below;
+      const room = Math.max(120, Math.min(240, (flip ? r.top : below) - 6));
+      setPos({
+        left: r.left,
+        width: r.width,
+        maxHeight: room,
+        ...(flip ? { bottom: window.innerHeight - r.top + 6 } : { top: r.bottom + 6 }),
+      });
+    };
+    place();
+    window.addEventListener("resize", place);
+    window.addEventListener("scroll", place, true);
+    return () => {
+      window.removeEventListener("resize", place);
+      window.removeEventListener("scroll", place, true);
+    };
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
 
     const handleClickOutside = (event) => {
-      if (ref.current && !ref.current.contains(event.target)) setOpen(false);
+      const t = event.target;
+      if (ref.current && !ref.current.contains(t) && !(listRef.current && listRef.current.contains(t))) setOpen(false);
     };
     const handleEscape = (event) => {
       if (event.key === "Escape") setOpen(false);
@@ -53,11 +82,13 @@ export default function GlassSelect({ value, onChange, options, placeholder = "S
         />
       </button>
 
-      {open && (
+      {open && pos && createPortal(
         <ul
+          ref={listRef}
+          style={pos}
           role="listbox"
           aria-label={label}
-          className="absolute left-0 right-0 top-[calc(100%+6px)] z-[200] max-h-60 overflow-y-auto rounded-xl border border-white/10 bg-[#1a0d10]/95 p-1 shadow-[0_18px_44px_-12px_rgba(0,0,0,0.85),0_0_24px_-8px_rgba(162,30,30,0.35)] backdrop-blur-xl [scrollbar-width:thin]"
+          className="fixed z-[1000] overflow-y-auto rounded-xl border border-white/10 bg-[#1a0d10]/95 p-1 shadow-[0_18px_44px_-12px_rgba(0,0,0,0.85),0_0_24px_-8px_rgba(162,30,30,0.35)] backdrop-blur-xl [scrollbar-width:thin]"
         >
           {items.map((item) => {
             const selected = item.value === value;
@@ -82,7 +113,8 @@ export default function GlassSelect({ value, onChange, options, placeholder = "S
               </li>
             );
           })}
-        </ul>
+        </ul>,
+        document.body
       )}
     </div>
   );

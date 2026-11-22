@@ -3,6 +3,8 @@
 // komponen tanpa data tidak ditampilkan. Sengaja memakai kelas CSS sendiri (rp-*), bukan kelas
 // Tailwind, supaya tidak terpengaruh aturan tema terang/gelap dashboard dan aman saat dicetak.
 import "./report.css";
+import { buildWeeklyTemplateSheets } from "./template/WeeklyTemplate";
+import { buildMonthlyTemplateSheets } from "./template/MonthlyTemplate";
 import { fmtGrowth, fmtInt, fmtPct, fmtRp, fmtRpShort, fmtShort, num } from "./calc";
 import { ANALYST_METRICS, MONTHS, fmtDate, isWeekly, labelOf, parsePeriod, typeLabel } from "./store";
 
@@ -69,6 +71,27 @@ function Gallery({ images, cols = 4, max = 8, light, layout }) {
 }
 
 // ---------------------------------------------------------------- Cover
+// Foto tim dengan kartu nama (halaman Social, Production, Campaign, Analyst seperti di template)
+function TeamStrip({ team, tall, wide }) {
+  const members = (team?.members || []).filter((member) => member.name);
+  const image = team?.image?.src;
+  if (!image && !members.length) return null;
+  return (
+    <div className={`rp-team${tall ? " rp-team-tall" : ""}${wide ? " rp-team-wide" : ""}`}>
+      {image && <img src={image} alt="" />}
+      <ul>
+        {members.map((member, index) => (
+          <li key={index}>
+            <b>{member.name}</b>
+            <strong>{member.role}</strong>
+            {member.tasks && <span>{member.tasks}</span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function Cover({ report }) {
   const weekly = isWeekly(report);
   const [first, ...rest] = report.meta.department.split(" ");
@@ -87,11 +110,10 @@ function Cover({ report }) {
   const kind = weekly ? "WEEKLY" : "MONTHLY";
   return (
     <div className="rp-page rp-cover">
-      <div className="rp-cover-bar rp-cover-bar-top" />
-      <div className="rp-cover-bar rp-cover-bar-bottom">
-        {report.meta.coverImage && <img src={report.meta.coverImage} alt="" />}
-      </div>
-      <div className="rp-cover-strip" />
+      {report.meta.coverImage && <img className="rp-cover-photo" src={report.meta.coverImage} alt="" />}
+      <div className="rp-cover-shade" />
+      <div className="rp-cover-band" />
+      <div className="rp-cover-year">{L(report, "coverYear", String(year))}</div>
       <div className="rp-cover-dept">
         <b>{first.toUpperCase()}</b>
         <span>{rest.join(" ").toUpperCase()}</span>
@@ -321,6 +343,7 @@ function SocialOverview({ report, data, texts, no }) {
           </table>
         </div>
       )}
+      <TeamStrip team={report.team?.social} />
       <PageNo n={no} />
     </div>
   );
@@ -393,6 +416,7 @@ function ProductionSpread({ report, data, no, layout }) {
           <Gallery images={production.images} cols={2} max={6} light layout={layout} />
         </div>
       )}
+      <TeamStrip team={report.team?.production} />
       <PageNo n={no} />
       <PageNo n={no + 1} right />
     </div>
@@ -467,6 +491,7 @@ function CampaignSpread({ report, data, texts, no }) {
         <Block dark title="INSIGHTS">{texts.campaignInsights}</Block>
         <Block dark title="NEXT PLAN">{texts.campaignNextPlan}</Block>
       </div>
+      <TeamStrip team={report.team?.campaign} tall />
       <PageNo n={no} />
       <PageNo n={no + 1} right />
     </div>
@@ -511,6 +536,7 @@ function AnalystSpread({ report, data, texts, no }) {
         <Block dark title="INSIGHTS">{texts.analystInsights}</Block>
         <Block dark title="RECOMMENDATIONS">{texts.analystPlan}</Block>
       </div>
+      <TeamStrip team={report.team?.analyst} wide />
       <PageNo n={no} />
       <PageNo n={no + 1} right />
     </div>
@@ -673,6 +699,8 @@ function CustomSpread({ section, no, layout }) {
 // Menyusun daftar halaman (setengah spread) dari urutan bagian (report.order), bagian yang tampil,
 // dan data yang ada; lalu menghitung nomor halaman dan daftar isi.
 export function buildSheets(report, data, texts) {
+  if (isWeekly(report)) return buildWeeklyTemplateSheets(report, data, texts); // laporan mingguan memakai halaman template deck 16:9
+  return buildMonthlyTemplateSheets(report, data, texts); // bulanan (Merah/Hijau) memakai halaman template
   const on = report.sections || {};
   const weekly = isWeekly(report);
   const items = []; // { span: 1 | 2, render(no, right), toc?: [group, title] }
@@ -783,9 +811,9 @@ export function buildSheets(report, data, texts) {
   return { sheets, pageCount: no - 1 };
 }
 
-export default function ReportDocument({ sheets }) {
+export default function ReportDocument({ sheets, theme }) {
   return (
-    <div className="rp-doc">
+    <div className={`rp-doc${theme === "green" ? " rp-theme-green" : ""}`}>
       {sheets.map((sheet) => (
         <div key={sheet.key} className={`rp-sheet rp-sheet-${sheet.kind}`}>{sheet.node}</div>
       ))}
